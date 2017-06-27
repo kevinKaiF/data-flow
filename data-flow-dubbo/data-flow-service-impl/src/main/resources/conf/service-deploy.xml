@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans.xsd  
+                     http://www.springframework.org/schema/tx  
+                     http://www.springframework.org/schema/tx/spring-tx.xsd  
+                     http://www.springframework.org/schema/aop  
+                     http://www.springframework.org/schema/aop/spring-aop.xsd
+                     http://code.alibabatech.com/schema/dubbo
+                     http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:conf/db.properties</value>
+                <value>classpath:conf/dubbo.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="dsDataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="useUnfairLock" value="true"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="notFullTimeoutRetryCount" value="2"/>
+        <property name="initialSize" value="0"/>
+        <property name="minIdle" value="0"/>
+        <property name="maxActive" value="32"/>
+        <property name="maxWait" value="5000"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="exceptionSorterClassName" value="com.alibaba.druid.pool.vendor.MySqlExceptionSorter"/>
+        <property name="validConnectionCheckerClassName"
+                  value="com.alibaba.druid.pool.vendor.MySqlValidConnectionChecker"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <property name="dataSource" ref="dsDataSource"/>
+    </bean>
+
+    <!--dao start-->
+    <bean id="dataInstanceDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.github.dataflow.dubbo.dao.DataInstanceDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="dataOutputMappingDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.github.dataflow.dubbo.dao.DataOutputMappingDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="dataSourceOutputDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.github.dataflow.dubbo.dao.DataSourceOutputDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="dataTableDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.github.dataflow.dubbo.dao.DataTableDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="dataNodeConfigurationDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.github.dataflow.dubbo.dao.DataNodeConfigurationDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="dataUserDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.github.dataflow.dubbo.dao.DataUserDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="dataLogDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.github.dataflow.dubbo.dao.DataLogDao"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!--dao end-->
+
+    <!--service start-->
+    <bean id="dataInstanceService" class="com.github.dataflow.dubbo.service.impl.DubboDataInstanceServiceImpl">
+        <property name="dataInstanceDao" ref="dataInstanceDao"/>
+    </bean>
+    <bean id="dataOutputMappingService"
+          class="com.github.dataflow.dubbo.service.impl.DubboDataOutputMappingServiceImpl">
+        <property name="dataOutputMappingDao" ref="dataOutputMappingDao"/>
+    </bean>
+    <bean id="dataSourceOutputService" class="com.github.dataflow.dubbo.service.impl.DubboDataSourceOutputServiceImpl">
+        <property name="dataSourceOutputDao" ref="dataSourceOutputDao"/>
+    </bean>
+    <bean id="dataTableService" class="com.github.dataflow.dubbo.service.impl.DubboDataTableServiceImpl">
+        <property name="dataTableDao" ref="dataTableDao"/>
+    </bean>
+    <bean id="dataNodeConfigService"
+          class="com.github.dataflow.dubbo.service.impl.DubboDataNodeConfigurationServiceImpl">
+        <property name="dataNodeConfigurationDao" ref="dataNodeConfigurationDao"/>
+    </bean>
+    <bean id="dataUserService" class="com.github.dataflow.dubbo.service.impl.DubboDataUserServiceImpl">
+        <property name="dataUserDao" ref="dataUserDao"/>
+    </bean>
+    <bean id="dataLogService" class="com.github.dataflow.dubbo.service.impl.DubboDataLogServiceImpl">
+        <property name="dataLogDao" ref="dataLogDao"/>
+    </bean>
+    <!--service end-->
+
+    <!--dubbo start-->
+    <dubbo:application name="${dubbo.application.name}"/>
+    <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" buffer="8192" payload="50000000"/>
+    <dubbo:registry address="${dubbo.registry.address}"/>
+    <dubbo:provider threadpool="cached" loadbalance="roundrobin" cluster="failfast" delay="-1"/>
+
+    <dubbo:service interface="com.github.dataflow.dubbo.service.DubboDataInstanceService"
+                   ref="dataInstanceService" delay="-1" cluster="failfast"/>
+    <dubbo:service interface="com.github.dataflow.dubbo.service.DubboDataTableService"
+                   ref="dataTableService" delay="-1" cluster="failfast"/>
+    <dubbo:service interface="com.github.dataflow.dubbo.service.DubboDataOutputMappingService"
+                   ref="dataOutputMappingService" delay="-1" cluster="failfast"/>
+    <dubbo:service interface="com.github.dataflow.dubbo.service.DubboDataSourceOutputService"
+                   ref="dataSourceOutputService" delay="-1" cluster="failfast"/>
+    <dubbo:service interface="com.github.dataflow.dubbo.service.DubboDataNodeConfigurationService"
+                   ref="dataNodeConfigService" delay="-1" cluster="failfast"/>
+    <dubbo:service interface="com.github.dataflow.dubbo.service.DubboDataUserService"
+                   ref="dataUserService" delay="-1" cluster="failfast"/>
+    <dubbo:service interface="com.github.dataflow.dubbo.service.DubboDataLogService"
+                   ref="dataLogService" delay="-1" cluster="failfast"/>
+    <!--dubbo end-->
+
+    <!-- transaction configuration-->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dsDataSource"/>
+    </bean>
+
+    <!-- 定义事务通知 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- 定义方法的过滤规则 -->
+        <tx:attributes>
+            <!-- 所有方法都使用事务 -->
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <!-- 定义所有get开头的方法都是只读的 -->
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 定义AOP配置 -->
+    <aop:config>
+        <!-- 定义一个切入点 -->
+        <aop:pointcut expression="execution (* com.github.dataflow.dubbo.service.*.*(..))" id="services"/>
+        <!-- 对切入点和事务的通知，进行适配 -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="services"/>
+    </aop:config>
+</beans>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="console-log" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss SSS} %-5p [${pom.application.name}] [%t] [%c.%M(%F:%L)] %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="file-log" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${pom.log.dir}/${pom.log.file}"/>
+        <param name="append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss SSS} %-5p [${pom.application.name}] [%t] [%c.%M(%F:%L)] %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="com.alibaba" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="file-log"/>
+    </logger>
+
+    <logger name="java.sql" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="file-log"/>
+    </logger>
+
+    <logger name="org.mybatis" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="file-log"/>
+    </logger>
+
+    <logger name="com.mysql" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="file-log"/>
+    </logger>
+
+    <logger name="org.springframework" additivity="true">
+        <level value="info"/>
+        <appender-ref ref="file-log"/>
+    </logger>
+
+    <root>
+        <level value="${pom.log.root-level}"/>
+        <appender-ref ref="file-log"/>
+    </root>
+
+</log4j:configuration>

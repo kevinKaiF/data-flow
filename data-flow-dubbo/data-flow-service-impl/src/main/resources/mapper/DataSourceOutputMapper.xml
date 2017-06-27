@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 该文件自动生成,请谨慎修改.不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.github.dataflow.dubbo.dao.DataSourceOutputDao">
+
+    <resultMap id="RM_DataSourceOutput" type="com.github.dataflow.dubbo.model.DataSourceOutput">
+        <result property="id" column="ID"/>
+        <result property="type" column="TYPE"/>
+        <result property="username" column="USERNAME"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="options" column="OPTIONS"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columns">
+        <![CDATA[
+			ID,TYPE,OPTIONS,USERNAME,PASSWORD,CREATE_TIME,UPDATE_TIME
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+	        INSERT INTO data_source_output (
+	        	ID ,
+	        	TYPE ,
+	        	OPTIONS ,
+	        	USERNAME ,
+	        	PASSWORD ,
+	        	CREATE_TIME ,
+	        	UPDATE_TIME 
+	        ) VALUES (
+	        	#{id} ,
+	        	#{type} ,
+	        	#{options} ,
+	        	#{username} ,
+	        	#{password} ,
+	        	#{createTime} ,
+	        	#{updateTime} 
+	        )
+	    ]]>
+    </insert>
+
+    <!-- update -->
+    <sql id="update_sql">
+        <set>
+            <if test="type != null">
+                TYPE = #{type} ,
+            </if>
+            <if test="options != null and options != ''">
+                OPTIONS = #{options} ,
+            </if>
+            <if test="username != null and username != ''">
+                USERNAME = #{username} ,
+            </if>
+            <if test="password != null and password != ''">
+                PASSWORD = #{password} ,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime} ,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime}
+            </if>
+        </set>
+    </sql>
+
+    <update id="update">
+        UPDATE data_source_output
+        <include refid="update_sql"/>
+        WHERE
+        ID = #{id}
+    </update>
+
+    <!-- delete -->
+    <delete id="delete">
+        <![CDATA[
+        	DELETE FROM data_source_output 
+        	WHERE
+        		ID = #{id} 
+    	]]>
+    </delete>
+
+    <delete id="deleteBatch">
+        DELETE FROM data_source_output WHERE id IN
+        <foreach item="ids" collection="list" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!-- selsect -->
+    <select id="getById" resultMap="RM_DataSourceOutput">
+        SELECT
+        <include refid="columns"/>
+        FROM data_source_output
+        WHERE
+        ID = #{id}
+    </select>
+
+    <sql id="findPage_where">
+        <where>
+            <if test="id != null">
+                AND ID = #{id}
+            </if>
+            <if test="type != null">
+                AND TYPE = #{type}
+            </if>
+            <if test="username != null and username !=''">
+                AND USERNAME = #{username}
+            </if>
+            <if test="password != null and password !=''">
+                AND PASSWORD = #{password}
+            </if>
+            <if test="options != null and options !=''">
+                AND OPTIONS LIKE CONCAT('%',#{options},'%')
+            </if>
+            <if test="createTimeBegin != null">
+                AND CREATE_TIME >= #{createTimeBegin}
+            </if>
+            <if test="createTimeEnd != null">
+                AND CREATE_TIME &lt;= #{createTimeEnd}
+            </if>
+            <if test="updateTimeBegin != null">
+                AND UPDATE_TIME >= #{updateTimeBegin}
+            </if>
+            <if test="updateTimeEnd != null">
+                AND UPDATE_TIME &lt;= #{updateTimeEnd}
+            </if>
+        </where>
+    </sql>
+
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(1)
+        FROM data_source_output
+        <include refid="findPage_where"/>
+    </select>
+
+    <select id="findByCondition" resultMap="RM_DataSourceOutput">
+        SELECT
+        <include refid="columns"/>
+        FROM data_source_output
+        <include refid="findPage_where"/>
+    </select>
+
+
+</mapper>

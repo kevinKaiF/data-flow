@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 该文件自动生成,请谨慎修改.不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.github.dataflow.dubbo.dao.DataOutputMappingDao">
+
+    <resultMap id="RM_DataOutputMapping" type="com.github.dataflow.dubbo.model.DataOutputMapping">
+        <result property="id" column="ID"/>
+        <result property="dataInstanceId" column="DATA_INSTANCE_ID"/>
+        <result property="schemaName" column="SCHEMA_NAME"/>
+        <result property="topic" column="TOPIC"/>
+        <result property="dataSourceOutputId" column="DATA_SOURCE_OUTPUT_ID"/>
+        <association property="dataSourceOutput" columnPrefix="dso_" resultMap="RM_DataSourceOutput"/>
+    </resultMap>
+
+    <resultMap id="RM_DataSourceOutput" type="com.github.dataflow.dubbo.model.DataSourceOutput">
+        <result property="id" column="ID"/>
+        <result property="type" column="TYPE"/>
+        <result property="options" column="OPTIONS"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columns">
+        <![CDATA[
+			dom.ID ID,dom.DATA_INSTANCE_ID DATA_INSTANCE_ID,dom.SCHEMA_NAME SCHEMA_NAME,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,dom.TOPIC TOPIC,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,
+			dso.ID dso_ID, dso.TYPE dso_TYPE, dso.OPTIONS dso_OPTIONS
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+	        INSERT INTO data_output_mapping (
+	        	ID ,
+	        	DATA_INSTANCE_ID ,
+	        	SCHEMA_NAME ,
+	        	DATA_SOURCE_OUTPUT_ID ,
+	        	TOPIC
+	        ) VALUES (
+	        	#{id} ,
+	        	#{dataInstanceId} ,
+	        	#{schemaName} ,
+	        	#{dataSourceOutputId} ,
+	        	#{topic}
+	        )
+	    ]]>
+    </insert>
+
+    <!-- update -->
+    <sql id="update_sql">
+        <set>
+            <if test="dataInstanceId != null">
+                DATA_INSTANCE_ID = #{dataInstanceId} ,
+            </if>
+            <if test="schemaName != null and schemaName != ''">
+                SCHEMA_NAME = #{schemaName} ,
+            </if>
+            <if test="dataSourceOutputId != null">
+                DATA_SOURCE_OUTPUT_ID = #{dataSourceOutputId} ,
+            </if>
+            <if test="topic != null and topic != ''">
+                TOPIC = #{topic}
+            </if>
+        </set>
+    </sql>
+
+    <update id="update">
+        UPDATE data_output_mapping
+        <include refid="update_sql"/>
+        WHERE
+        ID = #{id}
+    </update>
+
+    <!-- delete -->
+    <delete id="delete">
+        <![CDATA[
+        	DELETE FROM data_output_mapping 
+        	WHERE
+        		ID = #{id} 
+    	]]>
+    </delete>
+
+    <delete id="deleteBatch">
+        DELETE FROM data_output_mapping WHERE id IN
+        <foreach item="ids" collection="list" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!-- selsect -->
+    <select id="getById" resultMap="RM_DataOutputMapping">
+        SELECT
+        <include refid="columns"/>
+        FROM data_output_mapping dom LEFT JOIN data_source_output dso
+        ON dom.data_source_output_id = dso.id
+        WHERE
+        dom.ID = #{id}
+    </select>
+
+    <sql id="findPage_where">
+        <where>
+            <if test="id != null">
+                AND dom.ID = #{id}
+            </if>
+            <if test="dataInstanceId != null">
+                AND dom.DATA_INSTANCE_ID = #{dataInstanceId}
+            </if>
+            <if test="schemaName != null and schemaName !=''">
+                AND dom.SCHEMA_NAME = #{schemaName}
+            </if>
+            <if test="dataSourceOutputId != null">
+                AND dom.DATA_SOURCE_OUTPUT_ID = #{dataSourceOutputId}
+            </if>
+            <if test="topic != null and topic !=''">
+                AND dom.TOPIC LIKE CONCAT('%', #{topic}, '%')
+            </if>
+        </where>
+    </sql>
+
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(1)
+        FROM data_output_mapping dom
+        <include refid="findPage_where"/>
+    </select>
+
+    <select id="findByCondition" resultMap="RM_DataOutputMapping">
+        SELECT
+        <include refid="columns"/>
+        FROM data_output_mapping dom LEFT JOIN data_source_output dso
+        ON dom.data_source_output_id = dso.id
+        <include refid="findPage_where"/>
+    </select>
+
+
+</mapper>

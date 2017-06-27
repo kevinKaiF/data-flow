@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 该文件自动生成,请谨慎修改.不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.github.dataflow.dubbo.dao.DataInstanceDao">
+
+    <resultMap id="RM_DataInstance" type="com.github.dataflow.dubbo.model.DataInstance">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="slaveId" column="SLAVE_ID"/>
+        <result property="host" column="HOST"/>
+        <result property="port" column="PORT"/>
+        <result property="jdbcUrl" column="JDBC_URL"/>
+        <result property="type" column="TYPE"/>
+        <result property="username" column="USERNAME"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="whiteFilter" column="WHITE_FILTER"/>
+        <result property="blackFilter" column="BLACK_FILTER"/>
+        <result property="transformScript" column="TRANSFORM_SCRIPT"/>
+        <result property="options" column="OPTIONS"/>
+        <result property="nodePath" column="NODE_PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+    </resultMap>
+
+
+    <resultMap id="RM_DataInstance_fully" type="com.github.dataflow.dubbo.model.DataInstance">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="slaveId" column="SLAVE_ID"/>
+        <result property="host" column="HOST"/>
+        <result property="port" column="PORT"/>
+        <result property="jdbcUrl" column="JDBC_URL"/>
+        <result property="type" column="TYPE"/>
+        <result property="username" column="USERNAME"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="whiteFilter" column="WHITE_FILTER"/>
+        <result property="blackFilter" column="BLACK_FILTER"/>
+        <result property="transformScript" column="TRANSFORM_SCRIPT"/>
+        <result property="options" column="OPTIONS"/>
+        <result property="nodePath" column="NODE_PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="createTime" column="CREATE_TIME"/>
+        <result property="updateTime" column="UPDATE_TIME"/>
+        <association property="dataOutputMappings" columnPrefix="dom_" resultMap="RM_DataOutputMapping"/>
+        <association property="dataTables" columnPrefix="dt_" resultMap="RM_DataTable"/>
+    </resultMap>
+
+
+    <resultMap id="RM_DataOutputMapping" type="com.github.dataflow.dubbo.model.DataOutputMapping">
+        <result property="id" column="ID"/>
+        <result property="dataInstanceId" column="DATA_INSTANCE_ID"/>
+        <result property="schemaName" column="SCHEMA_NAME"/>
+        <result property="topic" column="TOPIC"/>
+        <result property="dataSourceOutputId" column="DATA_SOURCE_OUTPUT_ID"/>
+        <association property="dataSourceOutput" columnPrefix="dso_" resultMap="RM_DataSourceOutput"/>
+    </resultMap>
+
+    <resultMap id="RM_DataSourceOutput" type="com.github.dataflow.dubbo.model.DataSourceOutput">
+        <result property="id" column="ID"/>
+        <result property="type" column="TYPE"/>
+        <result property="options" column="OPTIONS"/>
+        <result property="username" column="USERNAME"/>
+        <result property="password" column="PASSWORD"/>
+    </resultMap>
+
+    <resultMap id="RM_DataTable" type="com.github.dataflow.dubbo.model.DataTable">
+        <result property="id" column="ID"/>
+        <result property="dataInstanceId" column="DATA_INSTANCE_ID"/>
+        <result property="schemaName" column="SCHEMA_NAME"/>
+        <result property="tableName" column="TABLE_NAME"/>
+        <result property="columns" column="COLUMNS"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columns_fully">
+        <![CDATA[
+			di.ID ID,di.NAME NAME,di.SLAVE_ID SLAVE_ID,di.HOST HOST,di.PORT PORT,di.JDBC_URL JDBC_URL,di.TYPE TYPE,di.USERNAME USERNAME,di.PASSWORD PASSWORD,di.WHITE_FILTER WHITE_FILTER,di.BLACK_FILTER BLACK_FILTER,di.TRANSFORM_SCRIPT TRANSFORM_SCRIPT,di.OPTIONS OPTIONS,di.NODE_PATH NODE_PATH,di.STATUS STATUS,di.CREATE_TIME CREATE_TIME,di.UPDATE_TIME UPDATE_TIME,
+			dom.ID dom_ID,dom.DATA_INSTANCE_ID dom_DATA_INSTANCE_ID,dom.SCHEMA_NAME dom_SCHEMA_NAME,dom.TOPIC dom_TOPIC,dom.DATA_SOURCE_OUTPUT_ID dom_DATA_SOURCE_OUTPUT_ID,
+			dso.ID dom_dso_ID,dso.TYPE dom_dso_TYPE,dso.OPTIONS dom_dso_OPTIONS,dso.USERNAME dom_dso_USERNAME,dso.PASSWORD dom_dso_PASSWORD,
+			dt.ID dt_ID,dt.DATA_INSTANCE_ID dt_DATA_INSTANCE_ID,dt.SCHEMA_NAME dt_SCHEMA_NAME,dt.TABLE_NAME dt_TABLE_NAME,dt.COLUMNS dt_COLUMNS
+	    ]]>
+    </sql>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columns">
+        <![CDATA[
+			ID,NAME,SLAVE_ID,HOST,PORT,JDBC_URL,TYPE,USERNAME,PASSWORD,WHITE_FILTER,BLACK_FILTER,TRANSFORM_SCRIPT,OPTIONS,NODE_PATH,STATUS,CREATE_TIME,UPDATE_TIME
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+	        INSERT INTO data_instance (
+	        	ID ,
+	        	NAME ,
+	        	SLAVE_ID ,
+	        	HOST ,
+	        	PORT ,
+	        	JDBC_URL ,
+	        	TYPE ,
+	        	USERNAME ,
+	        	PASSWORD ,
+	        	WHITE_FILTER ,
+	        	BLACK_FILTER ,
+	        	TRANSFORM_SCRIPT ,
+	        	OPTIONS ,
+	        	NODE_PATH ,
+	        	STATUS ,
+	        	CREATE_TIME ,
+	        	UPDATE_TIME 
+	        ) VALUES (
+	        	#{id} ,
+	        	#{name} ,
+	        	#{slaveId} ,
+	        	#{host} ,
+	        	#{port} ,
+	        	#{jdbcUrl} ,
+	        	#{type} ,
+	        	#{username} ,
+	        	#{password} ,
+	        	#{whiteFilter} ,
+	        	#{blackFilter} ,
+	        	#{transformScript} ,
+	        	#{options} ,
+	        	#{nodePath} ,
+	        	#{status} ,
+	        	#{createTime} ,
+	        	#{updateTime} 
+	        )
+	    ]]>
+    </insert>
+
+    <!-- update -->
+    <sql id="update_sql">
+        <set>
+            <if test="name != null and name != ''">
+                NAME = #{name} ,
+            </if>
+            <if test="slaveId != null">
+                SLAVE_ID = #{slaveId} ,
+            </if>
+            <if test="host != null and host != ''">
+                HOST = #{host} ,
+            </if>
+            <if test="port != null">
+                PORT = #{port} ,
+            </if>
+            <if test="jdbcUrl != null and jdbcUrl != ''">
+                JDBC_URL = #{jdbcUrl} ,
+            </if>
+            <if test="type != null">
+                TYPE = #{type} ,
+            </if>
+            <if test="username != null and username != ''">
+                USERNAME = #{username} ,
+            </if>
+            <if test="password != null and password != ''">
+                PASSWORD = #{password} ,
+            </if>
+            <if test="whiteFilter != null and whiteFilter != ''">
+                WHITE_FILTER = #{whiteFilter} ,
+            </if>
+            <if test="blackFilter != null and blackFilter != ''">
+                BLACK_FILTER = #{blackFilter} ,
+            </if>
+            <if test="transformScript != null and transformScript != ''">
+                TRANSFORM_SCRIPT = #{transformScript} ,
+            </if>
+            <if test="options != null and options != ''">
+                OPTIONS = #{options} ,
+            </if>
+            <if test="nodePath != null and nodePath != ''">
+                NODE_PATH = #{nodePath} ,
+            </if>
+            <if test="status != null">
+                STATUS = #{status} ,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime} ,
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME = #{updateTime}
+            </if>
+        </set>
+    </sql>
+
+    <update id="update">
+        UPDATE data_instance
+        <include refid="update_sql"/>
+        WHERE
+        ID = #{id}
+    </update>
+
+    <update id="updateStatusByName">
+        UPDATE data_instance
+        SET STATUS = #{status}
+        WHERE
+        NAME = #{name}
+    </update>
+
+    <update id="updateStatusById">
+        UPDATE data_instance
+        SET STATUS = #{status}
+        WHERE
+        ID = #{id}
+    </update>
+
+    <!-- delete -->
+    <delete id="delete">
+        <![CDATA[
+        	DELETE FROM data_instance 
+        	WHERE
+        		ID = #{id} 
+    	]]>
+    </delete>
+
+    <!-- delete -->
+    <delete id="deleteIfStopped">
+        <![CDATA[
+        	DELETE FROM data_instance
+        	WHERE
+        		ID = #{id} AND STATUS = 2;
+    	]]>
+    </delete>
+
+    <delete id="deleteBatch">
+        DELETE FROM data_instance WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- selsect -->
+    <select id="getById" resultMap="RM_DataInstance">
+        SELECT
+        <include refid="columns"/>
+        FROM data_instance
+        WHERE
+        ID = #{id}
+    </select>
+
+    <!-- selsect -->
+    <select id="getByName" resultMap="RM_DataInstance">
+        SELECT
+        <include refid="columns"/>
+        FROM data_instance
+        WHERE
+        NAME = #{name}
+    </select>
+
+    <!-- selsect -->
+    <select id="getByIdFully" resultMap="RM_DataInstance_fully">
+        SELECT
+        <include refid="columns_fully"/>
+        FROM data_instance di
+        LEFT JOIN data_table dt
+        ON di.ID = dt.DATA_INSTANCE_ID
+        LEFT JOIN data_output_mapping dom
+        ON di.ID = dom.DATA_INSTANCE_ID
+        LEFT JOIN data_source_output dso
+        ON dom.DATA_SOURCE_OUTPUT_ID = dso.ID
+        WHERE
+        di.ID = #{id}
+    </select>
+
+    <sql id="findPage_where">
+        <where>
+            <if test="id != null">
+                AND ID = #{id}
+            </if>
+            <if test="name != null and name !=''">
+                AND NAME = #{name}
+            </if>
+            <if test="slaveId != null">
+                AND SLAVE_ID = #{slaveId}
+            </if>
+            <if test="host != null and host !=''">
+                AND HOST = #{host}
+            </if>
+            <if test="port != null">
+                AND PORT = #{port}
+            </if>
+            <!--<if test="jdbcUrl != null and jdbcUrl !=''">-->
+            <!--AND JDBC_URL = #{jdbcUrl}-->
+            <!--</if>-->
+            <if test="type != null">
+                AND TYPE = #{type}
+            </if>
+            <if test="username != null and username !=''">
+                AND USERNAME = #{username}
+            </if>
+            <!--<if test="password != null and password !=''">-->
+            <!--AND PASSWORD = #{password}-->
+            <!--</if>-->
+            <!--<if test="whiteFilter != null and whiteFilter !=''">-->
+            <!--AND WHITE_FILTER = #{whiteFilter}-->
+            <!--</if>-->
+            <!--<if test="blackFilter != null and blackFilter !=''">-->
+            <!--AND BLACK_FILTER = #{blackFilter}-->
+            <!--</if>-->
+            <!--<if test="transformScript != null and transformScript !=''">-->
+            <!--AND TRANSFORM_SCRIPT = #{transformScript}-->
+            <!--</if>-->
+            <if test="options != null and options !=''">
+                AND OPTIONS LIKE CONCAT('%',#{options},'%')
+            </if>
+            <if test="nodePath != null and nodePath !=''">
+                AND NODE_PATH = #{nodePath}
+            </if>
+            <if test="status != null">
+                AND STATUS = #{status}
+            </if>
+            <if test="createTimeBegin != null">
+                AND CREATE_TIME >= #{createTimeBegin}
+            </if>
+            <if test="createTimeEnd != null">
+                AND CREATE_TIME &lt;= #{createTimeEnd}
+            </if>
+            <if test="updateTimeBegin != null">
+                AND UPDATE_TIME >= #{updateTimeBegin}
+            </if>
+            <if test="updateTimeEnd != null">
+                AND UPDATE_TIME &lt;= #{updateTimeEnd}
+            </if>
+        </where>
+    </sql>
+
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(1)
+        FROM data_instance di
+        <include refid="findPage_where"/>
+    </select>
+
+    <select id="findByCondition" resultMap="RM_DataInstance">
+        SELECT
+        <include refid="columns"/>
+        FROM data_instance
+        <include refid="findPage_where"/>
+    </select>
+
+    <sql id="findPage_where_fully">
+        <where>
+            <if test="id != null">
+                AND di.ID = #{id}
+            </if>
+            <if test="name != null and name !=''">
+                AND di.NAME = #{name}
+            </if>
+            <if test="slaveId != null">
+                AND di.SLAVE_ID = #{slaveId}
+            </if>
+            <if test="host != null and host !=''">
+                AND di.HOST = #{host}
+            </if>
+            <if test="port != null">
+                AND di.PORT = #{port}
+            </if>
+            <!--<if test="jdbcUrl != null and jdbcUrl !=''">-->
+            <!--AND di.JDBC_URL = #{jdbcUrl}-->
+            <!--</if>-->
+            <if test="type != null">
+                AND di.TYPE = #{type}
+            </if>
+            <if test="username != null and username !=''">
+                AND di.USERNAME = #{username}
+            </if>
+            <!--<if test="password != null and password !=''">-->
+            <!--AND di.PASSWORD = #{password}-->
+            <!--</if>-->
+            <!--<if test="whiteFilter != null and whiteFilter !=''">-->
+            <!--AND di.WHITE_FILTER = #{whiteFilter}-->
+            <!--</if>-->
+            <!--<if test="blackFilter != null and blackFilter !=''">-->
+            <!--AND di.BLACK_FILTER = #{blackFilter}-->
+            <!--</if>-->
+            <!--<if test="transformScript != null and transformScript !=''">-->
+            <!--AND di.TRANSFORM_SCRIPT = #{transformScript}-->
+            <!--</if>-->
+            <if test="options != null and options !=''">
+                AND di.OPTIONS LIKE CONCAT('%',#{options},'%')
+            </if>
+            <if test="nodePath != null and nodePath !=''">
+                AND di.NODE_PATH = #{nodePath}
+            </if>
+            <if test="status != null">
+                AND di.STATUS = #{status}
+            </if>
+            <if test="createTimeBegin != null">
+                AND di.CREATE_TIME >= #{createTimeBegin}
+            </if>
+            <if test="createTimeEnd != null">
+                AND di.CREATE_TIME &lt;= #{createTimeEnd}
+            </if>
+            <if test="updateTimeBegin != null">
+                AND di.UPDATE_TIME >= #{updateTimeBegin}
+            </if>
+            <if test="updateTimeEnd != null">
+                AND di.UPDATE_TIME &lt;= #{updateTimeEnd}
+            </if>
+        </where>
+    </sql>
+
+    <select id="findByConditionFully" resultMap="RM_DataInstance_fully">
+        SELECT
+        <include refid="columns_fully"/>
+        FROM data_instance di
+        LEFT JOIN data_table dt
+        ON di.ID = dt.DATA_INSTANCE_ID
+        LEFT JOIN data_output_mapping dom
+        ON di.ID = dom.DATA_INSTANCE_ID
+        LEFT JOIN data_source_output dso
+        ON dom.DATA_SOURCE_OUTPUT_ID = dso.ID
+        <include refid="findPage_where"/>
+    </select>
+
+
+</mapper>

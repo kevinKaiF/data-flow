@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 该文件自动生成,请谨慎修改.不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.github.dataflow.dubbo.dao.DataTableDao">
+
+    <resultMap id="RM_DataTable" type="com.github.dataflow.dubbo.model.DataTable">
+        <result property="id" column="ID"/>
+        <result property="dataInstanceId" column="DATA_INSTANCE_ID"/>
+        <result property="schemaName" column="SCHEMA_NAME"/>
+        <result property="tableName" column="TABLE_NAME"/>
+        <result property="columns" column="COLUMNS"/>
+    </resultMap>
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columns">
+        <![CDATA[
+			ID,DATA_INSTANCE_ID,SCHEMA_NAME,TABLE_NAME,COLUMNS
+	    ]]>
+    </sql>
+
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
+	        INSERT INTO data_table (
+	        	ID ,
+	        	DATA_INSTANCE_ID ,
+	        	SCHEMA_NAME ,
+	        	TABLE_NAME ,
+	        	COLUMNS
+	        ) VALUES (
+	        	#{id} ,
+	        	#{dataInstanceId} ,
+	        	#{schemaName} ,
+	        	#{tableName} ,
+	        	#{columns}
+	        )
+	    ]]>
+    </insert>
+
+    <!-- update -->
+    <sql id="update_sql">
+        <set>
+            <if test="dataInstanceId != null">
+                DATA_INSTANCE_ID = #{dataInstanceId} ,
+            </if>
+            <if test="schemaName != null and schemaName != ''">
+                SCHEMA_NAME = #{schemaName} ,
+            </if>
+            <if test="tableName != null and tableName != ''">
+                TABLE_NAME = #{tableName} ,
+            </if>
+            <if test="columns != null and columns != ''">
+                COLUMNS = #{columns} ,
+            </if>
+        </set>
+    </sql>
+
+    <update id="update">
+        UPDATE data_table
+        <include refid="update_sql"/>
+        WHERE
+        ID = #{id}
+    </update>
+
+    <!-- delete -->
+    <delete id="delete">
+        <![CDATA[
+        	DELETE FROM data_table 
+        	WHERE
+        		ID = #{id} 
+    	]]>
+    </delete>
+
+    <!-- delete -->
+    <delete id="deleteByDataInstanceId">
+        <![CDATA[
+        	DELETE FROM data_table
+        	WHERE
+        		DATA_INSTANCE_ID = #{dataInstanceId}
+    	]]>
+    </delete>
+
+    <delete id="deleteBatch">
+        DELETE FROM data_table WHERE id IN
+        <foreach item="ids" collection="list" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!-- selsect -->
+    <select id="getById" resultMap="RM_DataTable">
+        SELECT
+        <include refid="columns"/>
+        FROM data_table
+        WHERE
+        ID = #{id}
+    </select>
+
+    <sql id="findPage_where">
+        <where>
+            <if test="id != null">
+                AND ID = #{id}
+            </if>
+            <if test="dataInstanceId != null">
+                AND DATA_INSTANCE_ID = #{dataInstanceId}
+            </if>
+            <if test="schemaName != null and schemaName !=''">
+                AND SCHEMA_NAME = #{schemaName}
+            </if>
+            <if test="tableName != null and tableName !=''">
+                AND TABLE_NAME = #{tableName}
+            </if>
+            <if test="columns != null and columns !=''">
+                AND COLUMNS = #{columns}
+            </if>
+        </where>
+    </sql>
+
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(1)
+        FROM data_table
+        <include refid="findPage_where"/>
+    </select>
+
+    <select id="findByCondition" resultMap="RM_DataTable">
+        SELECT
+        <include refid="columns"/>
+        FROM data_table
+        <include refid="findPage_where"/>
+    </select>
+
+
+</mapper>
