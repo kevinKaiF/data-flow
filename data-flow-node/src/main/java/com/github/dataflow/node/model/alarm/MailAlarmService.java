@@ -31,8 +31,7 @@ public class MailAlarmService extends AbstractAlarmService implements AlarmServi
     private String         emailReceiver;
 
     @Override
-    public void start() {
-        super.start();
+    public void doStart() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setUsername(emailUsername);
         mailSender.setPassword(emailPassword);
@@ -44,6 +43,11 @@ public class MailAlarmService extends AbstractAlarmService implements AlarmServi
         pros.put("mail.smtp.port", stmpPort);
         mailSender.setJavaMailProperties(pros);
         this.mailSender = mailSender;
+    }
+
+    @Override
+    protected void doStop() {
+
     }
 
     @Override

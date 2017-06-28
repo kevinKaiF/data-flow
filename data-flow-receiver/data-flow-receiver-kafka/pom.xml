@@ -134,20 +134,20 @@
             <id>test</id>
             <properties>
                 <pom.application.name>data-flow-receiver-kafka</pom.application.name>
-                <pom.log.rootLogger>info, FILE</pom.log.rootLogger>
+                <pom.log.rootLogger>debug, stdout</pom.log.rootLogger>
                 <pom.log.dir>logs</pom.log.dir>
                 <!--kafka-->
                 <pom.kafka.poll.timeout>2000</pom.kafka.poll.timeout>
                 <pom.kafka.poll.period>100</pom.kafka.poll.period>
-                <pom.kafka.topic>test</pom.kafka.topic>
+                <pom.kafka.topic>canal_test2</pom.kafka.topic>
                 <pom.group.id>test1</pom.group.id>
                 <pom.bootstrap.servers>10.4.0.186:9092</pom.bootstrap.servers>
                 <pom.datareceiver.type>mysql</pom.datareceiver.type>
                 <!--datasource-->
                 <pom.db.type>mysql</pom.db.type>
-                <pom.db.url>jdbc:mysql://10.4.0.20:3306/dataflow?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true</pom.db.url>
-                <pom.db.username>tianyuan</pom.db.username>
-                <pom.db.password>s7GaCUG5</pom.db.password>
+                <pom.db.url>jdbc:mysql://10.4.1.45:3306/dataflow?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true</pom.db.url>
+                <pom.db.username>zikaifeng</pom.db.username>
+                <pom.db.password>123</pom.db.password>
             </properties>
         </profile>
         <profile>

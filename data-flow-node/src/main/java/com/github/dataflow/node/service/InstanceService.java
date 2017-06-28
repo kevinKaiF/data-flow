@@ -3,7 +3,7 @@ package com.github.dataflow.node.service;
 import com.github.dataflow.common.utils.IPUtil;
 import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.core.sender.DataSenderManager;
+import com.github.dataflow.sender.core.DataSenderManager;
 import com.github.dataflow.dubbo.common.enums.DataInstanceStatus;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.dubbo.model.PageSet;
@@ -109,7 +109,7 @@ public class InstanceService implements DisposableBean {
 
         Instance instance = InstanceManager.get(dataInstance.getName());
         if (instance == null) {
-            logger.warn("Instance [" + dataInstance.getName() + "] has no exist.");
+            logger.warn("Instance [" + dataInstance.getName() + "] does not exist.");
         } else {
             instance.stop();
             InstanceManager.remove(dataInstance.getName(), instance);

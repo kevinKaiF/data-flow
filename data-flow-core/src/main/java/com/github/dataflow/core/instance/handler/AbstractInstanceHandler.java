@@ -1,7 +1,7 @@
 package com.github.dataflow.core.instance.handler;
 
 import com.github.dataflow.core.exception.InstanceException;
-import com.github.dataflow.core.sender.DataSenderManager;
+import com.github.dataflow.sender.core.DataSenderManager;
 import com.github.dataflow.core.store.DataStore;
 import com.github.dataflow.core.transformer.GroovyShellDataTransformer;
 import com.github.dataflow.dubbo.model.DataInstance;
@@ -109,6 +109,7 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
                     if (dataSender.isSingleton()) {
                         DataSenderManager.put(dataSenderId, dataSender);
                     }
+                    dataSender.setDataSenderId(dataSenderId);
                 }
                 dataSenderMap.put(dataOutputMapping.getSchemaName(), dataSender);
             }

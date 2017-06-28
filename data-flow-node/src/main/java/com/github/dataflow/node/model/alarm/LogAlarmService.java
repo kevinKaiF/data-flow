@@ -14,6 +14,16 @@ public class LogAlarmService extends AbstractAlarmService implements AlarmServic
     private static final Logger logger = LoggerFactory.getLogger(LogAlarmService.class);
 
     @Override
+    public void doStart() {
+
+    }
+
+    @Override
+    protected void doStop() {
+
+    }
+
+    @Override
     protected void doSendAlarm(String instanceName, String message) {
         logger.info("{} - {}", instanceName, message);
     }

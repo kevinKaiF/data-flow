@@ -19,14 +19,12 @@ public class AlarmServiceDelegate extends AbstractAlarmService implements CanalA
     private AlarmService alarmService;
 
     @Override
-    public void start() {
-        super.start();
+    public void doStart() {
         alarmService.start();
     }
 
     @Override
-    public void stop() {
-        super.stop();
+    protected void doStop() {
         alarmService.stop();
     }
 

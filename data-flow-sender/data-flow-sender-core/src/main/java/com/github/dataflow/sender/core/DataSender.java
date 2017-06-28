@@ -61,6 +61,7 @@ public abstract class DataSender extends AbstractDataFlowLifeCycle {
             if (super.isStart()) {
                 super.stop();
                 doStop();
+                DataSenderManager.remove(this.getDataSenderId());
             }
         }
     }

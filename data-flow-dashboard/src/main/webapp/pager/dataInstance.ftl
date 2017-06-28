@@ -265,6 +265,17 @@
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
+                                                            <label for="middle-name"
+                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">type <span
+                                                                    class="required">*</span></label>
+                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                                <select class="form-control col-md-7 col-xs-12"
+                                                                        name="type" required="required">
+                                                                    <option value="1">mysql</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item form-group">
                                                             <label class="control-label col-md-3 col-sm-3 col-xs-12"
                                                                    for="dataInstance-host">host <span
                                                                     class="required">*</span>
@@ -348,15 +359,6 @@
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
-                                                        <#--<label for="middle-name"-->
-                                                        <#--class="control-label col-md-3 col-sm-3 col-xs-12">type</label>-->
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input id="dataInstance-type"
-                                                                       class="form-control col-md-7 col-xs-12"
-                                                                       type="hidden" name="type" value="1">
-                                                            </div>
-                                                        </div>
-                                                        <div class="item form-group">
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <input id="dataInstance-id"
                                                                        class="form-control col-md-7 col-xs-12"
@@ -383,7 +385,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="step-3" style="height: 400px">
+                                                <div id="step-3" style="height: 450px">
                                                     <div class="accordion" id="accordion" role="tablist"
                                                          aria-multiselectable="false">
                                                         <div class="panel">

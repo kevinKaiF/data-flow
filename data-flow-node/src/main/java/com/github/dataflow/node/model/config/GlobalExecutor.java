@@ -2,6 +2,7 @@ package com.github.dataflow.node.model.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.concurrent.*;
@@ -13,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @description :
  * @date : 2017/6/26
  */
-public class GlobalExecutor implements InitializingBean {
+public class GlobalExecutor implements InitializingBean, DisposableBean {
     private Logger logger = LoggerFactory.getLogger(GlobalExecutor.class);
 
     private AtomicInteger atomicInteger = new AtomicInteger(0);
@@ -44,6 +45,13 @@ public class GlobalExecutor implements InitializingBean {
                                                  blockingQueue,
                                                  new NamedThreadFactory(),
                                                  new LogRejectedExecutionHandler());
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        executorService.shutdown();
+        Thread.sleep(200);
+        executorService.shutdownNow();
     }
 
     public void execute(Runnable runnable) {

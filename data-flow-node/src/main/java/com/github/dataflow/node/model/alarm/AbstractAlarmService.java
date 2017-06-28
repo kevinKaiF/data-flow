@@ -5,6 +5,7 @@ import com.github.dataflow.core.alarm.AlarmService;
 import com.github.dataflow.node.model.config.GlobalExecutor;
 import com.github.dataflow.node.service.DataLogService;
 
+
 /**
  * @author : kevin
  * @version : Ver 1.0
@@ -15,6 +16,26 @@ public abstract class AbstractAlarmService extends AbstractDataFlowLifeCycle imp
     protected GlobalExecutor executorService;
 
     protected DataLogService dataLogService;
+
+    @Override
+    public void start() {
+        if (!isStart()) {
+            super.start();
+            doStart();
+        }
+    }
+
+    protected abstract void doStart();
+
+    @Override
+    public void stop() {
+        if (isStart()) {
+            doStop();
+            super.stop();
+        }
+    }
+
+    protected abstract void doStop();
 
     @Override
     public void sendAlarm(final String instanceName, final String message) {

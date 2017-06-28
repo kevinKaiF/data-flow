@@ -128,16 +128,20 @@ public class DefaultDataStore extends AbstractDataFlowLifeCycle implements DataS
     public void stop() {
         super.stop();
         stopDataSenders();
-        columnsToFilterMap.clear();
-        /**
-         * 真正的清理在DataSenderManager中
-         */
-//        dataSenderMap.clear();
+        clearColumnsToFilterMap();
+    }
+
+    private void clearColumnsToFilterMap() {
+        if (columnsToFilterMap != null) {
+            columnsToFilterMap.clear();
+        }
     }
 
     private void stopDataSenders() {
-        for (DataSender dataSender : dataSenderMap.values()) {
-            dataSender.stop();
+        if (dataSenderMap != null) {
+            for (DataSender dataSender : dataSenderMap.values()) {
+                dataSender.stop();
+            }
         }
     }
 
