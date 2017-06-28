@@ -155,12 +155,12 @@
             $("#alertMessage").modal('show');
             $("#alert-content").empty().html(message);
             if (callback) {
-                $("#alert-submit").show().off().on("click", function () {
+                $("#alert-submit").show().off('click')().on("click", function () {
                     callback();
                     $("#alertMessage").modal('hide');
                 })
             } else {
-                $("#alert-submit").hide().off();
+                $("#alert-submit").hide().off('click')();
             }
         },
         eventBind: function () {
@@ -362,7 +362,7 @@
                                                                         data.result.id && $dataInstanceTable.loadData(data.result);
 
                                                                         // bind submitting form event
-                                                                        $("#dataTable-submit").off().on("click", function () {
+                                                                        $("#dataTable-submit").off('click')().on("click", function () {
                                                                             var checkboxList = $("#dataTable-form :checkbox").fieldValue();
                                                                             // validate the length of checked checkboxes
                                                                             if (checkboxList && checkboxList.length > 0) {
@@ -596,8 +596,20 @@
                                 render: function (data, type, full, meta) {
                                     if (full.dataSourceOutput) {
                                         switch (full.dataSourceOutput.type) {
+                                            case 10:
+                                                return "MySQL";
+                                            case 11:
+                                                return "Oracle";
+                                            case 12 :
+                                                return "PostGreSQL";
+                                            case 13 :
+                                                return "SQLServer";
                                             case 20 :
                                                 return "kafka";
+                                            case 21 :
+                                                return "metaQ";
+                                            case 22 :
+                                                return "rabbitMQ"
                                         }
                                     } else {
                                         return "-"
@@ -795,7 +807,9 @@
                             $td.removeClass('fa-minus').addClass("fa-plus");
                         }
                         else {
+                            var child = row.child(Table._format(row.data()));
                             row.child(Table._format(row.data())).show();
+                            tr.next().children().eq(0).css("background", "white").off("click");
                             $td.addClass('fa-minus').removeClass("fa-plus");
                         }
                     });
@@ -910,7 +924,7 @@
                     })
                 },
                 _format: function (rowData) {
-                    var div = $('<div/>')
+                    var div = $('<div style="background: white"></div>')
                         .addClass('loading')
                         .text('Loading...');
 
@@ -921,8 +935,119 @@
                         },
                         dataType: 'json',
                         success: function (json) {
+                            var result = json.result;
+                            // render dataInstance [Form]
+                            var dataInstanceProperties = ["name", "slaveId", "host", "port", "jdbcUrl", "type", "username", "whiteFilter", "blackFilter", "transformScript"];
+                            var dataInstanceForm = '<div class="container">' +
+                                '<span class="section">实例详情</span>' +
+                                '<form class="form-horizontal form-label-left col-sm-12">';
+                            for (var i in dataInstanceProperties) {
+                                var prop = dataInstanceProperties[i];
+                                if (result[prop]) {
+                                    var value = result[prop];
+                                    if (prop == "type") {
+                                        value = 'MySQL';
+                                    }
+                                    dataInstanceForm += '<div class="item form-group col-sm-6" style="margin-bottom: 10px;;">'
+                                        + '<label class="control-label col-md-4"> ' + prop + ' </label>'
+                                        + '<div class="col-md-8">'
+                                        + '<textarea class="form-control" readonly style="width: 100%;background: white">' + value + ' </textarea>'
+                                        + '</div>'
+                                        + '</div>';
+                                }
+                            }
+                            dataInstanceForm += '</form></div>';
+
+                            // render dataTable [Table]
+                            var dataTable = '';
+                            if (result["dataTables"] && result["dataTables"].length > 0) {
+                                dataTable +=
+                                    '<div class="container">' +
+                                    '<span class="section">过滤表</span>' +
+                                    '<div class="col-sm-12">' +
+                                    '<table class="table table-hover dataTable no-footer" style="width: 100%;" role="grid">' +
+                                    '<thead><tr role="row">' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">schemaName</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">tableName</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 80%;">columns</th>' +
+                                    '</tr>' +
+                                    '</thead>' +
+                                    '<tbody>';
+                                for (var i in result["dataTables"]) {
+                                    var row = result["dataTables"][i];
+                                    dataTable +=
+                                        '<tr role="row">' +
+                                        '<td>' + row.schemaName + '</td>' +
+                                        '<td>' + row.tableName + '</td>' +
+                                        '<td>' + row.columns + '</td>' +
+                                        '</tr>'
+                                }
+                                dataTable +=
+                                    '</tbody>' +
+                                    '</table>' +
+                                    '</div>' +
+                                    '</div>';
+                            }
+
+                            // render dataOutputMapping [Table]
+                            function parseDataSourceOutputType(type) {
+                                    switch (type) {
+                                        case 10:
+                                            return "MySQL";
+                                        case 11:
+                                            return "Oracle";
+                                        case 12 :
+                                            return "PostGreSQL";
+                                        case 13 :
+                                            return "SQLServer";
+                                        case 20 :
+                                            return "kafka";
+                                        case 21 :
+                                            return "metaQ";
+                                        case 22 :
+                                            return "rabbitMQ"
+                                        default :
+                                            return '-';
+                                    }
+                            }
+
+                            var dataOutputMappings = '';
+                            if (result["dataOutputMappings"] && result["dataOutputMappings"].length > 0) {
+                                dataOutputMappings +=
+                                    '<div class="container">' +
+                                    '<span class="section">输出映射</span>' +
+                                    '<div class="col-sm-12">' +
+                                    '<table class="table table-hover dataTable no-footer" style="width: 100%;" role="grid">' +
+                                    '<thead><tr role="row">' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">schemaName</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">topic</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">dataSourceOutputId</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">type</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 60%;">options</th>' +
+                                    '</tr>' +
+                                    '</thead>' +
+                                    '<tbody>';
+                                for (var i in result["dataOutputMappings"]) {
+                                    var row = result["dataOutputMappings"][i];
+                                    dataOutputMappings +=
+                                        '<tr role="row">' +
+                                        '<td>' + row.schemaName + '</td>' +
+                                        '<td>' + row.topic + '</td>' +
+                                        '<td>' + row.dataSourceOutput.id + '</td>' +
+                                        '<td>' + parseDataSourceOutputType(row.dataSourceOutput.type) + '</td>' +
+                                        '<td>' + row.dataSourceOutput.options + '</td>' +
+                                        '</tr>'
+                                }
+                                dataOutputMappings +=
+                                    '</tbody>' +
+                                    '</table>' +
+                                    '</div>' +
+                                    '</div>';
+                            }
+
+                            var html = dataInstanceForm + dataTable + dataOutputMappings;
                             div
-                                .html(json.toString())
+                                .html(html)
                                 .removeClass('loading');
                         }
                     });

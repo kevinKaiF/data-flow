@@ -80,9 +80,9 @@
                             <li><a href="../dataSourceOutput/"><i class="fa fa-database"></i>
                                 输出数据源 <span class="fa fa-chevron-right"></span></a>
                             </li>
-                        <#--<li><a href="../nodeMonitor/"><i class="fa fa-eye"></i> 节点监控 <span-->
-                        <#--class="fa fa-chevron-right"></span></a>-->
-                        <#--</li>-->
+                        <li><a href="../dataNode/"><i class="fa fa-eye"></i> 节点监控 <span
+                            class="fa fa-chevron-right"></span></a>
+                        </li>
                             <li><a href="../dataNodeConfiguration/"><i class="fa fa-cog"></i> 系统配置 <span
                                     class="fa fa-chevron-right"></span></a>
                             </li>
