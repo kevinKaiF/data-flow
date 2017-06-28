@@ -140,6 +140,7 @@
                 <pom.kafka.poll.timeout>2000</pom.kafka.poll.timeout>
                 <pom.kafka.poll.period>100</pom.kafka.poll.period>
                 <pom.kafka.topic>canal_test2</pom.kafka.topic>
+                <!--<pom.kafka.topic>test</pom.kafka.topic>-->
                 <pom.group.id>test1</pom.group.id>
                 <pom.bootstrap.servers>10.4.0.186:9092</pom.bootstrap.servers>
                 <pom.datareceiver.type>mysql</pom.datareceiver.type>

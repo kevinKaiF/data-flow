@@ -37,6 +37,7 @@ public class MysqlInstanceHandler extends AbstractInstanceHandler implements Ins
     public Instance doCreateInstance(DataInstance dataInstance) {
         MysqlInstance mysqlInstance = new MysqlInstance();
         mysqlInstance.setJdbcUrl(dataInstance.getJdbcUrl());
+        mysqlInstance.setId(dataInstance.getId());
         mysqlInstance.setName(dataInstance.getName());
         mysqlInstance.setWhiteFilter(dataInstance.getWhiteFilter());
         mysqlInstance.setCanalParameter(buildCanalParameter(dataInstance));

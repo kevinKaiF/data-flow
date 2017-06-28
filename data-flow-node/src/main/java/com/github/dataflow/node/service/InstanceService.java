@@ -112,7 +112,7 @@ public class InstanceService implements DisposableBean {
             logger.warn("Instance [" + dataInstance.getName() + "] does not exist.");
         } else {
             instance.stop();
-            InstanceManager.remove(dataInstance.getName(), instance);
+            InstanceManager.remove(dataInstance.getName());
         }
         // 更新数据库状态
         dataInstance.setStatus(DataInstanceStatus.STOP.getStatus());

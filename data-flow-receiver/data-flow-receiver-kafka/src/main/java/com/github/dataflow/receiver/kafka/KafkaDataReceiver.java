@@ -108,6 +108,7 @@ public class KafkaDataReceiver extends AbstractDataReceiver implements Initializ
                     }
                 } catch (Exception e) {
                     closeConsumer();
+                    semaphore.release();
                     throw new ReceiverException(e);
                 }
             }

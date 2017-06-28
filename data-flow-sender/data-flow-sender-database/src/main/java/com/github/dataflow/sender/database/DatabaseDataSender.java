@@ -4,15 +4,13 @@ import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 import com.github.dataflow.sender.core.event.EventHandler;
-import com.github.dataflow.sender.core.exception.DataSenderException;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.util.CollectionUtils;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author : kevin
@@ -20,7 +18,8 @@ import java.util.Map;
  * @description :
  * @date : 2017/6/23
  */
-public abstract class DatabaseDataSender extends DataSender implements ApplicationContextAware {
+public abstract class DatabaseDataSender extends DataSender {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     protected List<EventHandler> eventHandlers = new ArrayList<>();
 
     protected DataSourceHolder dataSourceHolder;
@@ -30,7 +29,13 @@ public abstract class DatabaseDataSender extends DataSender implements Applicati
         for (RowMetaData rowMetaData : rowMetaDataList) {
             for (EventHandler eventHandler : eventHandlers) {
                 if (isSupport(rowMetaData, eventHandler)) {
-                    eventHandler.handle(dataSourceHolder, rowMetaData);
+                    try {
+                        eventHandler.handle(dataSourceHolder, rowMetaData);
+                    } catch (SQLException e) {
+                        if (e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY")) {
+                            logger.warn("ignore table[{}] 'PRIMARY' violation, rowMetaData : {}", rowMetaData.getFullTableName(), rowMetaData);
+                        }
+                    }
                 }
             }
         }
@@ -53,6 +58,10 @@ public abstract class DatabaseDataSender extends DataSender implements Applicati
 
     }
 
+    public void setEventHandlers(List<EventHandler> eventHandlers) {
+        this.eventHandlers = eventHandlers;
+    }
+
     public DataSourceHolder getDataSourceHolder() {
         return dataSourceHolder;
     }
@@ -61,14 +70,5 @@ public abstract class DatabaseDataSender extends DataSender implements Applicati
         this.dataSourceHolder = dataSourceHolder;
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        Map<String, EventHandler> eventHandlerMap = applicationContext.getBeansOfType(EventHandler.class);
-        if (CollectionUtils.isEmpty(eventHandlerMap)) {
-            throw new DataSenderException("there is no EventHandler bean");
-        } else {
-            eventHandlers.clear();
-            eventHandlers.addAll(eventHandlerMap.values());
-        }
-    }
+
 }

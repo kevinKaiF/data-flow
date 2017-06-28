@@ -21,8 +21,8 @@ public class InstanceManager {
         return instanceCache.get(instanceName);
     }
 
-    public static boolean remove(String instanceName, Instance instance) {
-        return instanceCache.remove(instanceName, instance);
+    public static Instance remove(String instanceName) {
+        return instanceCache.remove(instanceName);
     }
 
     public static List<Instance> getAllInstance() {

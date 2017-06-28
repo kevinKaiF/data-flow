@@ -332,20 +332,20 @@
                                                         </div>
                                                         <div class="item form-group">
                                                             <label for="middle-name"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">whiteTable </label>
+                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">whiteFilter </label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input id="dataInstance-whiteTable"
+                                                                <input id="dataInstance-whiteFilter"
                                                                        class="form-control col-md-7 col-xs-12"
-                                                                       type="text" name="whiteTable">
+                                                                       type="text" name="whiteFilter">
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
                                                             <label for="middle-name"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">blackTable </label>
+                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">blackFilter </label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input id="dataInstance-blackTable"
+                                                                <input id="dataInstance-blackFilter"
                                                                        class="form-control col-md-7 col-xs-12"
-                                                                       type="text" name="blackTable">
+                                                                       type="text" name="blackFilter">
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">

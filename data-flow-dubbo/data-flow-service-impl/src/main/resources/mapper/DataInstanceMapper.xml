@@ -137,6 +137,7 @@
     <!-- update -->
     <sql id="update_sql">
         <set>
+            NODE_PATH = #{nodePath} ,
             <if test="name != null and name != ''">
                 NAME = #{name} ,
             </if>
@@ -172,9 +173,6 @@
             </if>
             <if test="options != null and options != ''">
                 OPTIONS = #{options} ,
-            </if>
-            <if test="nodePath != null and nodePath != ''">
-                NODE_PATH = #{nodePath} ,
             </if>
             <if test="status != null">
                 STATUS = #{status} ,
