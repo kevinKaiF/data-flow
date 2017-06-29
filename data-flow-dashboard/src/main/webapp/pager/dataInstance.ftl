@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
     <title>数据实例</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -49,8 +49,8 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-paw"></i>
-                        <span>Data flow!</span></a>
+                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire" style="border: none; color:#1abb9c;font-size: 1.5em"></i>
+                        <span>Data flow</span></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -113,13 +113,7 @@
                             </ul>
                         </li>
 
-                        <li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"
-                               aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="badge bg-green">6</span>
-                            </a>
-                        </li>
+
                     </ul>
                 </nav>
             </div>
@@ -130,10 +124,17 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_content">
-                            <div class="row">
-                                <span class="section">实例搜索</span>
+                    <div class="row">
+                        <div class="x_panel">
+                            <div class="x_title" style="border-bottom-width: 1px; padding: 0;">
+                                <h2>实例搜索</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content" style="display: none">
                                 <form id="dataInstance-searchForm"
                                       class="form-horizontal form-label-left">
                                     <div class="item form-group">
@@ -182,7 +183,11 @@
                                     </div>
                                 </form>
                             </div>
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="x_panel">
                             <span class="section">实例列表</span>
                             <a href="#dataInstanceModal" class="btn btn-default"
                                id="add"><i class="fa fa-plus-square-o"></i> 新增
@@ -213,28 +218,28 @@
                                                     <li>
                                                         <a href="#step-1" id="step1">
                                                             <span class="step_no">1</span>
-                                                            <span class="step_descr">
-                                                                              Step 1<br/>
-                                                                              <small>Step 1 description</small>
-                                                                          </span>
+                                                    <span class="step_descr">
+                                                                      Step 1<br/>
+                                                                      <small>Step 1 description</small>
+                                                                  </span>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="#step-2">
                                                             <span class="step_no">2</span>
-                                                            <span class="step_descr">
-                                                                  Step 2<br/>
-                                                                  <small>Step 2 description</small>
-                                                              </span>
+                                                    <span class="step_descr">
+                                                          Step 2<br/>
+                                                          <small>Step 2 description</small>
+                                                      </span>
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <a href="#step-3">
                                                             <span class="step_no">3</span>
-                                                            <span class="step_descr">
-                                                                              Step 3<br/>
-                                                                <small>Step 3 description</small>
-                                                            </span>
+                                                    <span class="step_descr">
+                                                                      Step 3<br/>
+                                                        <small>Step 3 description</small>
+                                                    </span>
                                                         </a>
                                                     </li>
                                                 </ul>
@@ -352,10 +357,10 @@
                                                             <label for="middle-name"
                                                                    class="control-label col-md-3 col-sm-3 col-xs-12">transformScript </label>
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <textarea id="dataInstance-transformScript"
-                                                                          class="form-control col-md-7 col-xs-12"
-                                                                          rows="5"
-                                                                          name="transformScript"></textarea>
+                                                        <textarea id="dataInstance-transformScript"
+                                                                  class="form-control col-md-7 col-xs-12"
+                                                                  rows="5"
+                                                                  name="transformScript"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
@@ -540,6 +545,7 @@
 <script src="../javascript/jquery/jquery.smartWizard.min.js"></script>
 <script src="../javascript/validator/validator.min.js"></script>
 <!-- Custom Theme Scripts -->
+<script src="../javascript/custom/global.js"></script>
 <script src="../javascript/custom/dataInstance.js"></script>
 
 </body>

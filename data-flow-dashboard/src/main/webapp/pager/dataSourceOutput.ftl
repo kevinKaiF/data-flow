@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
 
     <title>输出数据源</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -45,8 +46,8 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-paw"></i>
-                        <span>Data flow!</span></a>
+                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire" style="border: none; color:#1abb9c;font-size: 1.5em"></i>
+                        <span>Data flow</span></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -76,9 +77,9 @@
                             <li class="active"><a href="../dataSourceOutput/"><i class="fa fa-database"></i>
                                 输出数据源 <span class="fa fa-chevron-right"></span></a>
                             </li>
-                        <#--<li><a href="../nodeMonitor/"><i class="fa fa-eye"></i> 节点监控 <span-->
-                        <#--class="fa fa-chevron-right"></span></a>-->
-                        <#--</li>-->
+                            <li><a href="../dataNode/"><i class="fa fa-eye"></i> 节点监控 <span
+                                    class="fa fa-chevron-right"></span></a>
+                            </li>
                             <li><a href="../dataNodeConfiguration/"><i class="fa fa-cog"></i> 系统配置 <span
                                     class="fa fa-chevron-right"></span></a>
                             </li>
@@ -109,13 +110,7 @@
                             </ul>
                         </li>
 
-                        <li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"
-                               aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="badge bg-green">6</span>
-                            </a>
-                        </li>
+
                     </ul>
                 </nav>
             </div>
@@ -126,10 +121,17 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_content">
-                            <div class="row">
-                                <span class="section">输出数据源搜索</span>
+                    <div class="row">
+                        <div class="x_panel">
+                            <div class="x_title" style="border-bottom-width: 1px; padding: 0;">
+                                <h2>输出数据源搜索</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content" style="display: none">
                                 <form id="dataSourceOutput-searchForm"
                                       class="form-horizontal form-label-left">
                                     <div class="item form-group">
@@ -160,7 +162,11 @@
                                     </div>
                                 </form>
                             </div>
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="x_panel">
                             <span class="section">输出数据源列表</span>
                             <a href="#dataSourceOutputModal" class="btn btn-default"
                                id="add"><i class="fa fa-plus-square-o"></i> 新增
@@ -171,7 +177,8 @@
                             <a class="btn btn-default" data-toggle="modal"
                                id="delete"><i class="fa fa-minus-square-o"></i> 删除
                             </a>
-                            <table id="dataSourceOutputTable" class="table table-hover jambo_table" style="width: 100%">
+                            <table id="dataSourceOutputTable" class="table table-hover jambo_table"
+                                   style="width: 100%">
                             </table>
 
                             <div id="dataSourceOutputModal" class="modal fade bs-example-modal-lg" tabindex="-1"
@@ -224,10 +231,10 @@
                                                             class="required">*</span>
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <textarea id="dataSourceOutput-options"
-                                                                  class="form-control col-md-7 col-xs-12"
-                                                                  rows="5"
-                                                                  name="options" required="required"></textarea>
+                                                <textarea id="dataSourceOutput-options"
+                                                          class="form-control col-md-7 col-xs-12"
+                                                          rows="5"
+                                                          name="options" required="required"></textarea>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="id">
@@ -295,6 +302,7 @@
 <script src="https://cdn.bootcss.com/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery.nicescroll/3.7.0/jquery.nicescroll.min.js"></script>
 <script src="../javascript/validator/validator.min.js"></script>
+<script src="../javascript/custom/global.js"></script>
 <script src="../javascript/custom/dataSourceOutput.js"></script>
 
 </body>

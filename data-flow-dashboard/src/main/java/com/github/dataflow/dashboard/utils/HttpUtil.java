@@ -31,6 +31,10 @@ public class HttpUtil {
     private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
     private static       String UTF_8  = "UTF-8";
 
+    public static ResponseEntity post(String url) {
+        return post(url, null, null);
+    }
+
     public static ResponseEntity post(String url, String key, Object value) {
         logger.info("send [POST] request, url : {}, params : {}", url, value);
         CloseableHttpResponse httpResponse = null;
@@ -59,13 +63,22 @@ public class HttpUtil {
     }
 
     private static HttpPost buildHttpPost(String url, String key, Object value) throws UnsupportedEncodingException {
-        String jsonString = JSONObject.toJSONString(value);
+        String jsonString = null;
+        if (value instanceof CharSequence) {
+            jsonString = value.toString();
+        } else {
+            jsonString = JSONObject.toJSONString(value);
+        }
         List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair(key, jsonString));
+        if (key != null) {
+            nameValuePairs.add(new BasicNameValuePair(key, jsonString));
+        }
         UrlEncodedFormEntity httpEntity = new UrlEncodedFormEntity(nameValuePairs);
         httpEntity.setContentEncoding(UTF_8);
         HttpPost httpPost = new HttpPost(url);
         httpPost.setEntity(httpEntity);
         return httpPost;
     }
+
+
 }

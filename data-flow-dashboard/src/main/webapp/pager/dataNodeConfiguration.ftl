@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
     <title>系统配置</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -22,8 +22,8 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-paw"></i>
-                        <span>Data flow!</span></a>
+                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire" style="border: none; color:#1abb9c;font-size: 1.5em"></i>
+                        <span>Data flow</span></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -53,9 +53,9 @@
                             <li><a href="../dataSourceOutput/"><i class="fa fa-database"></i>
                                 输出数据源 <span class="fa fa-chevron-right"></span></a>
                             </li>
-                        <#--<li><a href="../nodeMonitor/"><i class="fa fa-eye"></i> 节点监控 <span-->
-                        <#--class="fa fa-chevron-right"></span></a>-->
-                        <#--</li>-->
+                            <li><a href="../dataNode/"><i class="fa fa-eye"></i> 节点监控 <span
+                                    class="fa fa-chevron-right"></span></a>
+                            </li>
                             <li class="active"><a href="../dataNodeConfiguration/"><i class="fa fa-cog"></i> 系统配置 <span
                                     class="fa fa-chevron-right"></span></a>
                             </li>
@@ -86,13 +86,7 @@
                             </ul>
                         </li>
 
-                        <li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"
-                               aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="badge bg-green">6</span>
-                            </a>
-                        </li>
+
                     </ul>
                 </nav>
             </div>
@@ -103,8 +97,8 @@
         <div class="right_col" role="main">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_content">
+                    <div class="row">
+                        <div class="x_panel">
                             <form id="dataNodeConfiguration-form" class="form-horizontal form-label-left" novalidate>
                                 <span class="section">系统配置</span>
                                 <div class="item form-group">
@@ -126,7 +120,7 @@
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <textarea id="dataNodeConfiguration-options"
                                                   class="form-control col-md-7 col-xs-12"
-                                                  rows="5"
+                                                  rows="6"
                                                   name="options" required="required" placeholder="JSON格式"></textarea>
                                     </div>
                                 </div>
@@ -195,6 +189,7 @@
 <script src="../javascript/validator/validator.min.js"></script>
 
 <!-- Custom Theme Scripts -->
+<script src="../javascript/custom/global.js"></script>
 <script src="../javascript/custom/dataNodeConfiguration.js"></script>
 
 </body>

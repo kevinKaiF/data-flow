@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,12 +48,16 @@ public class DataNodeController extends BaseController{
             @Override
             public void call(ResponseEntity responseEntity) {
                 List<String> children = zookeeperClient.getChildren(Constants.DEFAULT_NODE_PATH);
-                responseEntity.setResult(children);
+                List<String> nodePathList = new ArrayList<String>();
+                for (String child : children) {
+                    nodePathList.add(Constants.DEFAULT_NODE_PATH + "/" + child);
+                }
+                responseEntity.setResult(nodePathList);
             }
         });
     }
 
-    @RequestMapping("listInstance")
+    @RequestMapping("instanceList")
     @ResponseBody
     public Object listInstance(@RequestParam final String nodePath) {
         return getResponseEntity("listInstance", new Callable(nodePath) {
@@ -81,7 +86,9 @@ public class DataNodeController extends BaseController{
 
     @RequestMapping("logList")
     @ResponseBody
-    public Object logList(@RequestParam final String instanceName, @RequestParam("start") final Integer start, @RequestParam("length") final Integer length) {
+    public Object logList(@RequestParam final String instanceName,
+                          @RequestParam(value = "start", required = false) final Integer start,
+                          @RequestParam(value = "length", required = false) final Integer length) {
         return getResponseEntity("logList", new Callable(instanceName, start, length) {
             @Override
             public void call(ResponseEntity responseEntity) {
@@ -100,6 +107,5 @@ public class DataNodeController extends BaseController{
             }
         });
     }
-
 
 }
