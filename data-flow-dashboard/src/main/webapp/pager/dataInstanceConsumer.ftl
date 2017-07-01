@@ -74,15 +74,19 @@
                     <div class="menu_section">
                         <h3></h3>
                         <ul class="nav side-menu">
-                            <li class="active"><a href="../dataInstance/"><i class="fa fa-random"></i> 数据实例 <span
+                            <li class="active"><a href="javascript:void(0)"><i class="fa fa-random"></i> 数据实例 <span
                                     class="fa fa-chevron-right"></span></a>
+                                <ul class="nav child_menu" style="display: block">
+                                    <li><a href="../dataInstance/producer">生产者</a></li>
+                                    <li class="current-page"><a href="../dataInstance/consumer">消费者</a></li>
+                                </ul>
                             </li>
                             <li><a href="../dataSourceOutput/"><i class="fa fa-database"></i>
                                 输出数据源 <span class="fa fa-chevron-right"></span></a>
                             </li>
-                        <li><a href="../dataNode/"><i class="fa fa-eye"></i> 节点监控 <span
-                            class="fa fa-chevron-right"></span></a>
-                        </li>
+                            <li><a href="../dataNode/"><i class="fa fa-eye"></i> 节点监控 <span
+                                class="fa fa-chevron-right"></span></a>
+                            </li>
                             <li><a href="../dataNodeConfiguration/"><i class="fa fa-cog"></i> 系统配置 <span
                                     class="fa fa-chevron-right"></span></a>
                             </li>
@@ -112,8 +116,6 @@
                                 <li><a href="../logout.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                             </ul>
                         </li>
-
-
                     </ul>
                 </nav>
             </div>
@@ -139,10 +141,10 @@
                                       class="form-horizontal form-label-left">
                                     <div class="item form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                               for="dataInstance-name">name
+                                               for="dataInstance-tag">tag
                                         </label>
                                         <div class="col-md-4 col-sm-4 col-xs-12">
-                                            <input type="text" id="dataInstance-name" name="name"
+                                            <input type="text" id="dataInstance-tag" name="tag"
                                                    class="form-control col-md-7 col-xs-12">
                                         </div>
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
@@ -233,133 +235,63 @@
                                                       </span>
                                                         </a>
                                                     </li>
-                                                    <li>
-                                                        <a href="#step-3">
-                                                            <span class="step_no">3</span>
-                                                    <span class="step_descr">
-                                                                      Step 3<br/>
-                                                        <small>Step 3 description</small>
-                                                    </span>
-                                                        </a>
-                                                    </li>
                                                 </ul>
                                                 <div id="step-1">
                                                     <form id="dataInstance-form"
                                                           class="form-horizontal form-label-left">
-
                                                         <div class="item form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                                   for="dataInstance-name">name <span
-                                                                    class="required">*</span>
-                                                            </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="text" id="dataInstance-name" name="name"
-                                                                       required="required"
-                                                                       class="form-control col-md-7 col-xs-12">
-                                                            </div>
-                                                        </div>
-                                                        <div class="item form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                                   for="dataInstance-slaveId">slaveId <span
-                                                                    class="required">*</span>
-                                                            </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="number" id="dataInstance-slaveId"
-                                                                       name="slaveId" required="required"
-                                                                       class="form-control col-md-7 col-xs-12">
-                                                            </div>
-                                                        </div>
-                                                        <div class="item form-group">
-                                                            <label for="middle-name"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">type <span
+                                                            <label for=""
+                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">模式 <span
                                                                     class="required">*</span></label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
                                                                 <select class="form-control col-md-7 col-xs-12"
-                                                                        name="type" required="required">
-                                                                    <option value="1">mysql</option>
+                                                                        name="producerOrConsumer" required="required">
+                                                                    <option value="1">消费者</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
-                                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                                   for="dataInstance-host">host <span
+                                                            <label class="control-label col-md-2 col-sm-2 col-xs-12"
+                                                                   for="dataInstance-tag">tag <span
                                                                     class="required">*</span>
                                                             </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input type="text" id="dataInstance-host" name="host"
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                <input type="text" id="dataInstance-tag" name="tag"
                                                                        required="required"
                                                                        class="form-control col-md-7 col-xs-12">
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
-                                                            <label for="dataInstance-port"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">port <span
+                                                            <label for=""
+                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">type <span
                                                                     class="required">*</span></label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input id="dataInstance-port"
-                                                                       required="required"
-                                                                       class="form-control col-md-7 col-xs-12"
-                                                                       type="number" name="port">
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                <select class="form-control col-md-7 col-xs-12"
+                                                                        name="type" required="required">
+                                                                    <option value="20">kafka</option>
+                                                                    <option value="21">metaQ</option>
+                                                                    <#--<option value="22">mysql</option>-->
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
-                                                            <label for="dataInstance-jdbcUrl"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">jdbcUrl <span
+                                                            <label for="dataInstance-options"
+                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">options <span
                                                                     class="required">*</span></label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input id="dataInstance-jdbcUrl"
-                                                                       required="required"
-                                                                       class="form-control col-md-7 col-xs-12"
-                                                                       type="text" name="jdbcUrl">
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                        <textarea id="dataInstance-options"
+                                                                  class="form-control col-md-7 col-xs-12"
+                                                                  rows="9" required="required"
+                                                                  name="options"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
-                                                            <label for="dataInstance-username"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">username <span
-                                                                    class="required">*</span></label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input id="dataInstance-username"
-                                                                       required="required"
-                                                                       class="form-control col-md-7 col-xs-12"
-                                                                       type="text" name="username">
-                                                            </div>
-                                                        </div>
-                                                        <div class="item form-group">
-                                                            <label for="dataInstance-password"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">password <span
-                                                                    class="required">*</span></label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input id="dataInstance-password"
-                                                                       required="required"
-                                                                       class="form-control col-md-7 col-xs-12"
-                                                                       type="password" name="password">
-                                                            </div>
-                                                        </div>
-                                                        <div class="item form-group">
-                                                            <label for="middle-name"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">whiteFilter </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input id="dataInstance-whiteFilter"
-                                                                       class="form-control col-md-7 col-xs-12"
-                                                                       type="text" name="whiteFilter">
-                                                            </div>
-                                                        </div>
-                                                        <div class="item form-group">
-                                                            <label for="middle-name"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">blackFilter </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                                <input id="dataInstance-blackFilter"
-                                                                       class="form-control col-md-7 col-xs-12"
-                                                                       type="text" name="blackFilter">
-                                                            </div>
-                                                        </div>
-                                                        <div class="item form-group">
-                                                            <label for="middle-name"
-                                                                   class="control-label col-md-3 col-sm-3 col-xs-12">transformScript </label>
-                                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <label for="dataInstance-transformScript"
+                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">transformScript </label>
+                                                            <div class="col-md-9 col-sm-9 col-xs-12">
                                                         <textarea id="dataInstance-transformScript"
                                                                   class="form-control col-md-7 col-xs-12"
-                                                                  rows="5"
+                                                                  rows="7"
                                                                   name="transformScript"></textarea>
                                                             </div>
                                                         </div>
@@ -370,27 +302,11 @@
                                                                        type="hidden" name="id">
                                                             </div>
                                                         </div>
+                                                        <input type="hidden" name="name" value="-1" id="dataInstance-name">
                                                     </form>
 
                                                 </div>
-                                                <div id="step-2" style="display: none">
-                                                    <div class="col-md-4 col-sm-4 col-xs-6">
-                                                        <div id="dataInstance-schemaList"
-                                                             class="main_menu_side hidden-print main_menu left_col"
-                                                             style="max-height: 400px; overflow: auto"
-                                                             class="x-content">
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-8 col-sm-8 col-xs-6">
-                                                        <div id="dataInstance-table-detail" class="x-content">
-                                                            <div style="margin: 0 auto; margin-top: 50px; text-align: center">
-                                                                <h3>配置过滤的表字段</h3>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div id="step-3" style="height: 450px">
+                                                <div id="step-2" style="height: 450px">
                                                     <div class="accordion" id="accordion" role="tablist"
                                                          aria-multiselectable="false">
                                                         <div class="panel">
@@ -422,32 +338,6 @@
                                                                 <div class="panel-body" style="background: white">
                                                                     <form id="dataOutputMapping-form"
                                                                           class="form-horizontal form-label-left">
-
-                                                                        <div class="item form-group">
-                                                                            <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                                                                   for="dataOutputMapping-schemaName">schemaName <span
-                                                                                    class="required">*</span>
-                                                                            </label>
-                                                                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                                <select id="dataOutputMapping-schemaName"
-                                                                                        class="form-control col-md-7 col-xs-12"
-                                                                                        name="schemaName"
-                                                                                        required="required">
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="item form-group">
-                                                                            <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                                                                   for="dataOutputMapping-options">topic <span
-                                                                                    class="required">*</span>
-                                                                            </label>
-                                                                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                                <input id="dataOutputMapping-topic"
-                                                                                       class="form-control col-md-7 col-xs-12"
-                                                                                       type="text" name="topic"
-                                                                                       required="required">
-                                                                            </div>
-                                                                        </div>
                                                                         <div class="item form-group">
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                                                    for="dataInstance-name">dataSourceOutput <span
@@ -546,7 +436,7 @@
 <script src="../javascript/validator/validator.min.js"></script>
 <!-- Custom Theme Scripts -->
 <script src="../javascript/custom/global.js"></script>
-<script src="../javascript/custom/dataInstance.js"></script>
+<script src="../javascript/custom/dataInstanceConsumer.js"></script>
 
 </body>
 </html>

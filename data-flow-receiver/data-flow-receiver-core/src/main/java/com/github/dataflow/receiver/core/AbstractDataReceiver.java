@@ -3,9 +3,9 @@ package com.github.dataflow.receiver.core;
 import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.model.AbstractDataFlowLifeCycle;
 import com.github.dataflow.common.utils.PropertyUtil;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.dubbo.model.DataSourceOutput;
-import com.github.dataflow.dubbo.common.enums.DataSourceOutputType;
 import com.github.dataflow.receiver.core.exception.ReceiverException;
 import com.github.dataflow.receiver.core.utils.DataReceiverConfig;
 import com.github.dataflow.sender.core.DataSender;
@@ -69,7 +69,7 @@ public class AbstractDataReceiver extends AbstractDataFlowLifeCycle implements A
 
     private int getType() {
         String property = prop.getProperty(DataReceiverConfig.DATA_RECEIVER_TYPE);
-        return DataSourceOutputType.parseName(property);
+        return DataSourceType.parseName(property);
     }
 
     protected Properties loadProperty() throws IOException {

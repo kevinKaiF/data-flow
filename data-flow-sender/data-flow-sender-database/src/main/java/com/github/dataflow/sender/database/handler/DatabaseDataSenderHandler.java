@@ -1,6 +1,6 @@
 package com.github.dataflow.sender.database.handler;
 
-import com.github.dataflow.dubbo.common.enums.DataSourceOutputType;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.AbstractDataSenderHandler;
 import com.github.dataflow.sender.core.DataSender;
@@ -18,18 +18,18 @@ import java.util.List;
  * @date : 2017/6/23
  */
 public abstract class DatabaseDataSenderHandler extends AbstractDataSenderHandler {
-    protected static final List<DataSourceOutputType> dataSourceOutputTypes = new ArrayList<>();
+    protected static final List<DataSourceType> DATA_SOURCE_TYPEs = new ArrayList<>();
 
     static {
-        dataSourceOutputTypes.add(DataSourceOutputType.MYSQL);
-        dataSourceOutputTypes.add(DataSourceOutputType.ORACLE);
-        dataSourceOutputTypes.add(DataSourceOutputType.POSTGRESQL);
-        dataSourceOutputTypes.add(DataSourceOutputType.SQLSERVER);
+        DATA_SOURCE_TYPEs.add(DataSourceType.MYSQL);
+        DATA_SOURCE_TYPEs.add(DataSourceType.ORACLE);
+        DATA_SOURCE_TYPEs.add(DataSourceType.POSTGRESQL);
+        DATA_SOURCE_TYPEs.add(DataSourceType.SQLSERVER);
     }
 
     @Override
     public boolean support(int type) {
-        return dataSourceOutputTypes.contains(DataSourceOutputType.parse(type));
+        return DATA_SOURCE_TYPEs.contains(DataSourceType.parse(type));
     }
 
     @Override

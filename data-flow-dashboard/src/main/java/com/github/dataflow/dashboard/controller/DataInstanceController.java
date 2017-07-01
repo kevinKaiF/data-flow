@@ -45,9 +45,14 @@ public class DataInstanceController extends BaseController {
     @Autowired
     private Router router;
 
-    @RequestMapping("/")
-    public String index() {
-        return "dataInstance";
+    @RequestMapping("producer")
+    public String producer() {
+        return "dataInstanceProducer";
+    }
+
+    @RequestMapping("consumer")
+    public String consumer() {
+        return "dataInstanceConsumer";
     }
 
     @RequestMapping("start")
@@ -63,7 +68,12 @@ public class DataInstanceController extends BaseController {
                 } else {
                     if (isStopOrCreated(dataInstance)) {
                         // 选取节点
-                        String address = router.next(dataInstance.getHost());
+                        String address = null;
+                        if (dataInstance.getProducerOrConsumer() == 0) {
+                            address = router.nextProducer(dataInstance.getName());
+                        } else {
+                            address = router.nextConsumer(dataInstance.getName());
+                        }
                         if (address == null) {
                             responseEntity.setResponseStatus(ResponseEntity.FAILURE);
                             responseEntity.setMessage("没有启动的Node");

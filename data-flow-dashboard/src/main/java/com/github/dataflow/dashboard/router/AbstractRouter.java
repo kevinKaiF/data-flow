@@ -17,19 +17,34 @@ public abstract class AbstractRouter implements Router {
     @Autowired
     private ZookeeperClient zookeeperClient;
 
-    protected List<String> getNodes() {
-        return zookeeperClient.getChildren(Constants.DEFAULT_NODE_PATH);
+    protected List<String> getProducerNodes() {
+        return zookeeperClient.getChildren(Constants.DEFAULT_PRODUCER_NODE_PATH);
+    }
+
+    protected List<String> getConsumerNodes() {
+        return zookeeperClient.getChildren(Constants.DEFAULT_CONSUMER_NODE_PATH);
     }
 
     @Override
-    public String next(String ipAddress) {
-        List<String> children = getNodes();
+    public String nextProducer(String name) {
+        List<String> children = getProducerNodes();
         if (CollectionUtils.isEmpty(children)) {
             return null;
         } else {
-            return doNext(children, ipAddress);
+            return doNext(children, name);
         }
     }
 
-    protected abstract String doNext(List<String> children, String ipAddress);
+    protected abstract String doNext(List<String> children, String name);
+
+    @Override
+    public String nextConsumer(String name) {
+        List<String> children = getConsumerNodes();
+        if (CollectionUtils.isEmpty(children)) {
+            return null;
+        } else {
+            return doNext(children, name);
+        }
+    }
+
 }

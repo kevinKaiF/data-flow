@@ -71,8 +71,12 @@
                     <div class="menu_section">
                         <h3></h3>
                         <ul class="nav side-menu">
-                            <li><a href="../dataInstance/"><i class="fa fa-random"></i> 数据实例 <span
+                            <li><a href="javascript:void(0)"><i class="fa fa-random"></i> 数据实例 <span
                                     class="fa fa-chevron-right"></span></a>
+                                <ul class="nav child_menu" style="display: block">
+                                    <li><a href="../dataInstance/producer">生产者</a></li>
+                                    <li><a href="../dataInstance/consumer">消费者</a></li>
+                                </ul>
                             </li>
                             <li class="active"><a href="../dataSourceOutput/"><i class="fa fa-database"></i>
                                 输出数据源 <span class="fa fa-chevron-right"></span></a>

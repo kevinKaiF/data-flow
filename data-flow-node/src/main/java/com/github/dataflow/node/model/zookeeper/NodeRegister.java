@@ -3,6 +3,7 @@ package com.github.dataflow.node.model.zookeeper;
 import com.github.dataflow.common.utils.Constants;
 import com.github.dataflow.common.utils.IPUtil;
 import com.github.dataflow.core.alarm.AlarmService;
+import com.github.dataflow.dubbo.common.enums.DataInstanceModel;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.node.exception.InstanceInvalidException;
 import com.github.dataflow.node.model.config.DataFlowContext;
@@ -39,6 +40,9 @@ public class NodeRegister implements InitializingBean {
     @Value("${instance.recovery.retryTime:3}")
     private int instanceRecoveryRetryTime;
 
+    @Value("${node.type:PRODUCER}")
+    private String nodeType;
+
     /**
      * 缓存集群中所有的node
      * <p>
@@ -70,10 +74,10 @@ public class NodeRegister implements InitializingBean {
 
     private void registerToZookeeper() {
         nodePath = createNodePath();
-        zookeeperClient.createNodePathIfNotExists(Constants.DEFAULT_NODE_PATH);
+        zookeeperClient.createNodePathIfNotExists(getNodeParentPath());
         zookeeperClient.createEphemeral(nodePath);
-        clusterNodes = zookeeperClient.getChildren(Constants.DEFAULT_NODE_PATH);
-        zookeeperClient.subscribeChildChanges(Constants.DEFAULT_NODE_PATH, new IZkChildListener() {
+        clusterNodes = zookeeperClient.getChildren(getNodeParentPath());
+        zookeeperClient.subscribeChildChanges(getNodeParentPath(), new IZkChildListener() {
             @Override
             public void handleChildChange(String parentPath, List<String> children) throws Exception {
                 List<String> oldClusterNodes = new ArrayList<>(clusterNodes);
@@ -106,10 +110,10 @@ public class NodeRegister implements InitializingBean {
                                 } catch (Exception e) {
                                     snatchInstanceRegistryException = e;
                                     if (e instanceof ZkNodeExistsException) {
-                                        logger.warn("snatch Instance [name : {}, jdbcUrl : {}] failure", dataInstance.getName(), dataInstance.getJdbcUrl());
+                                        logger.warn("snatch Instance [name : {}] failure", dataInstance.getName());
                                     } else {
                                         // 发送通知给负责人
-                                        logger.error("snatch Instance [name : {}, jdbcUrl : {}] caught exception, detail : {}", new Object[]{dataInstance.getName(), dataInstance.getJdbcUrl(), e});
+                                        logger.error("snatch Instance [name : {}] caught exception, detail : {}", new Object[]{dataInstance.getName(), e});
                                         alarmService.sendAlarm(Notice.SNATCH_INSTANCE_FAILURE.getSubject(), format(Notice.SNATCH_INSTANCE_FAILURE.getMessage(), getNodeName(), dataInstance.getName(), exceptionToString(e)), false);
                                     }
                                 }
@@ -119,33 +123,33 @@ public class NodeRegister implements InitializingBean {
                                     try {
                                         resetDataInstanceNodePath(dataInstance, nodePath);
                                         instanceService.recovery(dataInstance);
-                                        logger.info("recovery Instance [name : {}, jdbcUrl : {}] successful.", dataInstance.getName(), dataInstance.getJdbcUrl());
+                                        logger.info("recovery Instance [name : {}] successful.", dataInstance.getName());
                                     } catch (Exception e) {
                                         if (e instanceof InstanceInvalidException) {
-                                            logger.error("DataInstance [name : {}, jdbcUrl : {}] is invalid, detail : ", new Object[]{dataInstance.getName(), dataInstance.getJdbcUrl(), e});
+                                            logger.error("DataInstance [name : {}] is invalid, detail : ", new Object[]{dataInstance.getName(), e});
                                             // 发送通知给负责人
                                             alarmService.sendAlarm(Notice.INVALID_INSTANCE.getSubject(), format(Notice.INVALID_INSTANCE.getMessage(), getNodeName(), dataInstance.getName()), false);
                                         } else {
-                                            logger.warn("recovery Instance [name : {}, jdbcUrl : {}] failure, now attempt to retry {} times.",
-                                                        new Object[]{dataInstance.getName(), dataInstance.getJdbcUrl(), instanceRecoveryRetryTime});
+                                            logger.warn("recovery Instance [name : {}] failure, now attempt to retry {} times.",
+                                                        new Object[]{dataInstance.getName(), instanceRecoveryRetryTime});
                                             recoveryFailureException = e;
                                             for (int i = 0; i < instanceRecoveryRetryTime && recoveryFailureException != null; i++) {
                                                 try {
                                                     instanceService.recovery(dataInstance);
-                                                    logger.info("recovery Instance [name : {}, jdbcUrl : {}] successful after retry {} times.",
-                                                                new Object[]{dataInstance.getName(), dataInstance.getJdbcUrl(), i + 1});
+                                                    logger.info("recovery Instance [name : {}] successful after retry {} times.",
+                                                                new Object[]{dataInstance.getName(), i + 1});
                                                     recoveryFailureException = null;
                                                 } catch (Exception ex) {
-                                                    logger.warn("retry {} time to  recovery Instance [name : {}, jdbcUrl : {}] failure.",
-                                                                new Object[]{i + 1, dataInstance.getName(), dataInstance.getJdbcUrl()});
+                                                    logger.warn("retry {} time to  recovery Instance [name : {}] failure.",
+                                                                new Object[]{i + 1, dataInstance.getName()});
                                                     recoveryFailureException = ex;
                                                 }
                                             }
 
                                             if (recoveryFailureException != null) {
                                                 // 发送通知给负责人
-                                                logger.error("recovery Instance [name : {}, jdbcUrl : {}] failure after retry {} times.",
-                                                             new Object[]{dataInstance.getName(), dataInstance.getJdbcUrl(), instanceRecoveryRetryTime});
+                                                logger.error("recovery Instance [name : {}] failure after retry {} times.",
+                                                             new Object[]{dataInstance.getName(), instanceRecoveryRetryTime});
                                                 alarmService.sendAlarm(Notice.RECOVERY_INSTANCE_FAILURE.getSubject(), format(Notice.RECOVERY_INSTANCE_FAILURE.getMessage(), getNodeName(), dataInstance.getName(), instanceRecoveryRetryTime), false);
                                             }
                                         }
@@ -159,12 +163,20 @@ public class NodeRegister implements InitializingBean {
         });
     }
 
+    private String getNodeParentPath() {
+        if (nodeType.equalsIgnoreCase(DataInstanceModel.PRODUCER.name())) {
+            return Constants.DEFAULT_PRODUCER_NODE_PATH;
+        } else {
+            return Constants.DEFAULT_CONSUMER_NODE_PATH;
+        }
+    }
+
     public String getNodePath() {
         return nodePath;
     }
 
     private String createNodePath() {
-        return Constants.DEFAULT_NODE_PATH + "/" + getNodeName();
+        return getNodeParentPath() + "/" + getNodeName();
     }
 
     private static String format(String pattern, Object... arguments) {

@@ -10,6 +10,11 @@ import com.github.dataflow.core.store.DataStore;
  */
 public abstract class AbstractInstance extends AbstractDataFlowLifeCycle implements Instance {
     /**
+     * 是否已经init
+     */
+    protected boolean hasInit = false;
+
+    /**
      * 实例的id
      */
     protected Long id;
@@ -37,12 +42,12 @@ public abstract class AbstractInstance extends AbstractDataFlowLifeCycle impleme
     /**
      * 告警服务
      */
-    private AlarmService alarmService;
+    protected AlarmService alarmService;
 
     /**
      * 数据处理
      */
-    private DataStore dataStore;
+    protected DataStore dataStore;
 
     public Long getId() {
         return id;
@@ -92,4 +97,13 @@ public abstract class AbstractInstance extends AbstractDataFlowLifeCycle impleme
     public void setDataStore(DataStore dataStore) {
         this.dataStore = dataStore;
     }
+
+    @Override
+    public void init() {
+        if (!hasInit) {
+            doInit();
+        }
+    }
+
+    protected abstract void doInit();
 }

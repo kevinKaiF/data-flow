@@ -4,39 +4,44 @@
             this.initNodeList();
             this.initScroll();
         },
+        _renderNodeList : function (result) {
+            var nodeList = "";
+            if (result.length > 0) {
+                for (var i in result) {
+                    var nodePath = result[i];
+                    var nodeAddress = nodePath.substring(nodePath.lastIndexOf("/") + 1);
+                    nodeList +=
+                        '<div class="col-sm-6 instance-node" data-value="' + nodePath + '">' +
+                        '<div class="x_panel ">' +
+                        '   <div class="x_title">' +
+                        '       <h2>' + nodeAddress + '</h2>' +
+                        '       <div class="clearfix"></div>' +
+                        '   </div>' +
+                        // '<div class="x_content">' +
+                        // '    <div style="text-align: center; margin-bottom: 17px">' +
+                        // '       <span class="chart" data-percent="86">' +
+                        // '       <span class="percent"></span>' +
+                        // '       </span>' +
+                        // '    </div>' +
+                        // '</div>' +
+                        '</div>' +
+                        '</div>'
+                }
+            } else {
+                nodeList = "暂无注册node";
+            }
+            return nodeList;
+        },
         initNodeList: function () {
             $.ajax({
                 url: "list",
                 dataType: "json"
             }).then(function (data) {
                 if (data.responseStatus == 200) {
-                    var result = data.result;
-                    var nodeList = "";
-                    if (result.length > 0) {
-                        for (var i in result) {
-                            var nodePath = result[i];
-                            var nodeAddress = nodePath.substring(nodePath.lastIndexOf("/") + 1);
-                            nodeList +=
-                                '<div class="col-sm-2" data-value="' + nodePath + '">' +
-                                '<div class="x_panel ">' +
-                                '   <div class="x_title">' +
-                                '       <h2>' + nodeAddress + '</h2>' +
-                                '       <div class="clearfix"></div>' +
-                                '   </div>' +
-                                // '<div class="x_content">' +
-                                // '    <div style="text-align: center; margin-bottom: 17px">' +
-                                // '       <span class="chart" data-percent="86">' +
-                                // '       <span class="percent"></span>' +
-                                // '       </span>' +
-                                // '    </div>' +
-                                // '</div>' +
-                                '</div>' +
-                                '</div>'
-                        }
-                    } else {
-                        nodeList = "暂无注册node";
-                    }
-                    $("#nodeList").html(nodeList);
+                    var producerNode = data.result.producer;
+                    var consumerNode = data.result.consumer;
+                    $("#producerList").html(main._renderNodeList(producerNode))
+                    $("#consumerList").html(main._renderNodeList(consumerNode))
                     // render memory
                     // $("#nodeList>div").each(function () {
                     //     var $this = $(this);
@@ -67,7 +72,7 @@
                     //     })
                     // })
                     // bind event
-                    $("#nodeList>div").click(function () {
+                    $(".instance-node").click(function () {
                         var nodePath = $(this).attr("data-value");
                         $("#nodeHeader").html(nodePath);
                         $("#dataInstance").show();
@@ -98,11 +103,11 @@
             $("#alertMessage").modal('show');
             $("#alert-content").empty().html(message);
             if (callback) {
-                $("#alert-submit").show().off('click')().on("click", function () {
+                $("#alert-submit").show().off('click').on("click", function () {
                     callback();
                 })
             } else {
-                $("#alert-submit").hide().off('click')();
+                $("#alert-submit").hide().off('click');
             }
         },
         hasInitInstanceTable: false,

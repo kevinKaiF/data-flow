@@ -27,10 +27,6 @@ public class KafkaDataSender extends DataSender {
         producer.send(new ProducerRecord<String, String>(topic, JSON.toJSONString(rowMetaDataList)));
     }
 
-    public boolean isSingleton() {
-        return true;
-    }
-
     @Override
     protected void doStart() {
     }

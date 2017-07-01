@@ -4,14 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.otter.canal.instance.manager.model.CanalParameter;
 import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.core.instance.InstanceType;
 import com.github.dataflow.core.instance.handler.AbstractInstanceHandler;
 import com.github.dataflow.core.instance.handler.InstanceHandler;
 import com.github.dataflow.core.store.DataStore;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.node.model.config.DataFlowContext;
-import com.github.dataflow.node.model.instance.MysqlInstance;
+import com.github.dataflow.node.model.instance.mysql.MysqlInstance;
 import com.github.dataflow.node.model.store.DefaultDataStore;
+import com.github.dataflow.sender.database.utils.DatabaseConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,39 +29,38 @@ public class MysqlInstanceHandler extends AbstractInstanceHandler implements Ins
     @Autowired
     private DataFlowContext dataFlowContext;
 
-    private InstanceType instanceType = InstanceType.MYSQL;
+    private DataSourceType instanceType = DataSourceType.MYSQL;
 
     public boolean support(int instanceType) {
         return this.instanceType.getType() == instanceType;
     }
 
     public Instance doCreateInstance(DataInstance dataInstance) {
+        JSONObject options = JSON.parseObject(dataInstance.getOptions());
         MysqlInstance mysqlInstance = new MysqlInstance();
-        mysqlInstance.setJdbcUrl(dataInstance.getJdbcUrl());
+        mysqlInstance.setJdbcUrl(options.getString(DatabaseConfig.JDBC_URL));
         mysqlInstance.setId(dataInstance.getId());
         mysqlInstance.setName(dataInstance.getName());
-        mysqlInstance.setWhiteFilter(dataInstance.getWhiteFilter());
-        mysqlInstance.setCanalParameter(buildCanalParameter(dataInstance));
+        mysqlInstance.setWhiteFilter(options.getString("whiteFilter"));
+        mysqlInstance.setCanalParameter(buildCanalParameter(dataInstance, options));
         mysqlInstance.setAlarmService(dataFlowContext.getAlarmService());
         mysqlInstance.setDataStore(buildDataStore(dataInstance));
-        mysqlInstance.init();
         return mysqlInstance;
     }
 
-    private CanalParameter buildCanalParameter(DataInstance dataInstance) {
-        JSONObject options = JSON.parseObject(dataInstance.getOptions());
+    private CanalParameter buildCanalParameter(DataInstance dataInstance, JSONObject options) {
         CanalParameter parameter = new CanalParameter();
         parameter.setMetaMode(CanalParameter.MetaMode.ZOOKEEPER);
         parameter.setHaMode(CanalParameter.HAMode.HEARTBEAT);
         parameter.setIndexMode(CanalParameter.IndexMode.ZOOKEEPER);
         parameter.setSourcingType(CanalParameter.SourcingType.MYSQL);
-        parameter.setDbAddresses(Collections.singletonList(new InetSocketAddress(dataInstance.getHost(), dataInstance.getPort() != null ? dataInstance.getPort() : 3306)));
-        parameter.setDbUsername(dataInstance.getUsername());
-        parameter.setDbPassword(dataInstance.getPassword());
+        parameter.setDbAddresses(Collections.singletonList(new InetSocketAddress(options.getString(DatabaseConfig.HOST), options.getInteger(DatabaseConfig.PORT) == null ? 3306 : options.getInteger(DatabaseConfig.PORT) )));
+        parameter.setDbUsername(options.getString(DatabaseConfig.USERNAME));
+        parameter.setDbPassword(options.getString(DatabaseConfig.PASSWORD));
 //        parameter.setPositions(Arrays.asList("{\"journalName\":\"mysql-bin.000001\",\"position\":6163L,\"timestamp\":1322803601000L}",
 //                "{\"journalName\":\"mysql-bin.000001\",\"position\":6163L,\"timestamp\":1322803601000L}"));
 
-        parameter.setSlaveId(dataInstance.getSlaveId());
+        parameter.setSlaveId(options.getLong("slaveId"));
         parameter.setZkClusters(Arrays.asList(getZookeeperAddresses().split(",")));
         // 忽略表解析错误，比如删除表，删除字段等等
         parameter.setFilterTableError(true);
@@ -70,7 +70,7 @@ public class MysqlInstanceHandler extends AbstractInstanceHandler implements Ins
         parameter.setReceiveBufferSize(8 * 1024);
         parameter.setSendBufferSize(8 * 1024);
         //过滤掉库
-        parameter.setBlackFilter(dataInstance.getBlackFilter());
+        parameter.setBlackFilter(options.getString("blackFilter"));
 
         parameter.setDetectingEnable(false);
         parameter.setDetectingIntervalInSeconds(10);

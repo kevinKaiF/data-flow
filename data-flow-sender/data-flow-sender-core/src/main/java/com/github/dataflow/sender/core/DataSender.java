@@ -36,15 +36,6 @@ public abstract class DataSender extends AbstractDataFlowLifeCycle {
      */
     public abstract void send(List<RowMetaData> rowMetaDataList) throws Exception;
 
-
-    /**
-     * 是否是单例
-     *
-     * @return
-     */
-    public abstract boolean isSingleton();
-
-
     @Override
     public void start() {
         referenceCount.incrementAndGet();

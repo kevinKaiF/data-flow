@@ -2,10 +2,11 @@ package com.github.dataflow.sender.core.event;
 
 
 import com.github.dataflow.common.model.RowMetaData;
-import com.github.dataflow.dubbo.common.enums.DataSourceOutputType;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author : kevin
@@ -14,7 +15,16 @@ import java.sql.SQLException;
  * @date : 2017/6/20
  */
 public interface EventHandler {
-    boolean support(DataSourceOutputType dataSourceOutputType, RowMetaData.EventType eventType);
+    boolean support(DataSourceType dataSourceType, RowMetaData.EventType eventType);
 
-    void handle(DataSourceHolder dataSourceHolder, RowMetaData rowMetaData) throws SQLException;
+    void singleHandle(DataSourceHolder dataSourceHolder, RowMetaData rowMetaData) throws SQLException;
+
+    /**
+     * 批处理
+     *
+     * @param dataSourceHolder
+     * @param rowMetaDataList
+     * @throws SQLException
+     */
+    void batchHandle(DataSourceHolder dataSourceHolder, List<RowMetaData> rowMetaDataList) throws SQLException;
 }

@@ -13,6 +13,16 @@ public class Constants {
     public static final String DEFAULT_NODE_PATH = "/dataflow/node";
 
     /**
+     * 生产者node在zk中parent path
+     */
+    public static final String DEFAULT_PRODUCER_NODE_PATH = "/dataflow/node/producer";
+
+    /**
+     * 消费者node在zk中parent path
+     */
+    public static final String DEFAULT_CONSUMER_NODE_PATH = "/dataflow/node/consumer";
+
+    /**
      * instance在zk中parent path
      */
     public static final String DEFAULT_INSTANCE_PATH = "/dataflow/instance";

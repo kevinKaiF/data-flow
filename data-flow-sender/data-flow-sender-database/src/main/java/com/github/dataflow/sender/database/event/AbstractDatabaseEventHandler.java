@@ -2,7 +2,7 @@ package com.github.dataflow.sender.database.event;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.Closer;
-import com.github.dataflow.dubbo.common.enums.DataSourceOutputType;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 import com.github.dataflow.sender.core.event.EventHandler;
 import org.slf4j.Logger;
@@ -25,17 +25,17 @@ import java.util.List;
 public abstract class AbstractDatabaseEventHandler implements EventHandler {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected static final List<DataSourceOutputType> dataSourceOutputTypes = new ArrayList<>();
+    protected static final List<DataSourceType> DATA_SOURCE_TYPEs = new ArrayList<>();
 
     static {
-        dataSourceOutputTypes.add(DataSourceOutputType.MYSQL);
-        dataSourceOutputTypes.add(DataSourceOutputType.ORACLE);
-        dataSourceOutputTypes.add(DataSourceOutputType.POSTGRESQL);
-        dataSourceOutputTypes.add(DataSourceOutputType.SQLSERVER);
+        DATA_SOURCE_TYPEs.add(DataSourceType.MYSQL);
+        DATA_SOURCE_TYPEs.add(DataSourceType.ORACLE);
+        DATA_SOURCE_TYPEs.add(DataSourceType.POSTGRESQL);
+        DATA_SOURCE_TYPEs.add(DataSourceType.SQLSERVER);
     }
 
     @Override
-    public void handle(DataSourceHolder dataSourceHolder, RowMetaData rowMetaData) throws SQLException {
+    public void singleHandle(DataSourceHolder dataSourceHolder, RowMetaData rowMetaData) throws SQLException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -51,6 +51,11 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
             Closer.closeQuietly(preparedStatement);
             Closer.closeQuietly(connection);
         }
+    }
+
+    @Override
+    public void batchHandle(DataSourceHolder dataSourceHolder, List<RowMetaData> rowMetaDataList) throws SQLException {
+
     }
 
     /**

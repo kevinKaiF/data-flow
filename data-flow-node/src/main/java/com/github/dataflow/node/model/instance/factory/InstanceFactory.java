@@ -6,7 +6,6 @@ import com.github.dataflow.core.instance.handler.InstanceHandler;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.node.model.instance.InstanceManager;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -21,8 +20,7 @@ import java.util.Map;
  * @date 2017-05-28 3:12 PM.
  */
 @Component
-public class InstanceFactory implements InitializingBean, ApplicationContextAware {
-    private ApplicationContext applicationContext;
+public class InstanceFactory implements ApplicationContextAware {
     private List<InstanceHandler> instanceHandlers = new ArrayList<InstanceHandler>();
 
     public synchronized Instance createInstance(DataInstance dataInstance) {
@@ -32,25 +30,22 @@ public class InstanceFactory implements InitializingBean, ApplicationContextAwar
 
         for (InstanceHandler instanceHandler : instanceHandlers) {
             if (instanceHandler.support(dataInstance.getType())) {
-                return instanceHandler.doCreateInstance(dataInstance);
+                Instance instance = instanceHandler.doCreateInstance(dataInstance);
+                instance.init();
+                return instance;
             }
         }
 
         throw new InstanceException("don't support Instance:type [" + dataInstance.getType() + "]");
     }
 
-
-    public void afterPropertiesSet() throws Exception {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         instanceHandlers.clear();
         Map<String, InstanceHandler> instanceHandlerMap = applicationContext.getBeansOfType(InstanceHandler.class);
         if (CollectionUtils.isEmpty(instanceHandlerMap)) {
-
+            throw new InstanceException("there is no InstanceHandler, please registry one at least.");
         } else {
             instanceHandlers.addAll(instanceHandlerMap.values());
         }
-    }
-
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 }

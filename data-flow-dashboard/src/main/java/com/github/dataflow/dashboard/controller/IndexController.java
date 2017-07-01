@@ -37,7 +37,7 @@ public class IndexController {
         if (username == null) {
             return "index";
         } else {
-            return "redirect:/dataInstance/";
+            return "redirect:/dataInstance/producer";
         }
     }
 

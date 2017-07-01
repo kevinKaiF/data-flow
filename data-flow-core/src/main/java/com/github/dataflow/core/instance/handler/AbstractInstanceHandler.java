@@ -1,7 +1,6 @@
 package com.github.dataflow.core.instance.handler;
 
 import com.github.dataflow.core.exception.InstanceException;
-import com.github.dataflow.sender.core.DataSenderManager;
 import com.github.dataflow.core.store.DataStore;
 import com.github.dataflow.core.transformer.GroovyShellDataTransformer;
 import com.github.dataflow.dubbo.model.DataInstance;
@@ -9,8 +8,8 @@ import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.dubbo.model.DataTable;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.DataSenderHandler;
+import com.github.dataflow.sender.core.DataSenderManager;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -23,7 +22,7 @@ import java.util.*;
  * @author kevin
  * @date 2017-05-30 1:13 AM.
  */
-public abstract class AbstractInstanceHandler implements ApplicationContextAware, InitializingBean {
+public abstract class AbstractInstanceHandler implements ApplicationContextAware {
     /**
      * zk集群地址
      */
@@ -32,21 +31,14 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
 
     protected List<DataSenderHandler> dataSenderHandlers = new ArrayList<>();
 
-
-    private ApplicationContext applicationContext;
-
-    public void afterPropertiesSet() throws Exception {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         dataSenderHandlers.clear();
-        Map<String, DataSenderHandler> dataSenderHandlerMap = this.applicationContext.getBeansOfType(DataSenderHandler.class);
+        Map<String, DataSenderHandler> dataSenderHandlerMap = applicationContext.getBeansOfType(DataSenderHandler.class);
         if (CollectionUtils.isEmpty(dataSenderHandlerMap)) {
             throw new InstanceException("Not found any DataSenderHandler.");
         } else {
             dataSenderHandlers.addAll(dataSenderHandlerMap.values());
         }
-    }
-
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 
     protected DataStore buildDataStore(DataInstance dataInstance) {
@@ -63,12 +55,10 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
 
         // filter
         Map<String, Map<String, List<String>>> columnsToFilterMap = buildColumnsToFilterMap(dataInstance);
-        if (!CollectionUtils.isEmpty(columnsToFilterMap)) {
-            dataStore.setColumnsToFilterMap(columnsToFilterMap);
-        }
+        dataStore.setColumnsToFilterMap(columnsToFilterMap);
 
         // sender
-        initDataSender(dataOutputMappings, dataStore);
+        buildDataSender(dataOutputMappings, dataStore);
         return dataStore;
     }
 
@@ -96,7 +86,7 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
         return Arrays.asList(columns.split(","));
     }
 
-    protected void initDataSender(List<DataOutputMapping> dataOutputMappings, DataStore dataStore) {
+    protected void buildDataSender(List<DataOutputMapping> dataOutputMappings, DataStore dataStore) {
         Map<String, DataSender> dataSenderMap = new HashMap<>();
         for (DataOutputMapping dataOutputMapping : dataOutputMappings) {
             DataSender dataSender = dataSenderMap.get(dataOutputMapping.getSchemaName());
@@ -106,9 +96,7 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
                 dataSender = DataSenderManager.get(dataSenderId);
                 if (dataSender == null) {
                     dataSender = createDataSender(dataOutputMapping);
-                    if (dataSender.isSingleton()) {
-                        DataSenderManager.put(dataSenderId, dataSender);
-                    }
+                    DataSenderManager.put(dataSenderId, dataSender);
                     dataSender.setDataSenderId(dataSenderId);
                 }
                 dataSenderMap.put(dataOutputMapping.getSchemaName(), dataSender);

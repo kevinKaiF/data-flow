@@ -1,7 +1,7 @@
 package com.github.dataflow.sender.database.event;
 
 import com.github.dataflow.common.model.RowMetaData;
-import com.github.dataflow.dubbo.common.enums.DataSourceOutputType;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,8 +17,8 @@ public class DatabaseInsertEventHandler extends AbstractDatabaseEventHandler {
     private RowMetaData.EventType eventType = RowMetaData.EventType.INSERT;
 
     @Override
-    public boolean support(DataSourceOutputType dataSourceOutputType, RowMetaData.EventType eventType) {
-        return dataSourceOutputTypes.contains(dataSourceOutputType) && this.eventType == eventType;
+    public boolean support(DataSourceType dataSourceType, RowMetaData.EventType eventType) {
+        return DATA_SOURCE_TYPEs.contains(dataSourceType) && this.eventType == eventType;
     }
 
     @Override

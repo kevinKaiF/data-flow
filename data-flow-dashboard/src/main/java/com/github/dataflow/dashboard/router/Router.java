@@ -11,10 +11,18 @@ package com.github.dataflow.dashboard.router;
 public interface Router {
 
     /**
-     * 获取下一个节点
+     * 获取下一个producer节点
      *
-     * @param ipAddress
+     * @param name
      * @return
      */
-    String next(String ipAddress);
+    String nextProducer(String name);
+
+    /**
+     * 获取下一个consumer节点
+     *
+     * @param name
+     * @return
+     */
+    String nextConsumer(String name);
 }

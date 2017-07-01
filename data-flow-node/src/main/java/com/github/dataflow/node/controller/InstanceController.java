@@ -31,8 +31,8 @@ public class InstanceController {
         try {
             instanceService.start(dataInstance);
         } catch (Exception e) {
-            logger.error("start Instance [name : {}, jdbcUrl : {}] failure. detail : ",
-                         new Object[]{dataInstance.getName(), dataInstance.getJdbcUrl(), e});
+            logger.error("start Instance [name : {}] failure. detail : ",
+                         new Object[]{dataInstance.getName(), e});
             responseEntity.setResponseStatus(ResponseEntity.FAILURE);
             responseEntity.setMessage(e.getMessage());
         }
@@ -48,8 +48,8 @@ public class InstanceController {
             dataInstance = JSON.parseObject(dataInstanceJson, DataInstance.class);
             instanceService.start(dataInstance);
         } catch (Exception e) {
-            logger.error("start Instance [name : {}, jdbcUrl : {}] failure. detail : ",
-                         new Object[]{dataInstance.getName(), dataInstance.getJdbcUrl(), e});
+            logger.error("start Instance [name : {}] failure. detail : ",
+                         new Object[]{dataInstance.getName(), e});
             responseEntity.setResponseStatus(ResponseEntity.FAILURE);
             responseEntity.setMessage(e.getMessage());
         }
@@ -63,8 +63,8 @@ public class InstanceController {
         try {
             instanceService.stop(dataInstance);
         } catch (Exception e) {
-            logger.error("stop Instance [name : {}, jdbcUrl : {}] failure, detail : ",
-                         new Object[]{dataInstance.getName(), dataInstance.getJdbcUrl(), e});
+            logger.error("stop Instance [name : {}] failure, detail : ",
+                         new Object[]{dataInstance.getName(), e});
             responseEntity.setResponseStatus(ResponseEntity.FAILURE);
             responseEntity.setMessage(e.getMessage());
         }
@@ -80,8 +80,8 @@ public class InstanceController {
             dataInstance = JSON.parseObject(dataInstanceJson, DataInstance.class);
             instanceService.stop(dataInstance);
         } catch (Exception e) {
-            logger.error("stop Instance [name : {}, jdbcUrl : {}] failure, detail : ",
-                         new Object[]{dataInstance.getName(), dataInstance.getJdbcUrl(), e});
+            logger.error("stop Instance [name : {}] failure, detail : ",
+                         new Object[]{dataInstance.getName(), e});
             responseEntity.setResponseStatus(ResponseEntity.FAILURE);
             responseEntity.setMessage(e.getMessage());
         }

@@ -20,22 +20,14 @@ public class TestDataInstanceService extends TestBase {
     @Test
     public void testInsert() {
         DataInstance dataInstance = new DataInstance();
-        dataInstance.setBlackFilter("TEST.BlackFilter");
         dataInstance.setCreateTime(new java.util.Date());
-        dataInstance.setHost("192.168.1.2");
-        dataInstance.setJdbcUrl("jdbc:mysql://10.4.0.20:3306/dataflow");
         dataInstance.setName("name");
         dataInstance.setNodePath("/dataflow/node/192.168.1.1:8099");
         dataInstance.setOptions("{'name':'test'}");
-        dataInstance.setPassword("123456");
-        dataInstance.setPort(3306);
-        dataInstance.setSlaveId(5514L);
         dataInstance.setStatus(0);
         dataInstance.setTransformScript("public List<RowDataMeta> transform(List<RowDataMeta> rowDataMetaList) {return rowDataMetaList}");
         dataInstance.setType(1);
         dataInstance.setUpdateTime(new java.util.Date());
-        dataInstance.setUsername("TEST Username");
-        dataInstance.setWhiteFilter("TEST.WhiteFilter");
         dataInstanceService.insert(dataInstance);
     }
 
@@ -55,42 +47,26 @@ public class TestDataInstanceService extends TestBase {
     public void testUpdate() {
         DataInstance dataInstance = new DataInstance();
         dataInstance.setId(1L);
-        dataInstance.setBlackFilter("TEST.BlackFilter");
         dataInstance.setCreateTime(new java.util.Date());
-        dataInstance.setHost("192.168.1.2");
-        dataInstance.setJdbcUrl("jdbc:mysql://10.4.0.20:3306/dataflow");
         dataInstance.setName("name");
         dataInstance.setNodePath("/dataflow/node/192.168.1.1:8099");
         dataInstance.setOptions("{'name':'test'}");
-        dataInstance.setPassword("123456");
-        dataInstance.setPort(3306);
-        dataInstance.setSlaveId(5514L);
         dataInstance.setStatus(DataInstanceStatus.CREATED.getStatus());
         dataInstance.setTransformScript("public List<RowDataMeta> transform(List<RowDataMeta> rowDataMetaList) {return rowDataMetaList}");
         dataInstance.setType(1);
         dataInstance.setUpdateTime(new java.util.Date());
-        dataInstance.setUsername("TEST Username");
-        dataInstance.setWhiteFilter("TEST.WhiteFilter");
         dataInstanceService.update(dataInstance);
     }
 
     @Test
     public void testFindByCondition() {
         DataInstance dataInstance = new DataInstance();
-        dataInstance.setBlackFilter("TEST.BlackFilter");
-        dataInstance.setHost("192.168.1.2");
-        dataInstance.setJdbcUrl("jdbc:mysql://10.4.0.20:3306/dataflow");
         dataInstance.setName("name");
         dataInstance.setNodePath("/dataflow/node/192.168.1.1:8099");
         dataInstance.setOptions("{'name':'test'}");
-        dataInstance.setPassword("123456");
-        dataInstance.setPort(3306);
-        dataInstance.setSlaveId(5514L);
         dataInstance.setStatus(DataInstanceStatus.CREATED.getStatus());
         dataInstance.setTransformScript("public List<RowDataMeta> transform(List<RowDataMeta> rowDataMetaList) {return rowDataMetaList}");
         dataInstance.setType(1);
-        dataInstance.setUsername("TEST Username");
-        dataInstance.setWhiteFilter("TEST.WhiteFilter");
 
         PageSet pageSet = new PageSet();
         print(dataInstanceService.findByCondition(dataInstance, pageSet));
@@ -99,10 +75,11 @@ public class TestDataInstanceService extends TestBase {
     @Test
     public void testFindByConditionFully() {
         DataInstance dataInstance = new DataInstance();
-        dataInstance.setBlackFilter("TEST.BlackFilter");
-        dataInstance.setHost("192.168.1.2");
-        dataInstance.setJdbcUrl("jdbc:mysql://10.4.0.20:3306/dataflow");
-        dataInstance.setName("name");
+//        dataInstance.setBlackFilter("TEST.BlackFilter");
+//        dataInstance.setHost("192.168.1.2");
+//        dataInstance.setJdbcUrl("jdbc:mysql://10.4.0.20:3306/dataflow");
+//        dataInstance.setName("name");
+        dataInstance.setTag("test2");
 //        dataInstance.setNodePath("/dataflow/node/192.168.1.1:8099");
 //        dataInstance.setOptions("{'name':'test'}");
 //        dataInstance.setPassword("123456");

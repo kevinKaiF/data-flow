@@ -21,12 +21,12 @@
             $("#alertMessage").modal('show');
             $("#alert-content").empty().html(message);
             if (callback) {
-                $("#alert-submit").show().off('click')().on("click", function () {
+                $("#alert-submit").show().off('click').on("click", function () {
                     callback();
                     $("#alertMessage").modal('hide');
                 })
             } else {
-                $("#alert-submit").hide().off('click')();
+                $("#alert-submit").hide().off('click');
             }
         },
         eventBind: function () {
@@ -50,6 +50,26 @@
                 var promptingMessage = '<div style="margin: 0 auto; margin-top: 50px; text-align: center"><h3>配置过滤的表字段</h3></div>'
                 $("#dataInstance-table-detail").empty().html(promptingMessage)
             })
+        },
+        parseDataSourceOutputType: function (type) {
+            switch (type) {
+                case 10:
+                    return "MySQL";
+                case 11:
+                    return "Oracle";
+                case 12 :
+                    return "PostGreSQL";
+                case 13 :
+                    return "SQLServer";
+                case 20 :
+                    return "kafka";
+                case 21 :
+                    return "metaQ";
+                case 22 :
+                    return "rabbitMQ"
+                default :
+                    return '-';
+            }
         },
         initValidation: function () {
             if (typeof (validator) === 'undefined') {
@@ -228,7 +248,7 @@
                                                                         data.result.id && $dataInstanceTable.loadData(data.result);
 
                                                                         // bind submitting form event
-                                                                        $("#dataTable-submit").off('click')().on("click", function () {
+                                                                        $("#dataTable-submit").off('click').on("click", function () {
                                                                             var checkboxList = $("#dataTable-form :checkbox").fieldValue();
                                                                             // validate the length of checked checkboxes
                                                                             if (checkboxList && checkboxList.length > 0) {
@@ -393,6 +413,7 @@
                             type: "POST",
                             success: function (data) {
                                 if (data.responseStatus == 200) {
+                                    main.messageAlert("添加dataOutputMapping成功");
                                     $("#dataOutputMapping-id").val(data.result);
                                     $("#dataOutputMappingTable").dataTable().api().ajax.reload(null, false);
                                     // 重新渲染schemaList
@@ -461,22 +482,7 @@
                                 title: "dataSourceOutput.type",
                                 render: function (data, type, full, meta) {
                                     if (full.dataSourceOutput) {
-                                        switch (full.dataSourceOutput.type) {
-                                            case 10:
-                                                return "MySQL";
-                                            case 11:
-                                                return "Oracle";
-                                            case 12 :
-                                                return "PostGreSQL";
-                                            case 13 :
-                                                return "SQLServer";
-                                            case 20 :
-                                                return "kafka";
-                                            case 21 :
-                                                return "metaQ";
-                                            case 22 :
-                                                return "rabbitMQ"
-                                        }
+                                        return main.parseDataSourceOutputType(full.dataSourceOutput.type)
                                     } else {
                                         return "-"
                                     }
@@ -587,6 +593,7 @@
                             "url": "./list",
                             "contentType": "application/x-www-form-urlencoded",
                             "type": "POST",
+                            "data": {producerOrConsumer: 0}
                         },
                         columns: [
                             {
@@ -597,13 +604,10 @@
                                 width: "7px"
                             },
                             {data: "name", title: "name"},
-                            {data: "host", title: "host"},
-                            {data: "port", title: "port"},
+                            {data: "tag", title: "tag"},
                             {
                                 data: "type", title: "type", "render": function (data, type, full, meta) {
-                                if (data == 1) {
-                                    return "MySQL"
-                                }
+                                return main.parseDataSourceOutputType(data);
                             }
                             },
                             {data: "nodePath", title: "nodePath"},
@@ -722,7 +726,7 @@
                     // 搜索
                     $("#dataInstance-searchForm-submit").on("click", function () {
                         var arr = $("#dataInstance-searchForm").serializeArray();
-                        var data = {};
+                        var data = {producerOrConsumer: 0};
                         for (var i in arr) {
                             data[arr[i].name] = arr[i].value;
                         }
@@ -745,6 +749,7 @@
                     // 添加
                     $("#add").on("click", function () {
                         $("#dataInstanceModal").modal("show")
+                        $("#dataInstance-name").val(-1);
                     })
                     // 编辑
                     $("#edit").on("click", function () {
@@ -802,22 +807,29 @@
                         success: function (json) {
                             var result = json.result;
                             // render dataInstance [Form]
-                            var dataInstanceProperties = ["name", "slaveId", "host", "port", "jdbcUrl", "type", "username", "whiteFilter", "blackFilter", "transformScript"];
+                            var dataInstanceProperties = {
+                                "name": "input",
+                                "options": "textarea",
+                                "transformScript": "textarea",
+                            };
                             var dataInstanceForm = '<div class="container">' +
                                 '<span class="section">实例详情</span>' +
                                 '<form class="form-horizontal form-label-left col-sm-12">';
                             for (var i in dataInstanceProperties) {
-                                var prop = dataInstanceProperties[i];
+                                var prop = i;
+                                var type = dataInstanceProperties[i];
                                 if (result[prop]) {
                                     var value = result[prop];
-                                    if (prop == "type") {
-                                        value = 'MySQL';
+                                    dataInstanceForm += '<div class="item form-group col-sm-12" style="margin-bottom: 10px;;">'
+                                        + '<label class="control-label col-md-2"> ' + prop + ' </label>'
+                                        + '<div class="col-md-8">';
+                                    if (type == "input") {
+                                        dataInstanceForm += '<input class="form-control" readonly style="width: 100%;background: white" value="' + value + '"/>'
+                                    } else if (type == "textarea") {
+                                        dataInstanceForm += '<textarea class="form-control" readonly style="width: 100%;background: white">' + value + ' </textarea>'
                                     }
-                                    dataInstanceForm += '<div class="item form-group col-sm-6" style="margin-bottom: 10px;;">'
-                                        + '<label class="control-label col-md-4"> ' + prop + ' </label>'
-                                        + '<div class="col-md-8">'
-                                        + '<textarea class="form-control" readonly style="width: 100%;background: white">' + value + ' </textarea>'
-                                        + '</div>'
+
+                                    dataInstanceForm += '</div>'
                                         + '</div>';
                                 }
                             }
@@ -855,27 +867,6 @@
                             }
 
                             // render dataOutputMapping [Table]
-                            function parseDataSourceOutputType(type) {
-                                    switch (type) {
-                                        case 10:
-                                            return "MySQL";
-                                        case 11:
-                                            return "Oracle";
-                                        case 12 :
-                                            return "PostGreSQL";
-                                        case 13 :
-                                            return "SQLServer";
-                                        case 20 :
-                                            return "kafka";
-                                        case 21 :
-                                            return "metaQ";
-                                        case 22 :
-                                            return "rabbitMQ"
-                                        default :
-                                            return '-';
-                                    }
-                            }
-
                             var dataOutputMappings = '';
                             if (result["dataOutputMappings"] && result["dataOutputMappings"].length > 0) {
                                 dataOutputMappings +=
@@ -899,7 +890,7 @@
                                         '<td>' + row.schemaName + '</td>' +
                                         '<td>' + row.topic + '</td>' +
                                         '<td>' + row.dataSourceOutput.id + '</td>' +
-                                        '<td>' + parseDataSourceOutputType(row.dataSourceOutput.type) + '</td>' +
+                                        '<td>' + main.parseDataSourceOutputType(row.dataSourceOutput.type) + '</td>' +
                                         '<td>' + row.dataSourceOutput.options + '</td>' +
                                         '</tr>'
                                 }

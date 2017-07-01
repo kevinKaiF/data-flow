@@ -1,7 +1,7 @@
 package com.github.dataflow.sender.kafka.handler;
 
 import com.github.dataflow.dubbo.model.DataOutputMapping;
-import com.github.dataflow.dubbo.common.enums.DataSourceOutputType;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.sender.core.AbstractDataSenderHandler;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.exception.DataSenderException;
@@ -16,10 +16,10 @@ import java.util.Properties;
  * @date 2017-05-30 1:02 AM.
  */
 public class KafkaDataSenderHandler extends AbstractDataSenderHandler {
-    private DataSourceOutputType dataSourceOutputType = DataSourceOutputType.KAFKA;
+    private DataSourceType dataSourceType = DataSourceType.KAFKA;
 
     public boolean support(int type) {
-        return dataSourceOutputType.getType() == type;
+        return dataSourceType.getType() == type;
     }
 
     public DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {

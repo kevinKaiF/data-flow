@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,14 +48,25 @@ public class DataNodeController extends BaseController{
         return getResponseEntity("list", new Callable() {
             @Override
             public void call(ResponseEntity responseEntity) {
-                List<String> children = zookeeperClient.getChildren(Constants.DEFAULT_NODE_PATH);
-                List<String> nodePathList = new ArrayList<String>();
-                for (String child : children) {
-                    nodePathList.add(Constants.DEFAULT_NODE_PATH + "/" + child);
-                }
-                responseEntity.setResult(nodePathList);
+                Map<String, List<String>> nodeMap = new HashMap<>();
+                nodeMap.put("producer", getNodes(Constants.DEFAULT_PRODUCER_NODE_PATH));
+                nodeMap.put("consumer", getNodes(Constants.DEFAULT_CONSUMER_NODE_PATH));
+                responseEntity.setResult(nodeMap);
             }
         });
+    }
+
+    private List<String> getNodes(String nodeParentPath) {
+        List<String> nodePathList = new ArrayList<String>();
+        if (zookeeperClient.exists(nodeParentPath)) {
+            List<String> children = zookeeperClient.getChildren(nodeParentPath);
+            for (String child : children) {
+                nodePathList.add(nodeParentPath + "/" + child);
+            }
+
+        }
+
+        return nodePathList;
     }
 
     @RequestMapping("instanceList")

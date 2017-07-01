@@ -28,4 +28,8 @@ public class ZookeeperClient implements InitializingBean {
     public List<String> getChildren(String path) {
         return zkClient.getChildren(path);
     }
+
+    public boolean exists(String nodeParentPath) {
+        return zkClient.exists(nodeParentPath);
+    }
 }

@@ -19,34 +19,77 @@ import java.util.List;
  * @date : 2017/6/23
  */
 public abstract class DatabaseDataSender extends DataSender {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private   Logger             logger        = LoggerFactory.getLogger(this.getClass());
     protected List<EventHandler> eventHandlers = new ArrayList<>();
 
     protected DataSourceHolder dataSourceHolder;
 
+    protected boolean batch = true;
+
     @Override
     public void send(List<RowMetaData> rowMetaDataList) throws Exception {
-        for (RowMetaData rowMetaData : rowMetaDataList) {
+        List<RowMetaData> batchRowMetaData = new ArrayList<>();
+        RowMetaData prev = null;
+        for (int i = 0, size = rowMetaDataList.size(); i < size; i++) {
+            RowMetaData rowMetaData = rowMetaDataList.get(i);
             for (EventHandler eventHandler : eventHandlers) {
                 if (isSupport(rowMetaData, eventHandler)) {
-                    try {
-                        eventHandler.handle(dataSourceHolder, rowMetaData);
-                    } catch (SQLException e) {
-                        if (e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY")) {
-                            logger.warn("ignore table[{}] 'PRIMARY' violation, rowMetaData : {}", rowMetaData.getFullTableName(), rowMetaData);
+                    if (batch) {
+                        try {
+                            if (sameTableDML(prev, rowMetaData)) {
+                                prev = rowMetaData;
+                                batchRowMetaData.add(rowMetaData);
+                            } else {
+                                // handle the pre RowMetaData list
+                                prev = null;
+                                eventHandler.batchHandle(dataSourceHolder, batchRowMetaData);
+                                batchRowMetaData.clear();
+
+                                prev = rowMetaData;
+                                batchRowMetaData.add(rowMetaData);
+                            }
+
+                            // the last RowMetaData
+                            if (i == size - 1) {
+                                prev = null;
+                                eventHandler.batchHandle(dataSourceHolder, batchRowMetaData);
+                                batchRowMetaData.clear();
+                            }
+                        } catch (SQLException e) {
+                            if (e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY")) {
+                                logger.warn("batch handle RowMetaData failure and try to single handle RowMetaData, detail : ", e);
+                                for (RowMetaData metaData : batchRowMetaData) {
+                                    singleHandle(metaData, eventHandler);
+                                }
+                            }
                         }
+                    } else {
+                        singleHandle(rowMetaData, eventHandler);
                     }
                 }
             }
         }
     }
 
-    protected abstract boolean isSupport(RowMetaData rowMetaData, EventHandler eventHandler);
-
-    @Override
-    public boolean isSingleton() {
-        return false;
+    private void singleHandle(RowMetaData rowMetaData, EventHandler eventHandler) {
+        try {
+            eventHandler.singleHandle(dataSourceHolder, rowMetaData);
+        } catch (SQLException e) {
+            if (e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY")) {
+                logger.warn("ignore table[{}] 'PRIMARY' violation, rowMetaData : {}", rowMetaData.getFullTableName(), rowMetaData);
+            }
+        }
     }
+
+    private boolean sameTableDML(RowMetaData prev, RowMetaData current) {
+        if (prev == null) {
+            return true;
+        } else {
+            return prev.getFullTableName().equals(current.getFullTableName()) && prev.getEventType().equals(current.getEventType());
+        }
+    }
+
+    protected abstract boolean isSupport(RowMetaData rowMetaData, EventHandler eventHandler);
 
     @Override
     protected void doStart() {

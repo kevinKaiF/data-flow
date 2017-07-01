@@ -14,7 +14,7 @@ public class RoundRobinRouter extends AbstractRouter {
     private volatile int index = 0;
 
     @Override
-    protected synchronized String doNext(List<String> children, String ipAddress) {
+    protected synchronized String doNext(List<String> children, String name) {
         if (index >= children.size()) {
             index = 0;
         }

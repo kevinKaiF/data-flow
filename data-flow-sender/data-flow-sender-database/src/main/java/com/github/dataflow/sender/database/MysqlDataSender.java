@@ -1,7 +1,7 @@
 package com.github.dataflow.sender.database;
 
 import com.github.dataflow.common.model.RowMetaData;
-import com.github.dataflow.dubbo.common.enums.DataSourceOutputType;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.sender.core.event.EventHandler;
 
 /**
@@ -11,10 +11,10 @@ import com.github.dataflow.sender.core.event.EventHandler;
  * @date : 2017/6/24
  */
 public class MysqlDataSender extends DatabaseDataSender {
-    private DataSourceOutputType dataSourceOutputType = DataSourceOutputType.MYSQL;
+    private DataSourceType dataSourceType = DataSourceType.MYSQL;
 
     @Override
     protected boolean isSupport(RowMetaData rowMetaData, EventHandler eventHandler) {
-        return eventHandler.support(dataSourceOutputType, rowMetaData.getEventType());
+        return eventHandler.support(dataSourceType, rowMetaData.getEventType());
     }
 }

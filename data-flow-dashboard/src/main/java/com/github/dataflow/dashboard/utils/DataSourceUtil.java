@@ -1,10 +1,13 @@
 package com.github.dataflow.dashboard.utils;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.fastjson.JSON;
+import com.github.dataflow.common.utils.PropertyUtil;
 import com.github.dataflow.dubbo.model.DataInstance;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * @author : version
@@ -41,10 +44,11 @@ public class DataSourceUtil {
             int minIdle = 0;
             int initialSize = 0;
             int maxActive = 32;
+            Properties properties = JSON.parseObject(dataInstance.getOptions(), Properties.class);
             DruidDataSource druidDataSource = new DruidDataSource();
-            druidDataSource.setUrl(dataInstance.getJdbcUrl());
-            druidDataSource.setUsername(dataInstance.getUsername());
-            druidDataSource.setPassword(dataInstance.getPassword());
+            druidDataSource.setUrl(PropertyUtil.getString(properties, "jdbcUrl"));
+            druidDataSource.setUsername(PropertyUtil.getString(properties, "username"));
+            druidDataSource.setPassword(PropertyUtil.getString(properties, "password"));
             druidDataSource.setUseUnfairLock(true);
             druidDataSource.setNotFullTimeoutRetryCount(2);
             druidDataSource.setInitialSize(initialSize);

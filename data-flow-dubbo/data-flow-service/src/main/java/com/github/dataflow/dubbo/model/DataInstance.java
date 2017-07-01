@@ -1,7 +1,5 @@
 package com.github.dataflow.dubbo.model;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
@@ -23,71 +21,30 @@ public class DataInstance implements Serializable {
 
     /**
      * @描述:实例名称
-     * @字段:NAME VARCHAR(50)
+     * @字段:NAME VARCHAR(100)
      */
-    @NotEmpty
     private java.lang.String name;
 
     /**
-     * @描述:从库id
-     * @字段:SLAVE_ID BIGINT(20)
-     */
-    @NotNull
-    private java.lang.Long slaveId;
-
-    /**
-     * @描述:数据库host
-     * @字段:HOST VARCHAR(20)
-     */
-    @NotNull
-    private java.lang.String host;
-
-    /**
-     * @描述:数据库port
-     * @字段:PORT INT(10)
-     */
-    @NotNull
-    private java.lang.Integer port;
-
-    /**
-     * @描述:jdbc链接
-     * @字段:JDBC_URL VARCHAR(100)
-     */
-    @NotNull
-    private java.lang.String jdbcUrl;
-
-    /**
-     * @描述:数据源类型，1=MySQL,2=Oracle,3=POSTGRESQL,4=SQLSERVER
+     * @描述:数据源类型
      * @字段:TYPE INT(10)
      */
     @NotNull
     private java.lang.Integer type;
 
     /**
-     * @描述:用户名
-     * @字段:USERNAME VARCHAR(50)
+     * @描述:数据的生产者/消费者
+     * @字段:PRODUCER_OR_CONSUMER INT(1)
      */
     @NotNull
-    private java.lang.String username;
+    private java.lang.Integer producerOrConsumer;
 
     /**
-     * @描述:密码
-     * @字段:PASSWORD VARCHAR(50)
+     * @描述:针对于name的标签
+     * @字段:TAG VARCHAR(20)
      */
     @NotNull
-    private java.lang.String password;
-
-    /**
-     * @描述:白名单正则过滤表
-     * @字段:WHITE_FILTER VARCHAR(100)
-     */
-    private java.lang.String whiteFilter;
-
-    /**
-     * @描述:黑名单正则过滤表
-     * @字段:BLACK_FILTER VARCHAR(100)
-     */
-    private java.lang.String blackFilter;
+    private java.lang.String tag;
 
     /**
      * @描述:转换脚本
@@ -99,6 +56,7 @@ public class DataInstance implements Serializable {
      * @描述:其他配置，JSON格式
      * @字段:OPTIONS VARCHAR(200)
      */
+    @NotNull
     private java.lang.String options;
 
     /**
@@ -196,61 +154,6 @@ public class DataInstance implements Serializable {
         return this.name;
     }
 
-    /**
-     * @param slaveId 从库id
-     */
-    public void setSlaveId(java.lang.Long slaveId) {
-        this.slaveId = slaveId;
-    }
-
-    /**
-     * @return 从库id
-     */
-    public java.lang.Long getSlaveId() {
-        return this.slaveId;
-    }
-
-    /**
-     * @param host 数据库host
-     */
-    public void setHost(java.lang.String host) {
-        this.host = host;
-    }
-
-    /**
-     * @return 数据库host
-     */
-    public java.lang.String getHost() {
-        return this.host;
-    }
-
-    /**
-     * @param port 数据库port
-     */
-    public void setPort(java.lang.Integer port) {
-        this.port = port;
-    }
-
-    /**
-     * @return 数据库port
-     */
-    public java.lang.Integer getPort() {
-        return this.port;
-    }
-
-    /**
-     * @param jdbcUrl jdbc链接
-     */
-    public void setJdbcUrl(java.lang.String jdbcUrl) {
-        this.jdbcUrl = jdbcUrl;
-    }
-
-    /**
-     * @return jdbc链接
-     */
-    public java.lang.String getJdbcUrl() {
-        return this.jdbcUrl;
-    }
 
     /**
      * @param type 数据源类型，1=MySQL,2=Oracle,3=POSTGRESQL,4=SQLSERVER
@@ -264,62 +167,6 @@ public class DataInstance implements Serializable {
      */
     public java.lang.Integer getType() {
         return this.type;
-    }
-
-    /**
-     * @param username 用户名
-     */
-    public void setUsername(java.lang.String username) {
-        this.username = username;
-    }
-
-    /**
-     * @return 用户名
-     */
-    public java.lang.String getUsername() {
-        return this.username;
-    }
-
-    /**
-     * @param password 密码
-     */
-    public void setPassword(java.lang.String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return 密码
-     */
-    public java.lang.String getPassword() {
-        return this.password;
-    }
-
-    /**
-     * @param whiteFilter 白名单正则过滤表
-     */
-    public void setWhiteFilter(java.lang.String whiteFilter) {
-        this.whiteFilter = whiteFilter;
-    }
-
-    /**
-     * @return 白名单正则过滤表
-     */
-    public java.lang.String getWhiteFilter() {
-        return this.whiteFilter;
-    }
-
-    /**
-     * @param blackFilter 黑名单正则过滤表
-     */
-    public void setBlackFilter(java.lang.String blackFilter) {
-        this.blackFilter = blackFilter;
-    }
-
-    /**
-     * @return 黑名单正则过滤表
-     */
-    public java.lang.String getBlackFilter() {
-        return this.blackFilter;
     }
 
     /**
@@ -478,20 +325,30 @@ public class DataInstance implements Serializable {
         this.dataTables = dataTables;
     }
 
+    public Integer getProducerOrConsumer() {
+        return producerOrConsumer;
+    }
+
+    public void setProducerOrConsumer(Integer producerOrConsumer) {
+        this.producerOrConsumer = producerOrConsumer;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     @Override
     public String toString() {
         return "DataInstance{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", slaveId=" + slaveId +
-                ", host='" + host + '\'' +
-                ", port=" + port +
-                ", jdbcUrl='" + jdbcUrl + '\'' +
                 ", type=" + type +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", whiteFilter='" + whiteFilter + '\'' +
-                ", blackFilter='" + blackFilter + '\'' +
+                ", producerOrConsumer=" + producerOrConsumer +
+                ", tag='" + tag + '\'' +
                 ", transformScript='" + transformScript + '\'' +
                 ", options='" + options + '\'' +
                 ", nodePath='" + nodePath + '\'' +

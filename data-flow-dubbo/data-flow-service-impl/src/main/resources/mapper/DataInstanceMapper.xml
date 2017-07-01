@@ -8,15 +8,9 @@
     <resultMap id="RM_DataInstance" type="com.github.dataflow.dubbo.model.DataInstance">
         <result property="id" column="ID"/>
         <result property="name" column="NAME"/>
-        <result property="slaveId" column="SLAVE_ID"/>
-        <result property="host" column="HOST"/>
-        <result property="port" column="PORT"/>
-        <result property="jdbcUrl" column="JDBC_URL"/>
+        <result property="tag" column="TAG"/>
+        <result property="producerOrConsumer" column="PRODUCER_OR_CONSUMER"/>
         <result property="type" column="TYPE"/>
-        <result property="username" column="USERNAME"/>
-        <result property="password" column="PASSWORD"/>
-        <result property="whiteFilter" column="WHITE_FILTER"/>
-        <result property="blackFilter" column="BLACK_FILTER"/>
         <result property="transformScript" column="TRANSFORM_SCRIPT"/>
         <result property="options" column="OPTIONS"/>
         <result property="nodePath" column="NODE_PATH"/>
@@ -29,15 +23,9 @@
     <resultMap id="RM_DataInstance_fully" type="com.github.dataflow.dubbo.model.DataInstance">
         <result property="id" column="ID"/>
         <result property="name" column="NAME"/>
-        <result property="slaveId" column="SLAVE_ID"/>
-        <result property="host" column="HOST"/>
-        <result property="port" column="PORT"/>
-        <result property="jdbcUrl" column="JDBC_URL"/>
+        <result property="tag" column="TAG"/>
+        <result property="producerOrConsumer" column="PRODUCER_OR_CONSUMER"/>
         <result property="type" column="TYPE"/>
-        <result property="username" column="USERNAME"/>
-        <result property="password" column="PASSWORD"/>
-        <result property="whiteFilter" column="WHITE_FILTER"/>
-        <result property="blackFilter" column="BLACK_FILTER"/>
         <result property="transformScript" column="TRANSFORM_SCRIPT"/>
         <result property="options" column="OPTIONS"/>
         <result property="nodePath" column="NODE_PATH"/>
@@ -77,7 +65,7 @@
     <!-- 用于select查询公用抽取的列 -->
     <sql id="columns_fully">
         <![CDATA[
-			di.ID ID,di.NAME NAME,di.SLAVE_ID SLAVE_ID,di.HOST HOST,di.PORT PORT,di.JDBC_URL JDBC_URL,di.TYPE TYPE,di.USERNAME USERNAME,di.PASSWORD PASSWORD,di.WHITE_FILTER WHITE_FILTER,di.BLACK_FILTER BLACK_FILTER,di.TRANSFORM_SCRIPT TRANSFORM_SCRIPT,di.OPTIONS OPTIONS,di.NODE_PATH NODE_PATH,di.STATUS STATUS,di.CREATE_TIME CREATE_TIME,di.UPDATE_TIME UPDATE_TIME,
+			di.ID ID,di.NAME NAME,di.TAG TAG,di.PRODUCER_OR_CONSUMER PRODUCER_OR_CONSUMER,di.TYPE TYPE,di.TRANSFORM_SCRIPT TRANSFORM_SCRIPT,di.OPTIONS OPTIONS,di.NODE_PATH NODE_PATH,di.STATUS STATUS,di.CREATE_TIME CREATE_TIME,di.UPDATE_TIME UPDATE_TIME,
 			dom.ID dom_ID,dom.DATA_INSTANCE_ID dom_DATA_INSTANCE_ID,dom.SCHEMA_NAME dom_SCHEMA_NAME,dom.TOPIC dom_TOPIC,dom.DATA_SOURCE_OUTPUT_ID dom_DATA_SOURCE_OUTPUT_ID,
 			dso.ID dom_dso_ID,dso.TYPE dom_dso_TYPE,dso.OPTIONS dom_dso_OPTIONS,dso.USERNAME dom_dso_USERNAME,dso.PASSWORD dom_dso_PASSWORD,
 			dt.ID dt_ID,dt.DATA_INSTANCE_ID dt_DATA_INSTANCE_ID,dt.SCHEMA_NAME dt_SCHEMA_NAME,dt.TABLE_NAME dt_TABLE_NAME,dt.COLUMNS dt_COLUMNS
@@ -87,7 +75,7 @@
     <!-- 用于select查询公用抽取的列 -->
     <sql id="columns">
         <![CDATA[
-			ID,NAME,SLAVE_ID,HOST,PORT,JDBC_URL,TYPE,USERNAME,PASSWORD,WHITE_FILTER,BLACK_FILTER,TRANSFORM_SCRIPT,OPTIONS,NODE_PATH,STATUS,CREATE_TIME,UPDATE_TIME
+			ID,NAME,TAG,PRODUCER_OR_CONSUMER,TYPE,TRANSFORM_SCRIPT,OPTIONS,NODE_PATH,STATUS,CREATE_TIME,UPDATE_TIME
 	    ]]>
     </sql>
 
@@ -97,15 +85,9 @@
 	        INSERT INTO data_instance (
 	        	ID ,
 	        	NAME ,
-	        	SLAVE_ID ,
-	        	HOST ,
-	        	PORT ,
-	        	JDBC_URL ,
+	        	TAG ,
+	        	PRODUCER_OR_CONSUMER ,
 	        	TYPE ,
-	        	USERNAME ,
-	        	PASSWORD ,
-	        	WHITE_FILTER ,
-	        	BLACK_FILTER ,
 	        	TRANSFORM_SCRIPT ,
 	        	OPTIONS ,
 	        	NODE_PATH ,
@@ -115,15 +97,9 @@
 	        ) VALUES (
 	        	#{id} ,
 	        	#{name} ,
-	        	#{slaveId} ,
-	        	#{host} ,
-	        	#{port} ,
-	        	#{jdbcUrl} ,
+	        	#{tag} ,
+	        	#{producerOrConsumer} ,
 	        	#{type} ,
-	        	#{username} ,
-	        	#{password} ,
-	        	#{whiteFilter} ,
-	        	#{blackFilter} ,
 	        	#{transformScript} ,
 	        	#{options} ,
 	        	#{nodePath} ,
@@ -141,32 +117,14 @@
             <if test="name != null and name != ''">
                 NAME = #{name} ,
             </if>
-            <if test="slaveId != null">
-                SLAVE_ID = #{slaveId} ,
+            <if test="tag != null and tag != ''">
+                TAG = #{tag} ,
             </if>
-            <if test="host != null and host != ''">
-                HOST = #{host} ,
-            </if>
-            <if test="port != null">
-                PORT = #{port} ,
-            </if>
-            <if test="jdbcUrl != null and jdbcUrl != ''">
-                JDBC_URL = #{jdbcUrl} ,
+            <if test="producerOrConsumer != null">
+                PRODUCER_OR_CONSUMER = #{producerOrConsumer} ,
             </if>
             <if test="type != null">
                 TYPE = #{type} ,
-            </if>
-            <if test="username != null and username != ''">
-                USERNAME = #{username} ,
-            </if>
-            <if test="password != null and password != ''">
-                PASSWORD = #{password} ,
-            </if>
-            <if test="whiteFilter != null and whiteFilter != ''">
-                WHITE_FILTER = #{whiteFilter} ,
-            </if>
-            <if test="blackFilter != null and blackFilter != ''">
-                BLACK_FILTER = #{blackFilter} ,
             </if>
             <if test="transformScript != null and transformScript != ''">
                 TRANSFORM_SCRIPT = #{transformScript} ,
@@ -273,33 +231,15 @@
             <if test="name != null and name !=''">
                 AND NAME = #{name}
             </if>
-            <if test="slaveId != null">
-                AND SLAVE_ID = #{slaveId}
+            <if test="tag != null and tag !=''">
+                AND TAG = #{tag}
             </if>
-            <if test="host != null and host !=''">
-                AND HOST = #{host}
+            <if test="producerOrConsumer != null">
+                AND PRODUCER_OR_CONSUMER = #{producerOrConsumer}
             </if>
-            <if test="port != null">
-                AND PORT = #{port}
-            </if>
-            <!--<if test="jdbcUrl != null and jdbcUrl !=''">-->
-            <!--AND JDBC_URL = #{jdbcUrl}-->
-            <!--</if>-->
             <if test="type != null">
                 AND TYPE = #{type}
             </if>
-            <if test="username != null and username !=''">
-                AND USERNAME = #{username}
-            </if>
-            <!--<if test="password != null and password !=''">-->
-            <!--AND PASSWORD = #{password}-->
-            <!--</if>-->
-            <!--<if test="whiteFilter != null and whiteFilter !=''">-->
-            <!--AND WHITE_FILTER = #{whiteFilter}-->
-            <!--</if>-->
-            <!--<if test="blackFilter != null and blackFilter !=''">-->
-            <!--AND BLACK_FILTER = #{blackFilter}-->
-            <!--</if>-->
             <!--<if test="transformScript != null and transformScript !=''">-->
             <!--AND TRANSFORM_SCRIPT = #{transformScript}-->
             <!--</if>-->
@@ -348,33 +288,15 @@
             <if test="name != null and name !=''">
                 AND di.NAME = #{name}
             </if>
-            <if test="slaveId != null">
-                AND di.SLAVE_ID = #{slaveId}
+            <if test="tag != null and tag !=''">
+                AND TAG = #{tag}
             </if>
-            <if test="host != null and host !=''">
-                AND di.HOST = #{host}
+            <if test="producerOrConsumer != null">
+                AND PRODUCER_OR_CONSUMER = #{producerOrConsumer}
             </if>
-            <if test="port != null">
-                AND di.PORT = #{port}
-            </if>
-            <!--<if test="jdbcUrl != null and jdbcUrl !=''">-->
-            <!--AND di.JDBC_URL = #{jdbcUrl}-->
-            <!--</if>-->
             <if test="type != null">
                 AND di.TYPE = #{type}
             </if>
-            <if test="username != null and username !=''">
-                AND di.USERNAME = #{username}
-            </if>
-            <!--<if test="password != null and password !=''">-->
-            <!--AND di.PASSWORD = #{password}-->
-            <!--</if>-->
-            <!--<if test="whiteFilter != null and whiteFilter !=''">-->
-            <!--AND di.WHITE_FILTER = #{whiteFilter}-->
-            <!--</if>-->
-            <!--<if test="blackFilter != null and blackFilter !=''">-->
-            <!--AND di.BLACK_FILTER = #{blackFilter}-->
-            <!--</if>-->
             <!--<if test="transformScript != null and transformScript !=''">-->
             <!--AND di.TRANSFORM_SCRIPT = #{transformScript}-->
             <!--</if>-->

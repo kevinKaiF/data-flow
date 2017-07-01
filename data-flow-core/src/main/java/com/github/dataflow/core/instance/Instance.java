@@ -21,6 +21,11 @@ public interface Instance extends DataFlowLifeCycle {
     void stop();
 
     /**
+     * 初始化
+     */
+    void init();
+
+    /**
      * 设置告警service
      *
      * @param alarmService

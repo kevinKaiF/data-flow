@@ -45,6 +45,7 @@ public class DataInstanceService {
             return update(dataInstance);
         }
 
+        dataInstance.setName(createName(dataInstance.getTag()));
         dataInstance.setCreateTime(new Date());
         dataInstance.setStatus(DataInstanceStatus.CREATING.getStatus());
         ServiceResult<Long> serviceResult = dubboDataInstanceService.insert(dataInstance);
@@ -57,7 +58,20 @@ public class DataInstanceService {
         return serviceResult.getResult();
     }
 
+    private String createName(String tag) {
+        return createNamePrefix() + "-" + tag;
+    }
+
+    private String updateName(String name, String tag) {
+        return name.substring(0, name.indexOf("-") + 1) + tag;
+    }
+
+    private String createNamePrefix() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
+
     public Long update(DataInstance dataInstance) {
+        dataInstance.setName(updateName(dataInstance.getName(), dataInstance.getTag()));
         dataInstance.setUpdateTime(new Date());
         ServiceResult<Integer> serviceResult = dubboDataInstanceService.update(dataInstance);
         if (!serviceResult.isSuccess()) {

@@ -15,7 +15,7 @@ public class RandomRouter extends AbstractRouter {
     private Random random = new Random();
 
     @Override
-    protected String doNext(List<String> children, String ipAddress) {
+    protected String doNext(List<String> children, String name) {
         int nextIndex = random.nextInt(children.size());
         return children.get(nextIndex);
     }

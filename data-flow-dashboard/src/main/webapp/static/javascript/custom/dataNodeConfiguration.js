@@ -33,12 +33,12 @@
             $("#alertMessage").modal('show');
             $("#alert-content").empty().html(message);
             if (callback) {
-                $("#alert-submit").show().off('click')().on("click", function () {
+                $("#alert-submit").show().off('click').on("click", function () {
                     callback();
                     $("#alertMessage").modal('hide');
                 })
             } else {
-                $("#alert-submit").hide().off('click')();
+                $("#alert-submit").hide().off('click');
             }
         },
         eventBind: function () {

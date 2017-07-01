@@ -1,7 +1,5 @@
 package com.github.dataflow.dashboard.router;
 
-import com.github.dataflow.common.utils.IPUtil;
-
 import java.util.List;
 
 /**
@@ -15,8 +13,8 @@ import java.util.List;
 public class HashRouter extends AbstractRouter {
 
     @Override
-    protected String doNext(List<String> children, String ipAddress) {
-        int hashCode = IPUtil.valueOf(ipAddress);
+    protected String doNext(List<String> children, String name) {
+        int hashCode = name.hashCode();
         return children.get(hashCode % children.size());
     }
 }

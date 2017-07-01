@@ -1,6 +1,6 @@
 package com.github.dataflow.dubbo.service.impl;
 
-import com.github.dataflow.dubbo.common.enums.DataSourceOutputType;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataSourceOutput;
 import com.github.dataflow.dubbo.model.PageSet;
 import com.github.dataflow.dubbo.service.DubboDataSourceOutputService;
@@ -25,7 +25,7 @@ public class TestDataSourceOutputService extends TestBase {
         dataSourceOutput.setCreateTime(new java.util.Date());
         dataSourceOutput.setOptions("{'name':'kevin'}");
         dataSourceOutput.setPassword("TEST Password");
-        dataSourceOutput.setType(DataSourceOutputType.KAFKA.getType());
+        dataSourceOutput.setType(DataSourceType.KAFKA.getType());
         dataSourceOutput.setUsername("TEST Username");
         dataSourceOutputService.insert(dataSourceOutput);
     }
@@ -37,7 +37,7 @@ public class TestDataSourceOutputService extends TestBase {
         dataSourceOutput.setCreateTime(new java.util.Date());
         dataSourceOutput.setOptions("{'name':'kevin'}");
         dataSourceOutput.setPassword("TEST Password");
-        dataSourceOutput.setType(DataSourceOutputType.KAFKA.getType());
+        dataSourceOutput.setType(DataSourceType.KAFKA.getType());
         dataSourceOutput.setUsername("TEST Username");
         dataSourceOutput.setUpdateTime(new Date());
         dataSourceOutputService.update(dataSourceOutput);
@@ -56,7 +56,7 @@ public class TestDataSourceOutputService extends TestBase {
         dataSourceOutput.setCreateTime(new java.util.Date());
         dataSourceOutput.setOptions("{'name':'kevin'}");
         dataSourceOutput.setPassword("TEST Password");
-        dataSourceOutput.setType(DataSourceOutputType.KAFKA.getType());
+        dataSourceOutput.setType(DataSourceType.KAFKA.getType());
         dataSourceOutput.setUsername("TEST Username");
 
         PageSet pageSet = new PageSet();
@@ -70,7 +70,7 @@ public class TestDataSourceOutputService extends TestBase {
         dataSourceOutput.setCreateTime(new java.util.Date());
         dataSourceOutput.setOptions("{'name':'kevin'}");
         dataSourceOutput.setPassword("TEST Password");
-        dataSourceOutput.setType(DataSourceOutputType.KAFKA.getType());
+        dataSourceOutput.setType(DataSourceType.KAFKA.getType());
         dataSourceOutput.setUsername("TEST Username");
         print(dataSourceOutputService.countByCondition(dataSourceOutput));
     }
