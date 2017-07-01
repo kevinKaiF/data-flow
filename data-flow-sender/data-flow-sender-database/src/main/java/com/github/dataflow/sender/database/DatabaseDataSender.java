@@ -36,7 +36,7 @@ public abstract class DatabaseDataSender extends DataSender {
                 if (isSupport(rowMetaData, eventHandler)) {
                     if (batch) {
                         try {
-                            if (sameTableDML(prev, rowMetaData)) {
+                            if (dmlForSameTable(prev, rowMetaData)) {
                                 prev = rowMetaData;
                                 batchRowMetaData.add(rowMetaData);
                             } else {
@@ -81,7 +81,14 @@ public abstract class DatabaseDataSender extends DataSender {
         }
     }
 
-    private boolean sameTableDML(RowMetaData prev, RowMetaData current) {
+    /**
+     * 是否是同一个表的同一个dml类型操作
+     *
+     * @param prev
+     * @param current
+     * @return
+     */
+    private boolean dmlForSameTable(RowMetaData prev, RowMetaData current) {
         if (prev == null) {
             return true;
         } else {
