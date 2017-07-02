@@ -1,6 +1,4 @@
-package com.github.dataflow.node.model.instance;
-
-import com.github.dataflow.core.instance.Instance;
+package com.github.dataflow.core.instance;
 
 import java.util.ArrayList;
 import java.util.List;

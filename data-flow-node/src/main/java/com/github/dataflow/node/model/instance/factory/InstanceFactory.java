@@ -4,7 +4,7 @@ import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.core.instance.Instance;
 import com.github.dataflow.core.instance.handler.InstanceHandler;
 import com.github.dataflow.dubbo.model.DataInstance;
-import com.github.dataflow.node.model.instance.InstanceManager;
+import com.github.dataflow.core.instance.InstanceManager;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

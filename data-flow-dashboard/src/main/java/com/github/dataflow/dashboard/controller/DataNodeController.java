@@ -58,14 +58,10 @@ public class DataNodeController extends BaseController{
 
     private List<String> getNodes(String nodeParentPath) {
         List<String> nodePathList = new ArrayList<String>();
-        if (zookeeperClient.exists(nodeParentPath)) {
-            List<String> children = zookeeperClient.getChildren(nodeParentPath);
-            for (String child : children) {
-                nodePathList.add(nodeParentPath + "/" + child);
-            }
-
+        List<String> children = zookeeperClient.getChildren(nodeParentPath);
+        for (String child : children) {
+            nodePathList.add(nodeParentPath + "/" + child);
         }
-
         return nodePathList;
     }
 

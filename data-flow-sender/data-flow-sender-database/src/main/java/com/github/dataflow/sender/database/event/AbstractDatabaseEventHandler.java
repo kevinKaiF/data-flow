@@ -42,7 +42,7 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
             DataSource dataSource = (DataSource) dataSourceHolder.getDataSource();
             connection = dataSource.getConnection();
             SqlMeta sqlMeta = buildSqlMeta(rowMetaData);
-            logger.info("build SqlMeta : {}", sqlMeta);
+            logger.debug("build SqlMeta : {}", sqlMeta);
 
             preparedStatement = connection.prepareStatement(sqlMeta.getSql());
             populatePrepareStatementParams(preparedStatement, sqlMeta);
@@ -55,7 +55,26 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
 
     @Override
     public void batchHandle(DataSourceHolder dataSourceHolder, List<RowMetaData> rowMetaDataList) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            DataSource dataSource = (DataSource) dataSourceHolder.getDataSource();
+            connection = dataSource.getConnection();
+            for (RowMetaData rowMetaData : rowMetaDataList) {
+                SqlMeta sqlMeta = buildSqlMeta(rowMetaData);
+                logger.debug("build SqlMeta : {}", sqlMeta);
 
+                if (preparedStatement == null) {
+                    preparedStatement = connection.prepareStatement(sqlMeta.getSql());
+                }
+                populatePrepareStatementParams(preparedStatement, sqlMeta);
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        } finally {
+            Closer.closeQuietly(preparedStatement);
+            Closer.closeQuietly(connection);
+        }
     }
 
     /**

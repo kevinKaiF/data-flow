@@ -2,7 +2,7 @@ package com.github.dataflow.node.controller;
 
 import com.github.dataflow.common.model.ResponseEntity;
 import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.node.model.instance.InstanceManager;
+import com.github.dataflow.core.instance.InstanceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

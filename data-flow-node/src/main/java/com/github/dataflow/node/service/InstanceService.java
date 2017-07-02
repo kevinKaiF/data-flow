@@ -10,7 +10,7 @@ import com.github.dataflow.dubbo.model.PageSet;
 import com.github.dataflow.dubbo.model.ServiceResult;
 import com.github.dataflow.dubbo.service.DubboDataInstanceService;
 import com.github.dataflow.node.exception.InstanceInvalidException;
-import com.github.dataflow.node.model.instance.InstanceManager;
+import com.github.dataflow.core.instance.InstanceManager;
 import com.github.dataflow.node.model.instance.factory.InstanceFactory;
 import com.github.dataflow.node.model.zookeeper.InstanceRegister;
 import com.github.dataflow.node.model.zookeeper.NodeRegister;
@@ -55,14 +55,17 @@ public class InstanceService implements DisposableBean {
             throw new InstanceException("Instance [" + dataInstance.getName() + "] has existed, don't repeatedly create.");
         }
         Instance instance = instanceFactory.createInstance(dataInstance);
-        instance.start();
-        InstanceManager.put(dataInstance.getName(), instance);
-        // 注册instance到zk
-        instanceRegister.registerToZookeeper(instance.getName(), getLocalAddress());
-        // 更新数据库
-        dataInstance.setStatus(DataInstanceStatus.START.getStatus());
-        dataInstance.setNodePath(nodeRegister.getNodePath());
-        updateDataInstance(dataInstance);
+        if (!instance.isStart()) {
+            instance.start();
+            // 注册instance到zk
+            instanceRegister.registerToZookeeper(instance.getName(), getLocalAddress());
+            // 更新数据库
+            dataInstance.setStatus(DataInstanceStatus.START.getStatus());
+            dataInstance.setNodePath(nodeRegister.getNodePath());
+            updateDataInstance(dataInstance);
+        } else {
+            logger.warn("Instance [" + dataInstance.getName() + "] has started!");
+        }
     }
 
     private void validate(DataInstance dataInstance) {
@@ -99,7 +102,6 @@ public class InstanceService implements DisposableBean {
         updateDataInstance(dataInstance);
         Instance instance = instanceFactory.createInstance(dataInstance);
         instance.start();
-        InstanceManager.put(dataInstance.getName(), instance);
     }
 
     public void stop(DataInstance dataInstance) {
@@ -111,7 +113,11 @@ public class InstanceService implements DisposableBean {
         if (instance == null) {
             logger.warn("Instance [" + dataInstance.getName() + "] does not exist.");
         } else {
-            instance.stop();
+            if (instance.isStart()) {
+                instance.stop();
+            } else {
+                logger.warn("Instance [" + dataInstance.getName() + "] is not started!");
+            }
             InstanceManager.remove(dataInstance.getName());
         }
         // 更新数据库状态
@@ -141,8 +147,8 @@ public class InstanceService implements DisposableBean {
                         throw new InstanceException(serviceResult.getErrorMessage());
                     }
                 } catch (Exception e) {
-                    logger.error("destroy Instance[name : {}, jdbcUrl : {}] failure, detail : ",
-                                 new Object[]{instance.getName(), instance.getJdbcUrl(), e});
+                    logger.error("destroy Instance[name : {}] failure, detail : ",
+                                 new Object[]{instance.getName(), e});
                 }
             }
 

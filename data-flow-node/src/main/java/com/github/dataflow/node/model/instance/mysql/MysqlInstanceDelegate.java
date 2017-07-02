@@ -53,8 +53,6 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
 
     private String whiteFilter;
 
-    private String jdbcUrl;
-
     private AlarmService alarmService;
 
     private DataStore dataStore;
@@ -70,18 +68,10 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
         this.name = instanceName;
     }
 
-    public String getJdbcUrl() {
-        return this.jdbcUrl;
-    }
-
-    public void setJdbcUrl(String jdbcUrl) {
-        this.jdbcUrl = jdbcUrl;
-    }
-
     public void start() {
-        logger.info("start MysqlInstance for {}-{} with parameters:{}", new Object[]{this.id, this.name, this.canalParameter});
+        logger.info("start MysqlInstance for {} / {} with parameters:{}", new Object[]{this.id, this.name, this.canalParameter});
         if (this.running) {
-            throw new CanalException(this.getClass().getName() + " has startup , don\'t repeat start");
+            throw new CanalException(this.getClass().getName() + " has started , don\'t repeat start");
         } else {
             this.running = true;
         }
@@ -118,7 +108,7 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
             this.running = false;
         }
 
-        logger.info("stop MysqlInstance for {}-{} ", new Object[]{this.id, this.name});
+        logger.info("stop MysqlInstance for {} / {} ", new Object[]{this.id, this.name});
         if (this.eventParser.isStart()) {
             this.beforeStopEventParser(this.eventParser);
             this.eventParser.stop();
@@ -137,9 +127,9 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
             this.metaManager.stop();
         }
 
-        if (this.alarmHandler.isStart()) {
-            this.alarmHandler.stop();
-        }
+//        if (this.alarmHandler.isStart()) {
+//            this.alarmHandler.stop();
+//        }
 
         logger.info("stop MysqlInstance successful...");
     }

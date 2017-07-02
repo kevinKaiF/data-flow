@@ -47,13 +47,6 @@ public interface Instance extends DataFlowLifeCycle {
     String getName();
 
     /**
-     * 获取实例的JDBCUrl
-     *
-     * @return
-     */
-    String getJdbcUrl();
-
-    /**
      * 获取最后一次同步的位置信息
      * @return
      * @param instanceName

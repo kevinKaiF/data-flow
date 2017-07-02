@@ -79,7 +79,7 @@ public class DefaultDataStore extends AbstractDataFlowLifeCycle implements DataS
                     logger.warn("No DataSender found for the schema [{}], so discard the RowMetaData.", rowMetaData.getSchemaName());
                 } else {
                     dataSender.send(transformedRowMetaDataList);
-                    logger.debug("DataSender[id : {}] send the RowMetaData : {} successfully.", dataSender.getDataSenderId(), transformedRowMetaDataList);
+                    logger.debug("DataSender[id : {}] send the RowMetaData successfully. RowMetaData : {} ", dataSender.getDataSenderId(), transformedRowMetaDataList);
                 }
             }
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.core.instance.AbstractInstance;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.kafka.clients.consumer.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,19 +24,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date : 2017/6/30
  */
 public class KafkaInstance extends AbstractInstance {
-    private       Logger    logger              = LoggerFactory.getLogger(KafkaInstance.class);
-    private final String    DEFAULT_TIMEOUT_STR = "2000";
-    private final String    DEFAULT_PERIOD_STR  = "100";
-    private final String    PROP_TOPIC          = "kafka.topic";
-    private static AtomicInteger atomicInteger = new AtomicInteger(0);
-    private       Semaphore semaphore           = new Semaphore(0);
+    private        Logger        logger              = LoggerFactory.getLogger(KafkaInstance.class);
+    private final  String        DEFAULT_TIMEOUT_STR = "2000";
+    private final  String        DEFAULT_PERIOD_STR  = "100";
+    private final  String        PROP_TOPIC          = "topic";
+    private static AtomicInteger atomicInteger       = new AtomicInteger(0);
+    private        Semaphore     semaphore           = new Semaphore(0);
 
     private Consumer<String, String> consumer;
     private String                   topic;
     private long                     timeout;
     private long                     period;
     private Thread                   receiveThread;
-    private Properties options;
+    private Properties               options;
 
     private Properties getProperties() {
         Properties prop = options;
@@ -67,25 +68,40 @@ public class KafkaInstance extends AbstractInstance {
         receiveThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-
+                stop();
             }
         });
     }
 
-    public void start() {
-        super.start();
-        logger.info("start KafkaInstance successfully.");
+    public void doStart() {
+        logger.info("start KafkaInstance for {} / {} with parameters:{}", new Object[] {this.id, this.name, this.getProperties()});
+
         receiveThread.start();
+
+        if (!dataStore.isStart()) {
+            dataStore.start();
+        }
+
+        if (!alarmService.isStart()) {
+            alarmService.start();
+        }
+        logger.info("start KafkaInstance successfully.");
     }
 
-    public void stop() {
-        super.stop();
+    public void doStop() {
+        logger.info("stop KafkaInstance for {} / {} ", new Object[]{this.id, this.name});
         try {
+            // wait util receiveThread die
             semaphore.acquire(1);
-            logger.info("stop KafkaInstance successfully.");
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            Thread.interrupted();
         }
+
+        if (dataStore.isStart()) {
+            dataStore.stop();
+        }
+
+        logger.info("stop KafkaInstance successfully.");
     }
 
     private List<String> toList(String topic) {
@@ -108,7 +124,8 @@ public class KafkaInstance extends AbstractInstance {
     private class ReceiveTask implements Runnable {
         @Override
         public void run() {
-            while (running) {
+            Throwable ex = null;
+            while (running && ex == null) {
                 try {
                     ConsumerRecords<String, String> records = consumer.poll(timeout);
                     Iterator<ConsumerRecord<String, String>> iterator = records.iterator();
@@ -120,19 +137,22 @@ public class KafkaInstance extends AbstractInstance {
                         consumer.commitSync();
                     }
 
-                    try {
-                        Thread.sleep(period);
-                    } catch (InterruptedException e) {
-                        logger.info("ReceiveTask accept interruption successfully.");
-                        running = false;
+                    Thread.sleep(period);
+                } catch (InterruptedException e) {
+                    logger.info("ReceiveTask accept interruption successfully.");
+                    ex = e;
+                } catch (Throwable e) {
+                    logger.error("ReceiveTask happened exception, detail : ", e);
+                    String fullStackTrace = ExceptionUtils.getFullStackTrace(e);
+                    alarmService.sendAlarm(name, fullStackTrace);
+                    ex = e;
+                } finally {
+                    if (!running || ex != null) {
+                        closeConsumer();
+                        doStop();
                     }
-                } catch (Exception e) {
-                    closeConsumer();
-                    throw new InstanceException(e);
                 }
             }
-
-            closeConsumer();
         }
 
         private void closeConsumer() {

@@ -25,7 +25,7 @@ public class AbstractDataFlowLifeCycle {
 
     private void ensureIsStop() {
         if (this.running) {
-            throw new DataFlowLifeCycleException(this.getClass().getName() + " has startup , don't repeat start.");
+            throw new DataFlowLifeCycleException(this.getClass().getName() + " has started , don't repeat start.");
         }
     }
 

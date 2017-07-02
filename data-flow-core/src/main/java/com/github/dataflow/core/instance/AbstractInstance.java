@@ -35,11 +35,6 @@ public abstract class AbstractInstance extends AbstractDataFlowLifeCycle impleme
     protected String blackFilter;
 
     /**
-     * 数据库的jdbc url
-     */
-    protected String jdbcUrl;
-
-    /**
      * 告警服务
      */
     protected AlarmService alarmService;
@@ -73,14 +68,6 @@ public abstract class AbstractInstance extends AbstractDataFlowLifeCycle impleme
         this.whiteFilter = whiteFilter;
     }
 
-    public String getJdbcUrl() {
-        return jdbcUrl;
-    }
-
-    public void setJdbcUrl(String jdbcUrl) {
-        this.jdbcUrl = jdbcUrl;
-    }
-
     public String getBlackFilter() {
         return blackFilter;
     }
@@ -106,4 +93,22 @@ public abstract class AbstractInstance extends AbstractDataFlowLifeCycle impleme
     }
 
     protected abstract void doInit();
+
+    @Override
+    public void start() {
+        super.start();
+        doStart();
+        InstanceManager.put(name, this);
+    }
+
+    protected abstract void doStart();
+
+    @Override
+    public void stop() {
+        super.stop();
+        doStop();
+        InstanceManager.remove(name);
+    }
+
+    protected abstract void doStop();
 }

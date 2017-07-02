@@ -17,12 +17,12 @@ public class MysqlInstance extends AbstractInstance {
     }
 
     @Override
-    public void start() {
+    public void doStart() {
         mysqlInstanceDelegate.start();
     }
 
     @Override
-    public void stop() {
+    public void doStop() {
         mysqlInstanceDelegate.stop();
     }
 
@@ -46,6 +46,7 @@ public class MysqlInstance extends AbstractInstance {
 
     @Override
     public void setId(Long id) {
+        super.setId(id);
         mysqlInstanceDelegate.setId(id);
     }
 
@@ -56,6 +57,7 @@ public class MysqlInstance extends AbstractInstance {
 
     @Override
     public void setName(String name) {
+        super.setName(name);
         mysqlInstanceDelegate.setName(name);
     }
 
@@ -66,26 +68,19 @@ public class MysqlInstance extends AbstractInstance {
 
     @Override
     public void setWhiteFilter(String whiteFilter) {
+        super.setWhiteFilter(whiteFilter);
         mysqlInstanceDelegate.setWhiteFilter(whiteFilter);
     }
 
     @Override
-    public String getJdbcUrl() {
-        return mysqlInstanceDelegate.getJdbcUrl();
-    }
-
-    @Override
-    public void setJdbcUrl(String jdbcUrl) {
-        mysqlInstanceDelegate.setJdbcUrl(jdbcUrl);
-    }
-
-    @Override
     public void setAlarmService(AlarmService alarmService) {
+        super.setAlarmService(alarmService);
         mysqlInstanceDelegate.setAlarmService(alarmService);
     }
 
     @Override
     public void setDataStore(DataStore dataStore) {
+        super.setDataStore(dataStore);
         mysqlInstanceDelegate.setDataStore(dataStore);
     }
 

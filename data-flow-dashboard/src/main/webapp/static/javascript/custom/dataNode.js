@@ -42,6 +42,11 @@
                     var consumerNode = data.result.consumer;
                     $("#producerList").html(main._renderNodeList(producerNode))
                     $("#consumerList").html(main._renderNodeList(consumerNode))
+                    if (producerNode.length > consumerNode.length) {
+                        $("#producerList").css("border-right", "1px solid #e5e5e5");
+                    } else {
+                        $("#consumerList").css("border-left", "1px solid #e5e5e5");
+                    }
                     // render memory
                     // $("#nodeList>div").each(function () {
                     //     var $this = $(this);
@@ -144,12 +149,25 @@
                                 width: "7px"
                             },
                             {data: "name", title: "name"},
-                            {data: "host", title: "host"},
-                            {data: "port", title: "port"},
                             {
                                 data: "type", title: "type", "render": function (data, type, full, meta) {
-                                if (data == 1) {
-                                    return "MySQL"
+                                switch (data) {
+                                    case 10:
+                                        return "MySQL";
+                                    case 11:
+                                        return "Oracle";
+                                    case 12 :
+                                        return "PostGreSQL";
+                                    case 13 :
+                                        return "SQLServer";
+                                    case 20 :
+                                        return "kafka";
+                                    case 21 :
+                                        return "metaQ";
+                                    case 22 :
+                                        return "rabbitMQ"
+                                    default :
+                                        return '-';
                                 }
                             }
                             },

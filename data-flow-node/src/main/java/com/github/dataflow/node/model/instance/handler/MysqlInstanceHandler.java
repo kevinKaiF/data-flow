@@ -38,7 +38,6 @@ public class MysqlInstanceHandler extends AbstractInstanceHandler implements Ins
     public Instance doCreateInstance(DataInstance dataInstance) {
         JSONObject options = JSON.parseObject(dataInstance.getOptions());
         MysqlInstance mysqlInstance = new MysqlInstance();
-        mysqlInstance.setJdbcUrl(options.getString(DatabaseConfig.JDBC_URL));
         mysqlInstance.setId(dataInstance.getId());
         mysqlInstance.setName(dataInstance.getName());
         mysqlInstance.setWhiteFilter(options.getString("whiteFilter"));

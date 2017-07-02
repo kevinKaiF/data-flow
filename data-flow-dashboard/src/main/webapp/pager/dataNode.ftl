@@ -114,7 +114,7 @@
                     <div class="row">
                         <div class="x_panel">
                             <span class="section">节点列表</span>
-                            <div class="col-md-6" style="border-right: 1px solid #e5e5e5">
+                            <div class="col-md-6">
                                 <h4>生产者</h4>
                                 <div id="producerList" class="col-md-12"></div>
                             </div>

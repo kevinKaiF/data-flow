@@ -826,7 +826,7 @@
                                     if (type == "input") {
                                         dataInstanceForm += '<input class="form-control" readonly style="width: 100%;background: white" value="' + value + '"/>'
                                     } else if (type == "textarea") {
-                                        dataInstanceForm += '<textarea class="form-control" readonly style="width: 100%;background: white">' + value + ' </textarea>'
+                                        dataInstanceForm += '<textarea class="form-control" readonly style="width: 100%;background: white" rows="8">' + value + ' </textarea>'
                                     }
 
                                     dataInstanceForm += '</div>'

@@ -41,6 +41,8 @@ public class KafkaInstanceHandler extends AbstractInstanceHandler implements Ins
     public Instance doCreateInstance(DataInstance dataInstance) {
         Properties options = JSON.parseObject(dataInstance.getOptions(), Properties.class);
         KafkaInstance kafkaInstance = new KafkaInstance();
+        kafkaInstance.setId(dataInstance.getId());
+        kafkaInstance.setName(dataInstance.getName());
         kafkaInstance.setDataStore(buildDataStore(dataInstance));
         kafkaInstance.setAlarmService(dataFlowContext.getAlarmService());
         kafkaInstance.setOptions(options);
