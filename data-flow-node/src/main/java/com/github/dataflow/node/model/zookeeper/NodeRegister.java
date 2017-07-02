@@ -81,6 +81,7 @@ public class NodeRegister implements InitializingBean {
             @Override
             public void handleChildChange(String parentPath, List<String> children) throws Exception {
                 List<String> oldClusterNodes = new ArrayList<>(clusterNodes);
+                clusterNodes = children;
                 oldClusterNodes.removeAll(children);
                 // 监听到节点删除事件
                 if (!CollectionUtils.isEmpty(oldClusterNodes)) {
