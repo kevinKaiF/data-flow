@@ -74,8 +74,23 @@
                             // },
                             {
                                 data: "type", title: "type", width: '10%', render: function (data) {
-                                if (data == 20) {
-                                    return "Kafka"
+                                switch (data) {
+                                    case 10:
+                                        return "MySQL";
+                                    case 11:
+                                        return "Oracle";
+                                    case 12 :
+                                        return "PostGreSQL";
+                                    case 13 :
+                                        return "SQLServer";
+                                    case 20 :
+                                        return "kafka";
+                                    case 21 :
+                                        return "metaQ";
+                                    case 22 :
+                                        return "rabbitMQ"
+                                    default :
+                                        return '-';
                                 }
                             }
                             },

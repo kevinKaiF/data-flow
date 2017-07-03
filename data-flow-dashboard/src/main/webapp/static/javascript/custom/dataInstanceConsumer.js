@@ -704,9 +704,7 @@
                         columns: [
                             {
                                 data: "type", title: "type", width: '10%', render: function (data) {
-                                if (data == 20) {
-                                    return "Kafka"
-                                }
+                                return main.parseDataSourceOutputType(data);
                             }
                             },
                             {data: "options", title: "options"},

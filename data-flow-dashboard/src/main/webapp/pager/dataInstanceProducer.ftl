@@ -150,32 +150,11 @@
                                                    class="form-control col-md-7 col-xs-12">
                                         </div>
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                               for="dataInstance-name">host
-                                        </label>
-                                        <div class="col-md-4 col-sm-4 col-xs-12">
-                                            <input type="text" id="dataInstance-name" name="host"
-                                                   class="form-control col-md-7 col-xs-12">
-                                        </div>
-                                    </div>
-                                    <div class="item form-group">
-                                        <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                for="dataInstance-name">nodePath
                                         </label>
                                         <div class="col-md-4 col-sm-4 col-xs-12">
                                             <input type="text" id="dataInstance-name" name="nodePath"
                                                    class="form-control col-md-7 col-xs-12">
-                                        </div>
-                                        <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                               for="dataInstance-name">status
-                                        </label>
-                                        <div class="col-md-4 col-sm-4 col-xs-12">
-                                            <select class="form-control col-md-7 col-xs-12" name="status">
-                                                <option value="">全部</option>
-                                                <option value="-1">创建中</option>
-                                                <option value="0">已创建</option>
-                                                <option value="1">启动</option>
-                                                <option value="2">关停</option>
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="item form-group">

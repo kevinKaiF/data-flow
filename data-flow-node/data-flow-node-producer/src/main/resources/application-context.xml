@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+    <context:property-placeholder location="classpath:application.properties"/>
+
+    <context:component-scan base-package="com.github.dataflow.node"/>
+
+    <mvc:annotation-driven/>
+
+    <!--全局executor-->
+    <bean id="globalExecutorServiceHolder" class="com.github.dataflow.node.model.config.GlobalExecutor">
+        <property name="keepLiveTime" value="${executor.keepLiveTime:0}"/>
+        <property name="corePoolSize" value="${executor.corePoolSize:2}"/>
+        <property name="maxPoolSize" value="${executor.maxPoolSize:5}"/>
+        <property name="blockingQueue" ref="blockingQueue"/>
+    </bean>
+
+    <bean id="blockingQueue" class="java.util.concurrent.ArrayBlockingQueue">
+        <constructor-arg index="0">
+            <value>16</value>
+        </constructor-arg>
+    </bean>
+
+    <!--senders-->
+    <!--kafka-->
+    <bean id="kafkaDataSenderHandler" class="com.github.dataflow.sender.kafka.handler.KafkaDataSenderHandler"/>
+    <!--mysql-->
+    <bean id="mysqlDataSenderHandler" class="com.github.dataflow.sender.database.handler.MysqlDataSenderHandler"/>
+    <!--oracle-->
+    <bean id="oracleDataSenderHandler" class="com.github.dataflow.sender.database.handler.OracleDataSenderHandler"/>
+
+    <!--event handles-->
+    <bean id="databaseDeleteEventHandler" class="com.github.dataflow.sender.database.event.DatabaseDeleteEventHandler"></bean>
+    <bean id="databaseInsertEventHandler" class="com.github.dataflow.sender.database.event.DatabaseInsertEventHandler"></bean>
+    <bean id="databaseUpdateEventHandler" class="com.github.dataflow.sender.database.event.DatabaseUpdateEventHandler"></bean>
+
+    <import resource="application-dubbo.xml"/>
+
+</beans>
