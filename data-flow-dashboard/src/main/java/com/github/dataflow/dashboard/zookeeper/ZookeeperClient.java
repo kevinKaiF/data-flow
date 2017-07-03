@@ -33,8 +33,4 @@ public class ZookeeperClient implements InitializingBean {
             return Collections.emptyList();
         }
     }
-
-    public boolean exists(String nodeParentPath) {
-        return zkClient.exists(nodeParentPath);
-    }
 }

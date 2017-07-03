@@ -6,6 +6,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,7 +44,11 @@ public class ZookeeperClient implements InitializingBean {
     }
 
     public List<String> getChildren(String path) {
-        return zkClientx.getChildren(path);
+        if (zkClientx.exists(path)) {
+            return zkClientx.getChildren(path);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public void createNodePathIfNotExists(String path) {
