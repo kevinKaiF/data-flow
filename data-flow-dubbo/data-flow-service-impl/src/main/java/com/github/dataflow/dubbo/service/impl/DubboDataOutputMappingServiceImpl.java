@@ -24,6 +24,8 @@ import java.util.List;
 public class DubboDataOutputMappingServiceImpl implements DubboDataOutputMappingService {
     private final Logger logger = LoggerFactory.getLogger(DubboDataOutputMappingServiceImpl.class);
     private DataOutputMappingDao dataOutputMappingDao;
+    private final String GLOBAL_SCHEMA_NAME = "*";
+    ;
 
     public void setDataOutputMappingDao(DataOutputMappingDao dataOutputMappingDao) {
         this.dataOutputMappingDao = dataOutputMappingDao;
@@ -136,6 +138,8 @@ public class DubboDataOutputMappingServiceImpl implements DubboDataOutputMapping
     public ServiceResult<Long> insertMapping(DataOutputMapping dataOutputMapping) {
         ServiceResult<Long> result = new ServiceResult<Long>();
         try {
+            // 判断schemaName为*的情况
+            validateGlobalSchemaName(dataOutputMapping);
             dataOutputMappingDao.insert(dataOutputMapping);
             // 更新dataInstance的状态为已创建状态，可以start
             dataInstanceDao.updateStatusById(dataOutputMapping.getDataInstanceId(), DataInstanceStatus.CREATED.getStatus());
@@ -148,6 +152,24 @@ public class DubboDataOutputMappingServiceImpl implements DubboDataOutputMapping
             result.setErrorMessage("调用insertMapping方法异常，异常信息：" + e.getMessage());
         }
         return result;
+    }
+
+    /**
+     * 校验schemaName为*的数据是否已存在,即
+     *
+     * @param dataOutputMapping
+     */
+    private void validateGlobalSchemaName(DataOutputMapping dataOutputMapping) {
+        if (GLOBAL_SCHEMA_NAME.equals(dataOutputMapping.getSchemaName())) {
+            Long dataInstanceId = dataOutputMapping.getDataInstanceId();
+            DataOutputMapping condition = new DataOutputMapping();
+            condition.setDataInstanceId(dataInstanceId);
+            condition.setSchemaName(GLOBAL_SCHEMA_NAME);
+            List<DataOutputMapping> dataOutputMappings = dataOutputMappingDao.findByCondition(condition);
+            if (!CollectionUtils.isEmpty(dataOutputMappings)) {
+                throw new RuntimeException("DataOutputMapping schemaName[" + GLOBAL_SCHEMA_NAME + "] has existed.");
+            }
+        }
     }
 
     @Override

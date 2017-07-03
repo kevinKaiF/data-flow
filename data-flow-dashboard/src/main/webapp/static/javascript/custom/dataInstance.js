@@ -62,7 +62,7 @@
                 case 13 :
                     return "SQLServer";
                 case 20 :
-                    return "kafka";
+                    return "Kafka";
                 case 21 :
                     return "metaQ";
                 case 22 :
@@ -344,7 +344,9 @@
                             if (data.responseStatus == 200) {
                                 success = true;
                                 $("#dataInstance-id").val(data.result);
-                                wizard._beforeStep2Callback(data.result);
+                                if($("#dataInstance-type").val() < 20) {
+                                    wizard._beforeStep2Callback(data.result);
+                                }
                             } else {
                                 main.messageAlert("添加dataInstance失败")
                             }
@@ -367,19 +369,28 @@
                     // set dataInstanceId
                     var dataInstanceId = $("#dataInstance-id").val();
                     $("#dataOutputMapping-dataInstanceId").val(dataInstanceId);
-                    // render select options
-                    $.ajax({
-                        url: "./schema",
-                        data: {id: $("#dataInstance-id").val(), filter: true},
-                        dataType: "json",
-                    }).then(function (data) {
-                        if (data.responseStatus == 200) {
-                            wizard.__renderSelectOptions(data.result);
-                        } else {
-                            main.messageAlert("渲染schema列表失败")
-                        }
-                    })
+                    if($("#dataInstance-type").val() < 20) {
+                        // render select options
+                        $.ajax({
+                            url: "./schema",
+                            data: {id: $("#dataInstance-id").val(), filter: true},
+                            dataType: "json",
+                        }).then(function (data) {
+                            if (data.responseStatus == 200) {
+                                wizard.__renderSelectOptions(data.result);
+                            } else {
+                                main.messageAlert("渲染schema列表失败")
+                            }
+                        })
 
+                        $("#dataOutputMapping-schemaName-group").show();
+                        $("#dataOutputMapping-topic-group").show();
+                    } else {
+                        $("#dataOutputMapping-schemaName-group").hide();
+                        $("#dataOutputMapping-topic-group").hide();
+                        $("#dataOutputMapping-schemaName").empty().html("<option value='*' selected></option>");
+                        $("#dataOutputMapping-topic").val(-1);
+                    }
                     var dataTable = $('#dataOutputMappingTable').dataTable();
                     dataTable.fnSettings().ajax.data = {dataInstanceId: dataInstanceId};
                     dataTable.api().ajax.reload(null, false);
@@ -414,8 +425,10 @@
                             success: function (data) {
                                 if (data.responseStatus == 200) {
                                     main.messageAlert("添加dataOutputMapping成功");
-                                    $("#dataOutputMapping-id").val(data.result);
+                                    // $("#dataOutputMapping-id").val(data.result);
                                     $("#dataOutputMappingTable").dataTable().api().ajax.reload(null, false);
+                                    // expand the first panel
+                                    $("#headingOne").click()
                                     // 重新渲染schemaList
                                     $.ajax({
                                         url: "./schema",
@@ -465,21 +478,23 @@
                         },
                         columns: [
                             {
-                                data: "schemaName", title: "schemaName", render: function (data) {
+                                data: "schemaName", title: "库名", width : "20%", render: function (data) {
                                 return data == "*" ? "全部" : data;
                             }
                             },
-                            {data: "topic", title: "topic"},
+                            {data: "topic", title: "主题", width : "20%"},
                             {
                                 data: "dataSourceOutput.id",
-                                title: "dataSourceOutput.id",
+                                title: "输出源id",
+                                width : "10%" ,
                                 render: function (data, type, full, meta) {
                                     return full.dataSourceOutputId;
                                 }
                             },
                             {
                                 data: "dataSourceOutput.type",
-                                title: "dataSourceOutput.type",
+                                title: "输出源类型",
+                                width : "10%" ,
                                 render: function (data, type, full, meta) {
                                     if (full.dataSourceOutput) {
                                         return main.parseDataSourceOutputType(full.dataSourceOutput.type)
@@ -490,7 +505,7 @@
                             },
                             {
                                 data: "dataSourceOutput.options",
-                                title: "dataSourceOutput.options",
+                                title: "输出源配置",
                                 render: function (data, type, full, meta) {
                                     return full.dataSourceOutput ? full.dataSourceOutput.options : '-';
                                 }
@@ -593,7 +608,6 @@
                             "url": "./list",
                             "contentType": "application/x-www-form-urlencoded",
                             "type": "POST",
-                            "data": {producerOrConsumer: 0}
                         },
                         columns: [
                             {
@@ -603,17 +617,20 @@
                                 defaultContent: '',
                                 width: "7px"
                             },
-                            {data: "name", title: "name"},
-                            {data: "tag", title: "tag"},
+                            {data: "name", title: "名称"},
+                            {data: "tag", title: "标签"},
+                            {data : "producerOrConsumer", title : "模式", render : function (data) {
+                                return data ? "消费者" : "生产者";
+                            }},
                             {
-                                data: "type", title: "type", "render": function (data, type, full, meta) {
+                                data: "type", title: "类型", "render": function (data, type, full, meta) {
                                 return main.parseDataSourceOutputType(data);
                             }
                             },
-                            {data: "nodePath", title: "nodePath"},
+                            {data: "nodePath", title: "节点路径"},
                             {
                                 className: "dataInstance-status",
-                                data: "status", title: "status", render: function (data) {
+                                data: "status", title: "状态", render: function (data) {
                                 if (data == -1) {
                                     return "创建中"
                                 } else if (data == 0) {
@@ -844,9 +861,9 @@
                                     '<div class="col-sm-12">' +
                                     '<table class="table table-hover dataTable no-footer" style="width: 100%;" role="grid">' +
                                     '<thead><tr role="row">' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">schemaName</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">tableName</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 80%;">columns</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">库名</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">表名</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 80%;">列</th>' +
                                     '</tr>' +
                                     '</thead>' +
                                     '<tbody>';
@@ -875,11 +892,11 @@
                                     '<div class="col-sm-12">' +
                                     '<table class="table table-hover dataTable no-footer" style="width: 100%;" role="grid">' +
                                     '<thead><tr role="row">' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">schemaName</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">topic</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">dataSourceOutputId</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">type</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 60%;">options</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">库名</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">主题</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源id</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源类型</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 60%;">输出源配置</th>' +
                                     '</tr>' +
                                     '</thead>' +
                                     '<tbody>';
@@ -935,11 +952,11 @@
                         },
                         columns: [
                             {
-                                data: "type", title: "type", width: '10%', render: function (data) {
+                                data: "type", title: "输出源类型", width: '25%', render: function (data) {
                                 return main.parseDataSourceOutputType(data);
                             }
                             },
-                            {data: "options", title: "options"},
+                            {data: "options", title: "输出源配置"},
 
                         ],
                         language: {

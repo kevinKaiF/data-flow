@@ -143,8 +143,18 @@
                         var $this = $(this);
                         var name = $this.attr("name");
                         if (data[name]) {
+                            // remove the selected attribute of option dom
+                            $this.find("option").each(function() {
+                                $(this).removeAttr("selected")
+                            })
+
                             $this.val(data[name]);
-                            $this.find("option[value='" + data[name] + "']").attr("selected", true);
+                            $this.find("option").each(function(index) {
+                                if($(this).val() == data[name]) {
+                                    $this.get(0).selectedIndex = index;
+                                    $(this).attr("selected", true);
+                                }
+                            })
                         }
                     })
                 }

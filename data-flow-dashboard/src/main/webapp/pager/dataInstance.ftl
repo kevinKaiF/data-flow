@@ -74,12 +74,12 @@
                     <div class="menu_section">
                         <h3></h3>
                         <ul class="nav side-menu">
-                            <li class="active"><a href="javascript:void(0)"><i class="fa fa-random"></i> 数据实例 <span
+                            <li class="active"><a href="../dataInstance/"><i class="fa fa-random"></i> 数据实例 <span
                                     class="fa fa-chevron-right"></span></a>
-                                <ul class="nav child_menu" style="display: block">
-                                    <li class="current-page"><a href="../dataInstance/producer">生产者</a></li>
-                                    <li><a href="../dataInstance/consumer">消费者</a></li>
-                                </ul>
+                                <#--<ul class="nav child_menu" style="display: block">-->
+                                    <#--<li class="current-page"><a href="../dataInstance/producer">生产者</a></li>-->
+                                    <#--<li><a href="../dataInstance/consumer">消费者</a></li>-->
+                                <#--</ul>-->
                             </li>
                             <li><a href="../dataSourceOutput/"><i class="fa fa-database"></i>
                                 输出数据源 <span class="fa fa-chevron-right"></span></a>
@@ -202,8 +202,8 @@
                                                         <a href="#step-1" id="step1">
                                                             <span class="step_no">1</span>
                                                     <span class="step_descr">
-                                                                      Step 1<br/>
-                                                                      <small>Step 1 description</small>
+                                                                      步骤 1<br/>
+                                                                      <small>输入</small>
                                                                   </span>
                                                         </a>
                                                     </li>
@@ -211,8 +211,8 @@
                                                         <a href="#step-2">
                                                             <span class="step_no">2</span>
                                                     <span class="step_descr">
-                                                          Step 2<br/>
-                                                          <small>Step 2 description</small>
+                                                          步骤 2<br/>
+                                                          <small>过滤</small>
                                                       </span>
                                                         </a>
                                                     </li>
@@ -220,8 +220,8 @@
                                                         <a href="#step-3">
                                                             <span class="step_no">3</span>
                                                     <span class="step_descr">
-                                                                      Step 3<br/>
-                                                        <small>Step 3 description</small>
+                                                                      步骤 3<br/>
+                                                        <small>输出</small>
                                                     </span>
                                                         </a>
                                                     </li>
@@ -237,12 +237,13 @@
                                                                 <select class="form-control col-md-7 col-xs-12"
                                                                         name="producerOrConsumer" required="required">
                                                                     <option value="0">生产者</option>
+                                                                    <option value="1">消费者</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                                                   for="dataInstance-tag">tag <span
+                                                                   for="dataInstance-tag">标签 <span
                                                                     class="required">*</span>
                                                             </label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -253,18 +254,24 @@
                                                         </div>
                                                         <div class="item form-group">
                                                             <label for=""
-                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">type <span
+                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">类型 <span
                                                                     class="required">*</span></label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                <select class="form-control col-md-7 col-xs-12"
+                                                                <select id="dataInstance-type" class="form-control col-md-7 col-xs-12"
                                                                         name="type" required="required">
-                                                                    <option value="10">mysql</option>
+                                                                    <option value="10">MySQL</option>
+                                                                    <option value="11">Oracle</option>
+                                                                    <option value="12">PostGreSQL</option>
+                                                                    <option value="13">SQLServer</option>
+                                                                    <option value="20">Kafka</option>
+                                                                    <option value="21">metaQ</option>
+                                                                    <option value="22">rabbitMQ</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
                                                             <label for="dataInstance-options"
-                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">options <span
+                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">参数 <span
                                                                     class="required">*</span></label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                         <textarea id="dataInstance-options"
@@ -275,7 +282,7 @@
                                                         </div>
                                                         <div class="item form-group">
                                                             <label for="dataInstance-transformScript"
-                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">transformScript </label>
+                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">转换脚本 </label>
                                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                         <textarea id="dataInstance-transformScript"
                                                                   class="form-control col-md-7 col-xs-12"
@@ -344,7 +351,7 @@
                                                                     <form id="dataOutputMapping-form"
                                                                           class="form-horizontal form-label-left">
 
-                                                                        <div class="item form-group">
+                                                                        <div class="item form-group" id="dataOutputMapping-schemaName-group">
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                                                    for="dataOutputMapping-schemaName">schemaName <span
                                                                                     class="required">*</span>
@@ -357,7 +364,7 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="item form-group">
+                                                                        <div class="item form-group" id="dataOutputMapping-topic-group">
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                                                    for="dataOutputMapping-options">topic <span
                                                                                     class="required">*</span>
@@ -467,7 +474,7 @@
 <script src="../javascript/validator/validator.min.js"></script>
 <!-- Custom Theme Scripts -->
 <script src="../javascript/custom/global.js"></script>
-<script src="../javascript/custom/dataInstanceProducer.js"></script>
+<script src="../javascript/custom/dataInstance.js"></script>
 
 </body>
 </html>

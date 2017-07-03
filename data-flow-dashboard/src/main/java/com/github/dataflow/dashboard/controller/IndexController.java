@@ -37,7 +37,7 @@ public class IndexController {
         if (username == null) {
             return "index";
         } else {
-            return "redirect:/dataInstance/producer";
+            return "redirect:/dataInstance/";
         }
     }
 
@@ -49,7 +49,7 @@ public class IndexController {
         try {
             dataUser = dataUserService.getUserByUsername(username);
         } catch (Exception e) {
-            logger.error("apply DataUserService[getUserByUsername] failure, params : {}. detail : ", username, e);
+            logger.error("apply DataUserService [getUserByUsername] failure, params : {}. detail : ", username, e);
             responseEntity.setResponseStatus(ResponseEntity.FAILURE);
             responseEntity.setMessage("系统异常");
             return responseEntity;

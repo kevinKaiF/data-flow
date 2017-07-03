@@ -7,6 +7,7 @@ import com.github.dataflow.dashboard.service.DataOutputMappingService;
 import com.github.dataflow.dashboard.service.DataTableService;
 import com.github.dataflow.dashboard.utils.Constants;
 import com.github.dataflow.dashboard.utils.HttpUtil;
+import com.github.dataflow.dubbo.common.enums.DataInstanceModel;
 import com.github.dataflow.dubbo.common.enums.DataInstanceStatus;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
@@ -45,14 +46,9 @@ public class DataInstanceController extends BaseController {
     @Autowired
     private Router router;
 
-    @RequestMapping("producer")
+    @RequestMapping("/")
     public String producer() {
-        return "dataInstanceProducer";
-    }
-
-    @RequestMapping("consumer")
-    public String consumer() {
-        return "dataInstanceConsumer";
+        return "dataInstance";
     }
 
     @RequestMapping("start")
@@ -69,7 +65,7 @@ public class DataInstanceController extends BaseController {
                     if (isStopOrCreated(dataInstance)) {
                         // 选取节点
                         String address = null;
-                        if (dataInstance.getProducerOrConsumer() == 0) {
+                        if (dataInstance.getProducerOrConsumer() == DataInstanceModel.PRODUCER.getType()) {
                             address = router.nextProducer(dataInstance.getName());
                         } else {
                             address = router.nextConsumer(dataInstance.getName());
