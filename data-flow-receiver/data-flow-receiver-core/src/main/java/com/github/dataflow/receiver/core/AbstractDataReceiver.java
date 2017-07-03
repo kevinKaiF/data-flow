@@ -56,8 +56,6 @@ public class AbstractDataReceiver extends AbstractDataFlowLifeCycle implements A
 
     private DataOutputMapping parseDataOutputMapping(Properties prop) {
         DataSourceOutput dataSourceOutput = new DataSourceOutput();
-        dataSourceOutput.setUsername(PropertyUtil.getString(prop, DataReceiverConfig.DATA_RECEIVER_USERNAME));
-        dataSourceOutput.setPassword(PropertyUtil.getString(prop, DataReceiverConfig.DATA_RECEIVER_PASSWORD));
         dataSourceOutput.setType(getType());
         dataSourceOutput.setOptions(JSONObject.toJSONString(prop));
 

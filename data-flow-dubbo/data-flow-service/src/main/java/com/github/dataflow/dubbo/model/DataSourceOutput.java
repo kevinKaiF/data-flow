@@ -30,18 +30,6 @@ public class DataSourceOutput implements Serializable {
     private java.lang.String options;
 
     /**
-     * @描述:用户名
-     * @字段:USERNAME VARCHAR(50)
-     */
-    private java.lang.String username;
-
-    /**
-     * @描述:密码
-     * @字段:PASSWORD VARCHAR(50)
-     */
-    private java.lang.String password;
-
-    /**
      * @描述:创建时间
      * @字段:CREATE_TIME DATETIME
      */
@@ -126,34 +114,6 @@ public class DataSourceOutput implements Serializable {
      */
     public java.lang.String getOptions() {
         return this.options;
-    }
-
-    /**
-     * @param username 用户名
-     */
-    public void setUsername(java.lang.String username) {
-        this.username = username;
-    }
-
-    /**
-     * @return 用户名
-     */
-    public java.lang.String getUsername() {
-        return this.username;
-    }
-
-    /**
-     * @param password 密码
-     */
-    public void setPassword(java.lang.String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return 密码
-     */
-    public java.lang.String getPassword() {
-        return this.password;
     }
 
     /**
@@ -246,8 +206,6 @@ public class DataSourceOutput implements Serializable {
                 "id=" + id +
                 ", type=" + type +
                 ", options='" + options + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 '}';

@@ -146,7 +146,13 @@
                                             <select class="form-control col-md-7 col-xs-12"
                                                     id="dataSourceOutput-search-type" name="type">
                                                 <option value="">全部</option>
+                                                <option value="10">MySQL</option>
+                                                <option value="11">Oracle</option>
+                                                <option value="12">PostGreSQL</option>
+                                                <option value="13">SQLServer</option>
                                                 <option value="20">Kafka</option>
+                                                <option value="21">metaQ</option>
+                                                <option value="22">rabbitMQ</option>
                                             </select>
                                         </div>
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
@@ -200,24 +206,6 @@
                                             <form id="dataSourceOutput-form"
                                                   class="form-horizontal form-label-left">
                                                 <div class="item form-group">
-                                                    <label for="dataSourceOutput-username"
-                                                           class="control-label col-md-3 col-sm-3 col-xs-12">username </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input id="dataSourceOutput-username"
-                                                               class="form-control col-md-7 col-xs-12"
-                                                               type="text" name="username">
-                                                    </div>
-                                                </div>
-                                                <div class="item form-group">
-                                                    <label for="dataSourceOutput-password"
-                                                           class="control-label col-md-3 col-sm-3 col-xs-12">password </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input id="dataSourceOutput-password"
-                                                               class="form-control col-md-7 col-xs-12"
-                                                               type="password" name="password">
-                                                    </div>
-                                                </div>
-                                                <div class="item form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12"
                                                            for="dataSourceOutput-type">type <span
                                                             class="required">*</span>
@@ -225,7 +213,13 @@
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <select class="form-control col-md-7 col-xs-12"
                                                                 id="dataSourceOutput-type" name="type">
+                                                            <option value="10">MySQL</option>
+                                                            <option value="11">Oracle</option>
+                                                            <option value="12">PostGreSQL</option>
+                                                            <option value="13">SQLServer</option>
                                                             <option value="20">Kafka</option>
+                                                            <option value="21">metaQ</option>
+                                                            <option value="22">rabbitMQ</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -237,7 +231,7 @@
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                 <textarea id="dataSourceOutput-options"
                                                           class="form-control col-md-7 col-xs-12"
-                                                          rows="5"
+                                                          rows="8"
                                                           name="options" required="required"></textarea>
                                                     </div>
                                                 </div>

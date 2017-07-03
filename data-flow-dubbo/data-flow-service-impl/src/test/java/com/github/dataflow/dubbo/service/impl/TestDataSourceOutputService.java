@@ -24,9 +24,7 @@ public class TestDataSourceOutputService extends TestBase {
         DataSourceOutput dataSourceOutput = new DataSourceOutput();
         dataSourceOutput.setCreateTime(new java.util.Date());
         dataSourceOutput.setOptions("{'name':'kevin'}");
-        dataSourceOutput.setPassword("TEST Password");
         dataSourceOutput.setType(DataSourceType.KAFKA.getType());
-        dataSourceOutput.setUsername("TEST Username");
         dataSourceOutputService.insert(dataSourceOutput);
     }
 
@@ -36,9 +34,7 @@ public class TestDataSourceOutputService extends TestBase {
         dataSourceOutput.setId(1L);
         dataSourceOutput.setCreateTime(new java.util.Date());
         dataSourceOutput.setOptions("{'name':'kevin'}");
-        dataSourceOutput.setPassword("TEST Password");
         dataSourceOutput.setType(DataSourceType.KAFKA.getType());
-        dataSourceOutput.setUsername("TEST Username");
         dataSourceOutput.setUpdateTime(new Date());
         dataSourceOutputService.update(dataSourceOutput);
     }
@@ -55,9 +51,7 @@ public class TestDataSourceOutputService extends TestBase {
         dataSourceOutput.setId(1L);
         dataSourceOutput.setCreateTime(new java.util.Date());
         dataSourceOutput.setOptions("{'name':'kevin'}");
-        dataSourceOutput.setPassword("TEST Password");
         dataSourceOutput.setType(DataSourceType.KAFKA.getType());
-        dataSourceOutput.setUsername("TEST Username");
 
         PageSet pageSet = new PageSet();
         print(dataSourceOutputService.findByCondition(dataSourceOutput, pageSet));
@@ -69,9 +63,7 @@ public class TestDataSourceOutputService extends TestBase {
         dataSourceOutput.setId(1L);
         dataSourceOutput.setCreateTime(new java.util.Date());
         dataSourceOutput.setOptions("{'name':'kevin'}");
-        dataSourceOutput.setPassword("TEST Password");
         dataSourceOutput.setType(DataSourceType.KAFKA.getType());
-        dataSourceOutput.setUsername("TEST Username");
         print(dataSourceOutputService.countByCondition(dataSourceOutput));
     }
 

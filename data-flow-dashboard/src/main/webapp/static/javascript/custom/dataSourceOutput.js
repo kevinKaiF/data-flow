@@ -72,7 +72,6 @@
                             //     data: null,
                             //     defaultContent: ''
                             // },
-                            {data: "username", title: "username", width: '20%'},
                             {
                                 data: "type", title: "type", width: '10%', render: function (data) {
                                 if (data == 20) {
