@@ -155,7 +155,7 @@ public class DubboDataOutputMappingServiceImpl implements DubboDataOutputMapping
     }
 
     /**
-     * 校验schemaName为*的数据是否已存在,即
+     * 校验schemaName为*的数据是否已存在
      *
      * @param dataOutputMapping
      */
