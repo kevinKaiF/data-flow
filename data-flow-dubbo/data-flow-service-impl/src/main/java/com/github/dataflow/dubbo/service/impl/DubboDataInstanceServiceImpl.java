@@ -2,6 +2,8 @@ package com.github.dataflow.dubbo.service.impl;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.github.dataflow.dubbo.dao.DataInstanceDao;
+import com.github.dataflow.dubbo.dao.DataOutputMappingDao;
+import com.github.dataflow.dubbo.dao.DataTableDao;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.dubbo.model.PageSet;
 import com.github.dataflow.dubbo.model.ServiceResult;
@@ -22,6 +24,18 @@ import java.util.List;
 public class DubboDataInstanceServiceImpl implements DubboDataInstanceService {
     private final Logger logger = LoggerFactory.getLogger(DubboDataInstanceServiceImpl.class);
     private DataInstanceDao dataInstanceDao;
+
+    private DataTableDao dataTableDao;
+
+    private DataOutputMappingDao dataOutputMappingDao;
+
+    public void setDataTableDao(DataTableDao dataTableDao) {
+        this.dataTableDao = dataTableDao;
+    }
+
+    public void setDataOutputMappingDao(DataOutputMappingDao dataOutputMappingDao) {
+        this.dataOutputMappingDao = dataOutputMappingDao;
+    }
 
     public void setDataInstanceDao(DataInstanceDao dataInstanceDao) {
         this.dataInstanceDao = dataInstanceDao;
@@ -81,6 +95,9 @@ public class DubboDataInstanceServiceImpl implements DubboDataInstanceService {
         ServiceResult<Integer> result = new ServiceResult<Integer>();
         try {
             dataInstanceDao.delete(id);
+            // 同时删除dataTable,dataOutputMapping
+            dataTableDao.deleteByDataInstanceId(id);
+            dataOutputMappingDao.deleteByDataInstanceId(id);
         } catch (Exception e) {
             logger.error("调用{}方法 异常", "[dataflow-service_DubboDataInstanceServiceImpl#delete]");
             logger.error("方法使用参数：[[id:{}]]", id.toString());

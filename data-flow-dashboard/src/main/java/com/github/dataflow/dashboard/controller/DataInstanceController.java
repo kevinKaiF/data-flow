@@ -275,8 +275,6 @@ public class DataInstanceController extends BaseController {
             @Override
             public void call(ResponseEntity responseEntity) {
                 responseEntity.setResult(dataOutputMappingService.insert(dataOutputMapping));
-                // 更新dataInstance的状态为已创建状态，可以start
-                dataInstanceService.updateStatus(dataOutputMapping.getDataInstanceId(), DataInstanceStatus.CREATED.getStatus());
             }
         });
     }

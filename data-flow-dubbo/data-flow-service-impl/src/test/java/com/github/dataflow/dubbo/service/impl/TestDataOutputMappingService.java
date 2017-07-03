@@ -28,7 +28,7 @@ public class TestDataOutputMappingService extends TestBase {
 
     @Test
     public void testGetById() {
-        Long id = 10L;
+        Long id = 20L;
         print(dataOutputMappingService.getById(id));
     }
 

@@ -74,7 +74,7 @@ public class KafkaInstance extends AbstractInstance {
     }
 
     public void doStart() {
-        logger.info("start KafkaInstance for {} / {} with parameters:{}", new Object[] {this.id, this.name, this.getProperties()});
+        logger.info("start KafkaInstance for {} / {} with parameters:{}", new Object[]{this.id, this.name, this.getProperties()});
 
         receiveThread.start();
 
@@ -147,9 +147,14 @@ public class KafkaInstance extends AbstractInstance {
                     alarmService.sendAlarm(name, fullStackTrace);
                     ex = e;
                 } finally {
-                    if (!running || ex != null) {
+                    if (!running) {
                         closeConsumer();
                         doStop();
+                    } else if (ex != null) {
+                        closeConsumer();
+                        stop();
+                    } else {
+                        // do nothing
                     }
                 }
             }

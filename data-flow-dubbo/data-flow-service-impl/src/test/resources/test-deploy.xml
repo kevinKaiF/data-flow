@@ -82,10 +82,13 @@
     <!--service start-->
     <bean id="dataInstanceService" class="com.github.dataflow.dubbo.service.impl.DubboDataInstanceServiceImpl">
         <property name="dataInstanceDao" ref="dataInstanceDao"/>
+        <property name="dataTableDao" ref="dataTableDao"/>
+        <property name="dataOutputMappingDao" ref="dataOutputMappingDao"/>
     </bean>
     <bean id="dataOutputMappingService"
           class="com.github.dataflow.dubbo.service.impl.DubboDataOutputMappingServiceImpl">
         <property name="dataOutputMappingDao" ref="dataOutputMappingDao"/>
+        <property name="dataInstanceDao" ref="dataInstanceDao"/>
     </bean>
     <bean id="dataSourceOutputService" class="com.github.dataflow.dubbo.service.impl.DubboDataSourceOutputServiceImpl">
         <property name="dataSourceOutputDao" ref="dataSourceOutputDao"/>

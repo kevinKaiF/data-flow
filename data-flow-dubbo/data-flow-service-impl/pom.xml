@@ -173,7 +173,6 @@
         <dependency>
             <groupId>com.github.data-flow</groupId>
             <artifactId>data-flow-service-common</artifactId>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>

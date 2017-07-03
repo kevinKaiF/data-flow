@@ -81,6 +81,15 @@
     	]]>
     </delete>
 
+    <!-- delete -->
+    <delete id="deleteByDataInstanceId">
+        <![CDATA[
+        	DELETE FROM data_output_mapping
+        	WHERE
+        		DATA_INSTANCE_ID = #{dataInstanceId}
+    	]]>
+    </delete>
+
     <delete id="deleteBatch">
         DELETE FROM data_output_mapping WHERE id IN
         <foreach item="ids" collection="list" open="(" separator="," close=")">

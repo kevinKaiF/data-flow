@@ -25,4 +25,6 @@ public interface DataOutputMappingDao {
     Long countByCondition(DataOutputMapping dataOutputMapping);
 
     List<DataOutputMapping> findByCondition(DataOutputMapping dataOutputMapping);
+
+    void deleteByDataInstanceId(@Param("dataInstanceId") Long dataInstanceId);
 }

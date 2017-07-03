@@ -196,15 +196,6 @@ public class DataInstanceService {
         }
     }
 
-    public void updateStatus(Long id, Integer status) {
-        ServiceResult<Void> serviceResult = dubboDataInstanceService.updateStatusById(id, status);
-        if (!serviceResult.isSuccess()) {
-            logger.error("{}调用{}时发生未知异常,error Message:{}", "com.github.dataflow.dashboard.service.DataInstanceService.updateStatus",
-                         "serviceResult", serviceResult.getErrorMessage());
-            throw new DataFlowException();
-        }
-    }
-
     /**
      * 获取该数据源下的所有schemaName
      *

@@ -62,4 +62,21 @@ public interface DubboDataOutputMappingService {
      */
     ServiceResult<List<DataOutputMapping>> findByCondition(DataOutputMapping dataOutputMapping, PageSet pageSet);
 
+    /**
+     * 更新输出映射，并更新dataInstance的状态
+     *
+     * @param dataOutputMapping
+     * @return
+     */
+    ServiceResult<Long> insertMapping(DataOutputMapping dataOutputMapping);
+
+    ServiceResult<Integer> updateMapping(DataOutputMapping dataOutputMapping);
+
+    /**
+     * 删除输出映射，并更新dataInstance的状态
+     *
+     * @param id
+     * @return
+     */
+    ServiceResult<Integer> deleteMapping(Long id);
 }

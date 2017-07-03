@@ -35,9 +35,9 @@ public class DataOutputMappingService {
             return update(dataOutputMapping);
         }
 
-        ServiceResult<Long> serviceResult = dubboDataOutputMappingService.insert(dataOutputMapping);
+        ServiceResult<Long> serviceResult = dubboDataOutputMappingService.insertMapping(dataOutputMapping);
         if (!serviceResult.isSuccess()) {
-            logger.error("{}调用{}时发生未知异常,error Message:{}", "com.github.dataflow.dashboard.service.DataOutputMappingService.insert",
+            logger.error("{}调用{}时发生未知异常,error Message:{}", "com.github.dataflow.dashboard.service.DataOutputMappingService.insertMapping",
                          "serviceResult", serviceResult.getErrorMessage());
             throw new DataFlowException();
         }
@@ -45,9 +45,9 @@ public class DataOutputMappingService {
     }
 
     public Long update(DataOutputMapping dataOutputMapping) {
-        ServiceResult<Integer> serviceResult = dubboDataOutputMappingService.update(dataOutputMapping);
+        ServiceResult<Integer> serviceResult = dubboDataOutputMappingService.updateMapping(dataOutputMapping);
         if (!serviceResult.isSuccess()) {
-            logger.error("{}调用{}时发生未知异常,error Message:{}", "com.github.dataflow.dashboard.service.DataOutputMappingService.update",
+            logger.error("{}调用{}时发生未知异常,error Message:{}", "com.github.dataflow.dashboard.service.DataOutputMappingService.updateMapping",
                          "serviceResult", serviceResult.getErrorMessage());
             throw new DataFlowException();
         }
@@ -56,9 +56,9 @@ public class DataOutputMappingService {
     }
 
     public void delete(Long id) {
-        ServiceResult<Integer> serviceResult = dubboDataOutputMappingService.delete(id);
+        ServiceResult<Integer> serviceResult = dubboDataOutputMappingService.deleteMapping(id);
         if (!serviceResult.isSuccess()) {
-            logger.error("{}调用{}时发生未知异常,error Message:{}", "com.github.dataflow.dashboard.service.DataOutputMappingService.delete",
+            logger.error("{}调用{}时发生未知异常,error Message:{}", "com.github.dataflow.dashboard.service.DataOutputMappingService.deleteMapping",
                          "serviceResult", serviceResult.getErrorMessage());
             throw new DataFlowException();
         }

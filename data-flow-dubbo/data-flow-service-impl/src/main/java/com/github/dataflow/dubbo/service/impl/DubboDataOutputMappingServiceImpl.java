@@ -1,6 +1,8 @@
 package com.github.dataflow.dubbo.service.impl;
 
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.github.dataflow.dubbo.common.enums.DataInstanceStatus;
+import com.github.dataflow.dubbo.dao.DataInstanceDao;
 import com.github.dataflow.dubbo.dao.DataOutputMappingDao;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.dubbo.model.PageSet;
@@ -9,6 +11,7 @@ import com.github.dataflow.dubbo.service.DubboDataOutputMappingService;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -24,6 +27,12 @@ public class DubboDataOutputMappingServiceImpl implements DubboDataOutputMapping
 
     public void setDataOutputMappingDao(DataOutputMappingDao dataOutputMappingDao) {
         this.dataOutputMappingDao = dataOutputMappingDao;
+    }
+
+    private DataInstanceDao dataInstanceDao;
+
+    public void setDataInstanceDao(DataInstanceDao dataInstanceDao) {
+        this.dataInstanceDao = dataInstanceDao;
     }
 
     @Override
@@ -119,6 +128,62 @@ public class DubboDataOutputMappingServiceImpl implements DubboDataOutputMapping
             logger.error("异常信息：{}", e);
             result.setSuccess(false);
             result.setErrorMessage("调用findByCondition方法异常，异常信息：" + e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public ServiceResult<Long> insertMapping(DataOutputMapping dataOutputMapping) {
+        ServiceResult<Long> result = new ServiceResult<Long>();
+        try {
+            dataOutputMappingDao.insert(dataOutputMapping);
+            // 更新dataInstance的状态为已创建状态，可以start
+            dataInstanceDao.updateStatusById(dataOutputMapping.getDataInstanceId(), DataInstanceStatus.CREATED.getStatus());
+            result.setResult(dataOutputMapping.getId());
+        } catch (Exception e) {
+            logger.error("调用{}方法 异常", "[dataflow-service_DubboDataOutputMappingServiceImpl#insertMapping]");
+            logger.error("方法使用参数：[[dataOutputMapping:{}]]", dataOutputMapping.toString());
+            logger.error("异常信息：{}", e);
+            result.setSuccess(false);
+            result.setErrorMessage("调用insertMapping方法异常，异常信息：" + e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public ServiceResult<Integer> updateMapping(DataOutputMapping dataOutputMapping) {
+        ServiceResult<Integer> result = new ServiceResult<Integer>();
+        try {
+            dataOutputMappingDao.update(dataOutputMapping);
+        } catch (Exception e) {
+            logger.error("调用{}方法 异常", "[dataflow-service_DubboDataOutputMappingServiceImpl#updateMapping]");
+            logger.error("方法使用参数：[[dataOutputMapping:{}]]", dataOutputMapping.toString());
+            logger.error("异常信息：{}", e);
+            result.setSuccess(false);
+            result.setErrorMessage("调用updateMapping方法异常，异常信息：" + e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public ServiceResult<Integer> deleteMapping(Long id) {
+        ServiceResult<Integer> result = new ServiceResult<Integer>();
+        try {
+            DataOutputMapping dataOutputMapping = dataOutputMappingDao.getById(id);
+            dataOutputMappingDao.delete(id);
+            // 更新dataInstance的状态
+            DataOutputMapping condition = new DataOutputMapping();
+            condition.setDataInstanceId(dataOutputMapping.getDataInstanceId());
+            List<DataOutputMapping> dataOutputMappingList = dataOutputMappingDao.findByCondition(condition);
+            if (CollectionUtils.isEmpty(dataOutputMappingList)) {
+                dataInstanceDao.updateStatusById(dataOutputMapping.getDataInstanceId(), DataInstanceStatus.CREATING.getStatus());
+            }
+        } catch (Exception e) {
+            logger.error("调用{}方法 异常", "[dataflow-service_DubboDataOutputMappingServiceImpl#deleteMapping]");
+            logger.error("方法使用参数：[[id:{}]]", id.toString());
+            logger.error("异常信息：{}", e);
+            result.setSuccess(false);
+            result.setErrorMessage("调用deleteMapping方法异常，异常信息：" + e.getMessage());
         }
         return result;
     }
