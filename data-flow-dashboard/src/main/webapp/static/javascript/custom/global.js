@@ -11,23 +11,21 @@
         },
         settingValidator : function() {
           if (validator && validator.message) {
-              validator.message = {
-                  invalid         : '非法',
-                  checked         : '请勾选',
-                  empty           : '非空',
-                  min             : '太短',
-                  max             : '太长',
-                  number_min      : '太小',
-                  number_max      : '太大',
-                  url             : '非法',
-                  number          : '非数字',
-                  email           : '非法',
-                  email_repeat    : '重复',
-                  password_repeat : '不一致',
-                  repeat          : '不一致',
-                  complete        : '未完成',
-                  select          : '请选择'
-              };
+              validator.message.invalid='非法',
+              validator.message.checked='请勾选',
+              validator.message.empty='非空',
+              validator.message.min='太短',
+              validator.message.max='太长',
+              validator.message.number_min='太小',
+              validator.message.number_max='太大',
+              validator.message.url='非法',
+              validator.message.number='非数字',
+              validator.message.email='非法',
+              validator.message.email_repeat='重复',
+              validator.message.password_repeat='不一致',
+              validator.message.repeat='不一致',
+              validator.message.complete='未完成',
+              validator.message.select='请选择'
           }
         },
         init_sidebar: function () {
