@@ -170,8 +170,8 @@
 
         <!-- footer content -->
         <footer>
-            <div class="pull-right">
-                Github <a href="">Dataflow</a>
+            <div class="pull-right github-ico">
+                Github <a href="https://github.com/kevinKaiF/data-flow" target="_blank">Dataflow</a>
             </div>
             <div class="clearfix"></div>
         </footer>

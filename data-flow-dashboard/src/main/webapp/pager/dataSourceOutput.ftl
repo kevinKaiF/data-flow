@@ -37,6 +37,18 @@
             color: rgba(255, 255, 255, 0.75);
         }
 
+        #dataSourceOutput-options-doc {
+            position: absolute;
+            right: 10px;
+            top: -1px;
+            border: 1px solid #e5e5e5;
+            padding: 3px 5px;
+            border-radius: 3px;
+            background: #e5e5e5;
+            color: #1abb9c;
+            font-weight: 800;
+        }
+
     </style>
 </head>
 
@@ -123,7 +135,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="row">
                         <div class="x_panel">
-                            <div class="x_title" style="border-bottom-width: 1px; padding: 0;">
+                            <div class="x_title" style="border-bottom-width: 1px; padding: 0;" id="search_panel_header">
                                 <h2>输出数据源搜索</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
@@ -136,7 +148,7 @@
                                       class="form-horizontal form-label-left">
                                     <div class="item form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                               for="dataSourceOutput-search-type">type
+                                               for="dataSourceOutput-search-type">类型
                                         </label>
                                         <div class="col-md-4 col-sm-4 col-xs-12">
                                             <select class="form-control col-md-7 col-xs-12"
@@ -152,7 +164,7 @@
                                             </select>
                                         </div>
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                               for="dataSourceOutput-search-options">options
+                                               for="dataSourceOutput-search-options">配置
                                         </label>
                                         <div class="col-md-4 col-sm-4 col-xs-12">
                                             <input type="text" id="dataSourceOutput-search-options" name="options"
@@ -203,7 +215,18 @@
                                                   class="form-horizontal form-label-left">
                                                 <div class="item form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                           for="dataSourceOutput-type">type <span
+                                                           for="dataSourceOutput-name">名称 <span
+                                                            class="required">*</span>
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <input class="form-control col-md-7 col-xs-12"
+                                                                id="dataSourceOutput-name" name="name" required="required" data-validate-length-range="1,20">
+                                                        </input>
+                                                    </div>
+                                                </div>
+                                                <div class="item form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                           for="dataSourceOutput-type">类型 <span
                                                             class="required">*</span>
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -221,14 +244,15 @@
                                                 </div>
                                                 <div class="item form-group">
                                                     <label class="control-label col-md-3 col-sm-3 col-xs-12"
-                                                           for="dataSourceOutput-options">options <span
+                                                           for="dataSourceOutput-options">配置 <span
                                                             class="required">*</span>
                                                     </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <div class="col-md-6 col-sm-6 col-xs-12" style="position: relative">
                                                 <textarea id="dataSourceOutput-options"
                                                           class="form-control col-md-7 col-xs-12"
                                                           rows="8"
                                                           name="options" required="required"></textarea>
+                                                        <span id="dataSourceOutput-options-doc">doc</span>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="id">
@@ -273,13 +297,60 @@
                     </div>
                 </div>
             </div>
+
+            <div id="dataSourceOutput-options-modal" class="modal fade bs-example-modal-lg" tabindex="-1"
+                 role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                    aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">模板</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Mysql</a>
+                                </li>
+                            <#--<li role="presentation" class=""><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Oracle</a>-->
+                            <#--</li>-->
+                                <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="profile-tab">
+                                        <textarea style="width: 100%;" rows="8" readonly>{
+    "username":"",
+    "password":"",
+    "host":"",
+    "port":"",
+    "jdbcUrl":""
+}</textarea>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab">
+                                        <textarea style="width: 100%;" rows="8" readonly>{
+    "bootstrap.servers":"",
+} </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="alert-close" class="btn btn-default antoclose"
+                                    data-dismiss="modal">关闭
+                            </button>
+                            <button type="button" id="alert-submit" class="btn btn-primary antosubmit">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- /page content -->
 
         <!-- footer content -->
         <footer>
-            <div class="pull-right">
-                Github <a href="">Dataflow</a>
+            <div class="pull-right github-ico">
+                Github <a href="https://github.com/kevinKaiF/data-flow" target="_blank">Dataflow</a>
             </div>
             <div class="clearfix"></div>
         </footer>

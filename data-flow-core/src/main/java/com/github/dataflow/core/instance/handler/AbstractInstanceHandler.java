@@ -93,11 +93,13 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
             if (dataSender == null) {
                 // 输出数据源的id就是DataSender的标识符
                 Long dataSenderId = dataOutputMapping.getDataSourceOutput().getId();
+                String dataSenderName = dataOutputMapping.getDataSourceOutput().getName();
                 dataSender = DataSenderManager.get(dataSenderId);
                 if (dataSender == null) {
                     dataSender = createDataSender(dataOutputMapping);
                     DataSenderManager.put(dataSenderId, dataSender);
                     dataSender.setDataSenderId(dataSenderId);
+                    dataSender.setDataSenderName(dataSenderName);
                 }
                 dataSenderMap.put(dataOutputMapping.getSchemaName(), dataSender);
             }

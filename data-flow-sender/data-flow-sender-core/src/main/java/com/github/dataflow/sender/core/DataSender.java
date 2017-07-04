@@ -30,6 +30,11 @@ public abstract class DataSender extends AbstractDataFlowLifeCycle {
     protected Long dataSenderId;
 
     /**
+     * DataSender的名称，对应数据库name
+     */
+    protected String dataSenderName;
+
+    /**
      * 发送数据
      *
      * @param rowMetaDataList
@@ -79,4 +84,11 @@ public abstract class DataSender extends AbstractDataFlowLifeCycle {
         this.dataSenderId = dataSenderId;
     }
 
+    public String getDataSenderName() {
+        return dataSenderName;
+    }
+
+    public void setDataSenderName(String dataSenderName) {
+        this.dataSenderName = dataSenderName;
+    }
 }

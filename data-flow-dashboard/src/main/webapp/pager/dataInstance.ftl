@@ -40,6 +40,18 @@
             color: rgba(255, 255, 255, 0.75);
         }
 
+        #dataInstance-options-doc {
+            position: absolute;
+            right: 10px;
+            top: -1px;
+            border: 1px solid #e5e5e5;
+            padding: 3px 5px;
+            border-radius: 3px;
+            background: #e5e5e5;
+            color: #1abb9c;
+            font-weight: 800;
+        }
+
     </style>
 </head>
 
@@ -125,12 +137,12 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-        <div class="right_col" role="main">
+        <div class="right_col" role="main" style="relative">
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="row">
                         <div class="x_panel">
-                            <div class="x_title" style="border-bottom-width: 1px; padding: 0;">
+                            <div class="x_title" style="border-bottom-width: 1px; padding: 0;" id="search_panel_header">
                                 <h2>实例搜索</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
@@ -143,14 +155,14 @@
                                       class="form-horizontal form-label-left">
                                     <div class="item form-group">
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                               for="dataInstance-tag">tag
+                                               for="dataInstance-tag">标签
                                         </label>
                                         <div class="col-md-4 col-sm-4 col-xs-12">
                                             <input type="text" id="dataInstance-tag" name="tag"
                                                    class="form-control col-md-7 col-xs-12">
                                         </div>
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                               for="dataInstance-name">nodePath
+                                               for="dataInstance-name">节点路径
                                         </label>
                                         <div class="col-md-4 col-sm-4 col-xs-12">
                                             <input type="text" id="dataInstance-name" name="nodePath"
@@ -233,7 +245,7 @@
                                                             <label for=""
                                                                    class="control-label col-md-2 col-sm-2 col-xs-12">模式 <span
                                                                     class="required">*</span></label>
-                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                            <div class="col-md-8 col-sm-8 col-xs-12">
                                                                 <select class="form-control col-md-7 col-xs-12"
                                                                         name="producerOrConsumer" required="required">
                                                                     <option value="0">生产者</option>
@@ -246,17 +258,17 @@
                                                                    for="dataInstance-tag">标签 <span
                                                                     class="required">*</span>
                                                             </label>
-                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                            <div class="col-md-8 col-sm-8 col-xs-12">
                                                                 <input type="text" id="dataInstance-tag" name="tag"
                                                                        required="required"
-                                                                       class="form-control col-md-7 col-xs-12">
+                                                                       class="form-control col-md-7 col-xs-12" data-validate-length-range="1,20">
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
                                                             <label for=""
                                                                    class="control-label col-md-2 col-sm-2 col-xs-12">类型 <span
                                                                     class="required">*</span></label>
-                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                            <div class="col-md-8 col-sm-8 col-xs-12">
                                                                 <select id="dataInstance-type" class="form-control col-md-7 col-xs-12"
                                                                         name="type" required="required">
                                                                     <option value="10">MySQL</option>
@@ -273,17 +285,18 @@
                                                             <label for="dataInstance-options"
                                                                    class="control-label col-md-2 col-sm-2 col-xs-12">参数 <span
                                                                     class="required">*</span></label>
-                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                            <div class="col-md-8 col-sm-8 col-xs-12" style="position: relative">
                                                         <textarea id="dataInstance-options"
                                                                   class="form-control col-md-7 col-xs-12"
                                                                   rows="9" required="required"
                                                                   name="options"></textarea>
+                                                                <span id="dataInstance-options-doc">doc</span>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
                                                             <label for="dataInstance-transformScript"
                                                                    class="control-label col-md-2 col-sm-2 col-xs-12">转换脚本 </label>
-                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                            <div class="col-md-8 col-sm-8 col-xs-12">
                                                         <textarea id="dataInstance-transformScript"
                                                                   class="form-control col-md-7 col-xs-12"
                                                                   rows="7"
@@ -353,7 +366,7 @@
 
                                                                         <div class="item form-group" id="dataOutputMapping-schemaName-group">
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                                                                   for="dataOutputMapping-schemaName">schemaName <span
+                                                                                   for="dataOutputMapping-schemaName">库名 <span
                                                                                     class="required">*</span>
                                                                             </label>
                                                                             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -366,7 +379,7 @@
                                                                         </div>
                                                                         <div class="item form-group" id="dataOutputMapping-topic-group">
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                                                                   for="dataOutputMapping-options">topic <span
+                                                                                   for="dataOutputMapping-options">主题 <span
                                                                                     class="required">*</span>
                                                                             </label>
                                                                             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -378,7 +391,7 @@
                                                                         </div>
                                                                         <div class="item form-group">
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                                                                   for="dataInstance-name">dataSourceOutput <span
+                                                                                   for="dataInstance-name">输出数据源 <span
                                                                                     class="required">*</span>
                                                                             </label>
                                                                             <div class="col-md-9 col-sm-9 col-xs-12">
@@ -444,14 +457,70 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="dataInstance-options-modal" class="modal fade bs-example-modal-lg" tabindex="-1"
+                     role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">模板</h4>
+                            </div>
+                            <div class="modal-body">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Mysql</a>
+                                    </li>
+                                    <#--<li role="presentation" class=""><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Oracle</a>-->
+                                    <#--</li>-->
+                                    <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                    </li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="profile-tab">
+                                        <textarea style="width: 100%;" rows="12" readonly>{
+    "username":"",
+    "password":"",
+    "host":"",
+    "port":"",
+    "jdbcUrl":"",
+    "slaveId":"",
+    "whiteFilter":"white\\..*",
+    "blackFilter":"black\\..*"
+}</textarea>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab">
+                                        <textarea style="width: 100%;" rows="12" readonly>{
+    "bootstrap.servers":"",
+    "topic":"",
+    "group.id":""
+} </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="alert-close" class="btn btn-default antoclose"
+                                        data-dismiss="modal">关闭
+                                </button>
+                                <button type="button" id="alert-submit" class="btn btn-primary antosubmit">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="loading" class="text-center" style="display:none;z-index:1000;position: absolute;left: 0;bottom: 0;right: 0;top: 0;background: #000;opacity: 0.5">
+                <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="font-size: 4em;color: #13bebf;margin: 20%;"></span>
             </div>
         </div>
         <!-- /page content -->
 
         <!-- footer content -->
         <footer>
-            <div class="pull-right">
-                Github <a href="">Dataflow</a>
+            <div class="pull-right github-ico">
+                Github <a href="https://github.com/kevinKaiF/data-flow" target="_blank">Dataflow</a>
             </div>
             <div class="clearfix"></div>
         </footer>

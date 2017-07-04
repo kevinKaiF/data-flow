@@ -17,6 +17,7 @@
     <resultMap id="RM_DataSourceOutput" type="com.github.dataflow.dubbo.model.DataSourceOutput">
         <result property="id" column="ID"/>
         <result property="type" column="TYPE"/>
+        <result property="name" column="NAME"/>
         <result property="options" column="OPTIONS"/>
     </resultMap>
 
@@ -24,7 +25,7 @@
     <sql id="columns">
         <![CDATA[
 			dom.ID ID,dom.DATA_INSTANCE_ID DATA_INSTANCE_ID,dom.SCHEMA_NAME SCHEMA_NAME,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,dom.TOPIC TOPIC,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,
-			dso.ID dso_ID, dso.TYPE dso_TYPE, dso.OPTIONS dso_OPTIONS
+			dso.ID dso_ID, dso.NAME dso_NAME, dso.TYPE dso_TYPE, dso.OPTIONS dso_OPTIONS
 	    ]]>
     </sql>
 

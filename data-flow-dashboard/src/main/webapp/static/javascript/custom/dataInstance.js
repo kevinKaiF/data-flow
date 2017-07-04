@@ -29,6 +29,12 @@
                 $("#alert-submit").hide().off('click');
             }
         },
+        showLoading : function () {
+            $("#loading").show();
+        },
+        hideLoading : function () {
+            $("#loading").hide();
+        },
         eventBind: function () {
             $("#dataInstanceModal").on("shown.bs.modal", function () {
                 if (!main._hasInitFormWizard) {
@@ -49,6 +55,16 @@
                 // clear dataTable form
                 var promptingMessage = '<div style="margin: 0 auto; margin-top: 50px; text-align: center"><h3>配置过滤的表字段</h3></div>'
                 $("#dataInstance-table-detail").empty().html(promptingMessage)
+            })
+            
+            // the reference for DataInstance's options
+            $("#dataInstance-options-doc").on("click", function () {
+                $("#dataInstance-options-modal").modal("show");
+            })
+
+            // collapse the search panel
+            $("#search_panel_header").on("click", function() {
+                $(this).find(".collapse-link").click();
             })
         },
         parseDataSourceOutputType: function (type) {
@@ -389,7 +405,7 @@
                         $("#dataOutputMapping-schemaName-group").hide();
                         $("#dataOutputMapping-topic-group").hide();
                         $("#dataOutputMapping-schemaName").empty().html("<option value='*' selected></option>");
-                        $("#dataOutputMapping-topic").val(-1);
+                        $("#dataOutputMapping-topic").val("-");
                     }
                     var dataTable = $('#dataOutputMappingTable').dataTable();
                     dataTable.fnSettings().ajax.data = {dataInstanceId: dataInstanceId};
@@ -478,17 +494,28 @@
                         },
                         columns: [
                             {
-                                data: "schemaName", title: "库名", width : "20%", render: function (data) {
+                                data: "schemaName", title: "库名", width : "15%", render: function (data) {
                                 return data == "*" ? "全部" : data;
                             }
                             },
-                            {data: "topic", title: "主题", width : "20%"},
+                            {data: "topic", title: "主题", width : "10%"},
                             {
                                 data: "dataSourceOutput.id",
                                 title: "输出源id",
                                 width : "10%" ,
                                 render: function (data, type, full, meta) {
                                     return full.dataSourceOutputId;
+                                }
+                            },{
+                                data: "dataSourceOutput.name",
+                                title: "输出源名称",
+                                width : "15%" ,
+                                render: function (data, type, full, meta) {
+                                    if (full.dataSourceOutput) {
+                                        return full.dataSourceOutput.name
+                                    } else {
+                                        return "-"
+                                    }
                                 }
                             },
                             {
@@ -702,6 +729,7 @@
 
                     // 启动
                     $tbody.on("click", "td>span.dataInstance-start", function () {
+                        main.showLoading();
                         var $button = $(this);
                         var $tr = $button.closest('tr');
                         var row = table.row($tr);
@@ -709,7 +737,10 @@
                             url: "./start",
                             dataType: "json",
                             type: "POST",
-                            data: {id: row.data().id}
+                            data: {id: row.data().id},
+                            complete : function() {
+                                main.hideLoading();
+                            }
                         }).then(function (data) {
                             if (data.responseStatus == 200) {
                                 $("#dataInstanceTable").dataTable().api().ajax.reload(null, false);
@@ -722,6 +753,7 @@
 
                     // 关停
                     $tbody.on("click", "td>span.dataInstance-stop", function () {
+                        main.showLoading();
                         var $button = $(this);
                         var $tr = $button.closest('tr');
                         var row = table.row($tr);
@@ -729,7 +761,10 @@
                             url: "./stop",
                             dataType: "json",
                             type: "POST",
-                            data: {id: row.data().id}
+                            data: {id: row.data().id},
+                            complete : function() {
+                                main.hideLoading();
+                            }
                         }).then(function (data) {
                             if (data.responseStatus == 200) {
                                 $("#dataInstanceTable").dataTable().api().ajax.reload(null, false);
@@ -895,8 +930,9 @@
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">库名</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">主题</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源id</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源名称</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源类型</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 60%;">输出源配置</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 50%;">输出源配置</th>' +
                                     '</tr>' +
                                     '</thead>' +
                                     '<tbody>';
@@ -907,6 +943,7 @@
                                         '<td>' + row.schemaName + '</td>' +
                                         '<td>' + row.topic + '</td>' +
                                         '<td>' + row.dataSourceOutput.id + '</td>' +
+                                        '<td>' + row.dataSourceOutput.name + '</td>' +
                                         '<td>' + main.parseDataSourceOutputType(row.dataSourceOutput.type) + '</td>' +
                                         '<td>' + row.dataSourceOutput.options + '</td>' +
                                         '</tr>'
@@ -955,6 +992,8 @@
                                 data: "type", title: "输出源类型", width: '25%', render: function (data) {
                                 return main.parseDataSourceOutputType(data);
                             }
+                            }, {
+                                data: "name", title: "输出源名称", width: '25%'
                             },
                             {data: "options", title: "输出源配置"},
 

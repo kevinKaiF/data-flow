@@ -30,6 +30,16 @@
             $("#dataSourceOutputModal").on("hidden.bs.modal", function () {
                 $("#dataSourceOutput-form").clearForm(true);
             })
+
+            // the reference for DataSourceOutput's options
+            $("#dataSourceOutput-options-doc").on("click", function () {
+                $("#dataSourceOutput-options-modal").modal("show");
+            })
+
+            // collapse the search panel
+            $("#search_panel_header").on("click", function () {
+                $(this).find(".collapse-link").click();
+            })
         },
         initValidation: function () {
             if (typeof (validator) === 'undefined') {
@@ -72,8 +82,10 @@
                             //     data: null,
                             //     defaultContent: ''
                             // },
+                            {data: "id", title: "ID"},
+                            {data : "name", title : "名称"},
                             {
-                                data: "type", title: "type", width: '10%', render: function (data) {
+                                data: "type", title: "类型", width: '10%', render: function (data) {
                                 switch (data) {
                                     case 10:
                                         return "MySQL";
@@ -94,7 +106,7 @@
                                 }
                             }
                             },
-                            {data: "options", title: "options"},
+                            {data: "options", title: "配置"},
 
                         ],
                         language: {

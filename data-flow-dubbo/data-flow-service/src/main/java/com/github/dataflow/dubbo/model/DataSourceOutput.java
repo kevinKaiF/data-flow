@@ -23,6 +23,13 @@ public class DataSourceOutput implements Serializable {
     private java.lang.Integer type;
 
     /**
+     * @描述:输出数据源的名称
+     * @字段:NAME VARCHAR(20)
+     */
+    @NotNull
+    private java.lang.String name;
+
+    /**
      * @描述:输出数据源的配置，JSON格式
      * @字段:OPTIONS VARCHAR(200)
      */
@@ -200,11 +207,20 @@ public class DataSourceOutput implements Serializable {
         return this.updateTimeEnd;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "DataSourceOutput{" +
                 "id=" + id +
                 ", type=" + type +
+                ", name=" + name +
                 ", options='" + options + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

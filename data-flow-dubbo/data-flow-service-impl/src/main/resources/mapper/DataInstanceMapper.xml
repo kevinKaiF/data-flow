@@ -49,6 +49,7 @@
     <resultMap id="RM_DataSourceOutput" type="com.github.dataflow.dubbo.model.DataSourceOutput">
         <result property="id" column="ID"/>
         <result property="type" column="TYPE"/>
+        <result property="name" column="NAME"/>
         <result property="options" column="OPTIONS"/>
     </resultMap>
 
@@ -65,7 +66,7 @@
         <![CDATA[
 			di.ID ID,di.NAME NAME,di.TAG TAG,di.PRODUCER_OR_CONSUMER PRODUCER_OR_CONSUMER,di.TYPE TYPE,di.TRANSFORM_SCRIPT TRANSFORM_SCRIPT,di.OPTIONS OPTIONS,di.NODE_PATH NODE_PATH,di.STATUS STATUS,di.CREATE_TIME CREATE_TIME,di.UPDATE_TIME UPDATE_TIME,
 			dom.ID dom_ID,dom.DATA_INSTANCE_ID dom_DATA_INSTANCE_ID,dom.SCHEMA_NAME dom_SCHEMA_NAME,dom.TOPIC dom_TOPIC,dom.DATA_SOURCE_OUTPUT_ID dom_DATA_SOURCE_OUTPUT_ID,
-			dso.ID dom_dso_ID,dso.TYPE dom_dso_TYPE,dso.OPTIONS dom_dso_OPTIONS,
+			dso.ID dom_dso_ID,dso.NAME dom_dso_NAME,dso.TYPE dom_dso_TYPE,dso.OPTIONS dom_dso_OPTIONS,
 			dt.ID dt_ID,dt.DATA_INSTANCE_ID dt_DATA_INSTANCE_ID,dt.SCHEMA_NAME dt_SCHEMA_NAME,dt.TABLE_NAME dt_TABLE_NAME,dt.COLUMNS dt_COLUMNS
 	    ]]>
     </sql>
@@ -245,7 +246,7 @@
                 AND OPTIONS LIKE CONCAT('%',#{options},'%')
             </if>
             <if test="nodePath != null and nodePath !=''">
-                AND NODE_PATH = #{nodePath}
+                AND NODE_PATH LIKE CONCAT('%',#{nodePath},'%')
             </if>
             <if test="status != null">
                 AND STATUS = #{status}
@@ -302,7 +303,7 @@
                 AND di.OPTIONS LIKE CONCAT('%',#{options},'%')
             </if>
             <if test="nodePath != null and nodePath !=''">
-                AND di.NODE_PATH = #{nodePath}
+                AND NODE_PATH LIKE CONCAT('%',#{nodePath},'%')
             </if>
             <if test="status != null">
                 AND di.STATUS = #{status}

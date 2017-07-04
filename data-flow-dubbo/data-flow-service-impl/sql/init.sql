@@ -42,6 +42,7 @@ DROP TABLE IF EXISTS `data_source_output`;
 CREATE TABLE `data_source_output` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `TYPE` int(1) NOT NULL COMMENT '输出数据源的类型',
+  `NAME` varchar(20) NOT NULL COMMENT '输出数据源的名称',
   `OPTIONS` varchar(200) NOT NULL COMMENT '输出数据源的配置，JSON格式',
   `CREATE_TIME` datetime NOT NULL COMMENT '创建时间',
   `UPDATE_TIME` datetime DEFAULT NULL COMMENT '更新时间',

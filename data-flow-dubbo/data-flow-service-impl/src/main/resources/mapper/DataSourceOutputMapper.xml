@@ -8,6 +8,7 @@
     <resultMap id="RM_DataSourceOutput" type="com.github.dataflow.dubbo.model.DataSourceOutput">
         <result property="id" column="ID"/>
         <result property="type" column="TYPE"/>
+        <result property="name" column="NAME"/>
         <result property="options" column="OPTIONS"/>
         <result property="createTime" column="CREATE_TIME"/>
         <result property="updateTime" column="UPDATE_TIME"/>
@@ -16,7 +17,7 @@
     <!-- 用于select查询公用抽取的列 -->
     <sql id="columns">
         <![CDATA[
-			ID,TYPE,OPTIONS,CREATE_TIME,UPDATE_TIME
+			ID,NAME,TYPE,OPTIONS,CREATE_TIME,UPDATE_TIME
 	    ]]>
     </sql>
 
@@ -26,12 +27,14 @@
 	        INSERT INTO data_source_output (
 	        	ID ,
 	        	TYPE ,
+	        	NAME ,
 	        	OPTIONS ,
 	        	CREATE_TIME ,
 	        	UPDATE_TIME 
 	        ) VALUES (
 	        	#{id} ,
 	        	#{type} ,
+	        	#{name} ,
 	        	#{options} ,
 	        	#{createTime} ,
 	        	#{updateTime} 
@@ -44,6 +47,9 @@
         <set>
             <if test="type != null">
                 TYPE = #{type} ,
+            </if>
+            <if test="name != null and name != ''">
+                NAME = #{name} ,
             </if>
             <if test="options != null and options != ''">
                 OPTIONS = #{options} ,
@@ -99,6 +105,9 @@
             </if>
             <if test="options != null and options !=''">
                 AND OPTIONS LIKE CONCAT('%',#{options},'%')
+            </if>
+            <if test="name != null and name !=''">
+                AND NAME LIKE CONCAT('%',#{name},'%')
             </if>
             <if test="createTimeBegin != null">
                 AND CREATE_TIME >= #{createTimeBegin}

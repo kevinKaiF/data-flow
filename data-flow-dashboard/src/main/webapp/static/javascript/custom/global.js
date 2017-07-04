@@ -3,10 +3,32 @@
         init: function () {
             profile.initNProgress();
             $(function () {
+                profile.settingValidator();
                 profile.init_sidebar();
                 profile.initPanelEvent();
                 profile.extension();
             })
+        },
+        settingValidator : function() {
+          if (validator && validator.message) {
+              validator.message = {
+                  invalid         : '非法',
+                  checked         : '请勾选',
+                  empty           : '非空',
+                  min             : '太短',
+                  max             : '太长',
+                  number_min      : '太小',
+                  number_max      : '太大',
+                  url             : '非法',
+                  number          : '非数字',
+                  email           : '非法',
+                  email_repeat    : '重复',
+                  password_repeat : '不一致',
+                  repeat          : '不一致',
+                  complete        : '未完成',
+                  select          : '请选择'
+              };
+          }
         },
         init_sidebar: function () {
             var $BODY = $('body'),
@@ -28,7 +50,7 @@
                     contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
 
                 // normalize content
-                contentHeight -= $NAV_MENU.height() + footerHeight;
+                contentHeight -= $NAV_MENU.height() + footerHeight + 20;
 
                 $RIGHT_COL.css('min-height', contentHeight);
             };
@@ -75,7 +97,8 @@
             }
         },
         initPanelEvent : function () {
-            $('.collapse-link').on('click', function() {
+            $('.collapse-link').on('click', function(e) {
+                e.stopPropagation();
                 var $BOX_PANEL = $(this).closest('.x_panel'),
                     $ICON = $(this).find('i'),
                     $BOX_CONTENT = $BOX_PANEL.find('.x_content');
@@ -142,7 +165,7 @@
                     $(this).find("select").each(function () {
                         var $this = $(this);
                         var name = $this.attr("name");
-                        if (data[name]) {
+                        if (data[name] || (data[name] == 0 && (data[name] + "").length > 0)) {
                             // remove the selected attribute of option dom
                             $this.find("option").each(function() {
                                 $(this).removeAttr("selected")
