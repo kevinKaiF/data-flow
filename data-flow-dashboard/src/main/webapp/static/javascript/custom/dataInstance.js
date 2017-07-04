@@ -29,10 +29,10 @@
                 $("#alert-submit").hide().off('click');
             }
         },
-        showLoading : function () {
+        showLoading: function () {
             $("#loading").show();
         },
-        hideLoading : function () {
+        hideLoading: function () {
             $("#loading").hide();
         },
         eventBind: function () {
@@ -56,14 +56,14 @@
                 var promptingMessage = '<div style="margin: 0 auto; margin-top: 50px; text-align: center"><h3>配置过滤的表字段</h3></div>'
                 $("#dataInstance-table-detail").empty().html(promptingMessage)
             })
-            
+
             // the reference for DataInstance's options
             $("#dataInstance-options-doc").on("click", function () {
                 $("#dataInstance-options-modal").modal("show");
             })
 
             // collapse the search panel
-            $("#search_panel_header").on("click", function() {
+            $("#search_panel_header").on("click", function () {
                 $(this).find(".collapse-link").click();
             })
         },
@@ -346,9 +346,73 @@
                         }
                     })
                 },
+                __validateDataInstanceOptions: function (type, options) {
+                    function isEmpty(data) {
+                        if (data || (data == 0 && (data + "").length > 0)) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+
+                    function validateProperty(json, property) {
+                        for (var i in property) {
+                            if (isEmpty(json[property[i]])) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+
+                    try {
+                        var json = JSON.parse(options);
+                        switch (type) {
+                            case 10 : // MySQL
+                                var props = ["username", "password", "host", "port", "jdbcUrl", "slaveId"];
+                                return validateProperty(json, props);
+                            case 11: // Oracle
+                            case 12: // PostGreSQL
+                            case 13: // SQLServer
+                                var props = ["username", "password", "host", "port", "jdbcUrl"];
+                                return validateProperty(json, props);
+                            case 20 : // Kafka
+                                var props = ["bootstrap.servers", "topic"]
+                                return validateProperty(json, props);
+                            case 21 : // metaQ
+                                // TODO
+                                return true;
+                            case 22 : // rabbitMQ
+                                return true;
+                            case 23 : // activeMQ
+                                var props = ["brokeUrl", "type"];
+                                if (validateProperty(json, props)) {
+                                    // topic or queue
+                                    if (json[props[1]] == 1) {  // topic
+                                        return !isEmpty(json["topic"])
+                                    } else {                    // queue
+                                        return !isEmpty(json["queue"])
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            default :
+                                return false;
+                        }
+                    } catch (e) {
+                        main.messageAlert("配置非JSON格式")
+                        return false;
+                    }
+                },
                 __step1: function () {
                     // validate
                     if (!validator.checkAll($("#dataInstance-form"))) {
+                        return false;
+                    }
+
+                    // validate the options property of DataInstance
+                    var options = $("#dataInstance-options").val();
+                    var type = $("#dataInstance-type").val();
+                    if (!wizard.__validateDataInstanceOptions(type, options)) {
                         return false;
                     }
 
@@ -362,7 +426,7 @@
                             if (data.responseStatus == 200) {
                                 success = true;
                                 $("#dataInstance-id").val(data.result);
-                                if($("#dataInstance-type").val() < 20) {
+                                if ($("#dataInstance-type").val() < 20) {
                                     wizard._beforeStep2Callback(data.result);
                                 }
                             } else {
@@ -387,7 +451,7 @@
                     // set dataInstanceId
                     var dataInstanceId = $("#dataInstance-id").val();
                     $("#dataOutputMapping-dataInstanceId").val(dataInstanceId);
-                    if($("#dataInstance-type").val() < 20) {
+                    if ($("#dataInstance-type").val() < 20) {
                         // render select options
                         $.ajax({
                             url: "./schema",
@@ -431,6 +495,17 @@
                         if (!dataInstanceId) {
                             main.messageAlert('数据实例已失效');
                             return false;
+                        }
+
+                        var options = $("#dataOutputMapping-options").val();
+                        if (options) {
+                            try {
+                                JSON.parse(options)
+                            } catch (e) {
+                                main.messageAlert('配置非JSON格式');
+                                console.error(e);
+                                return false;
+                            }
                         }
 
                         $dataOutputMapping.ajaxSubmit({
@@ -493,22 +568,22 @@
                         },
                         columns: [
                             {
-                                data: "schemaName", title: "库名", width : "15%", render: function (data) {
+                                data: "schemaName", title: "库名", width: "15%", render: function (data) {
                                 return data == "*" ? "全部" : data;
                             }
                             },
-                            {data: "options", title: "配置", width : "35%"},
+                            {data: "options", title: "配置", width: "35%"},
                             {
                                 data: "dataSourceOutput.id",
                                 title: "输出源id",
-                                width : "10%" ,
+                                width: "10%",
                                 render: function (data, type, full, meta) {
                                     return full.dataSourceOutputId;
                                 }
-                            },{
+                            }, {
                                 data: "dataSourceOutput.name",
                                 title: "输出源名称",
-                                width : "15%" ,
+                                width: "15%",
                                 render: function (data, type, full, meta) {
                                     if (full.dataSourceOutput) {
                                         return full.dataSourceOutput.name
@@ -520,7 +595,7 @@
                             {
                                 data: "dataSourceOutput.type",
                                 title: "输出源类型",
-                                width : "10%" ,
+                                width: "10%",
                                 render: function (data, type, full, meta) {
                                     if (full.dataSourceOutput) {
                                         return main.parseDataSourceOutputType(full.dataSourceOutput.type)
@@ -638,9 +713,11 @@
                             },
                             {data: "name", title: "名称"},
                             {data: "tag", title: "标签"},
-                            {data : "producerOrConsumer", title : "模式", render : function (data) {
+                            {
+                                data: "producerOrConsumer", title: "模式", render: function (data) {
                                 return data ? "消费者" : "生产者";
-                            }},
+                            }
+                            },
                             {
                                 data: "type", title: "类型", "render": function (data, type, full, meta) {
                                 return main.parseDataSourceOutputType(data);
@@ -730,7 +807,7 @@
                             dataType: "json",
                             type: "POST",
                             data: {id: row.data().id},
-                            complete : function() {
+                            complete: function () {
                                 main.hideLoading();
                             }
                         }).then(function (data) {
@@ -754,7 +831,7 @@
                             dataType: "json",
                             type: "POST",
                             data: {id: row.data().id},
-                            complete : function() {
+                            complete: function () {
                                 main.hideLoading();
                             }
                         }).then(function (data) {
