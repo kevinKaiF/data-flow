@@ -19,6 +19,10 @@ public class PropertyUtil {
         return Integer.valueOf(properties.getProperty(key, defaultValue));
     }
 
+    public static int getInt(Properties properties, String key, int defaultValue) {
+        return Integer.valueOf(properties.getProperty(key, String.valueOf(defaultValue)));
+    }
+
     ;
 
     public static long getLong(Properties properties, String key, String defaultValue) {

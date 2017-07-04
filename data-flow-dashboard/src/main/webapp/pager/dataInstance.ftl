@@ -198,7 +198,7 @@
 
                             <div id="dataInstanceModal" class="modal fade bs-example-modal-lg" tabindex="-1"
                                  role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
+                                <div class="modal-dialog modal-lg" style="width: 65%">
                                     <div class="modal-content">
 
                                         <div class="modal-header">
@@ -278,6 +278,7 @@
                                                                     <option value="20">Kafka</option>
                                                                     <option value="21">metaQ</option>
                                                                     <option value="22">rabbitMQ</option>
+                                                                    <option value="23">activeMQ</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -377,16 +378,16 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="item form-group" id="dataOutputMapping-topic-group">
+                                                                        <div class="item form-group">
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
-                                                                                   for="dataOutputMapping-options">主题 <span
-                                                                                    class="required">*</span>
+                                                                                   for="dataOutputMapping-options">配置
                                                                             </label>
                                                                             <div class="col-md-9 col-sm-9 col-xs-12">
-                                                                                <input id="dataOutputMapping-topic"
-                                                                                       class="form-control col-md-7 col-xs-12"
-                                                                                       type="text" name="topic"
-                                                                                       required="required">
+                                                                                 <textarea id="dataOutputMapping-options"
+                                                                                           class="form-control col-md-7 col-xs-12"
+                                                                                           rows="5" required="required"
+                                                                                           name="options"></textarea>
+                                                                                <#--<span id="dataOutputMapping-options-doc">doc</span>-->
                                                                             </div>
                                                                         </div>
                                                                         <div class="item form-group">

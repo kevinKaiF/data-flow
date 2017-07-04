@@ -9,7 +9,7 @@
         <result property="id" column="ID"/>
         <result property="dataInstanceId" column="DATA_INSTANCE_ID"/>
         <result property="schemaName" column="SCHEMA_NAME"/>
-        <result property="topic" column="TOPIC"/>
+        <result property="options" column="OPTIONS"/>
         <result property="dataSourceOutputId" column="DATA_SOURCE_OUTPUT_ID"/>
         <association property="dataSourceOutput" columnPrefix="dso_" resultMap="RM_DataSourceOutput"/>
     </resultMap>
@@ -24,7 +24,7 @@
     <!-- 用于select查询公用抽取的列 -->
     <sql id="columns">
         <![CDATA[
-			dom.ID ID,dom.DATA_INSTANCE_ID DATA_INSTANCE_ID,dom.SCHEMA_NAME SCHEMA_NAME,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,dom.TOPIC TOPIC,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,
+			dom.ID ID,dom.DATA_INSTANCE_ID DATA_INSTANCE_ID,dom.SCHEMA_NAME SCHEMA_NAME,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,dom.OPTIONS OPTIONS,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,
 			dso.ID dso_ID, dso.NAME dso_NAME, dso.TYPE dso_TYPE, dso.OPTIONS dso_OPTIONS
 	    ]]>
     </sql>
@@ -37,13 +37,13 @@
 	        	DATA_INSTANCE_ID ,
 	        	SCHEMA_NAME ,
 	        	DATA_SOURCE_OUTPUT_ID ,
-	        	TOPIC
+	        	OPTIONS
 	        ) VALUES (
 	        	#{id} ,
 	        	#{dataInstanceId} ,
 	        	#{schemaName} ,
 	        	#{dataSourceOutputId} ,
-	        	#{topic}
+	        	#{options}
 	        )
 	    ]]>
     </insert>
@@ -60,8 +60,8 @@
             <if test="dataSourceOutputId != null">
                 DATA_SOURCE_OUTPUT_ID = #{dataSourceOutputId} ,
             </if>
-            <if test="topic != null and topic != ''">
-                TOPIC = #{topic}
+            <if test="options != null and options != ''">
+                OPTIONS = #{options}
             </if>
         </set>
     </sql>
@@ -122,8 +122,8 @@
             <if test="dataSourceOutputId != null">
                 AND dom.DATA_SOURCE_OUTPUT_ID = #{dataSourceOutputId}
             </if>
-            <if test="topic != null and topic !=''">
-                AND dom.TOPIC LIKE CONCAT('%', #{topic}, '%')
+            <if test="options != null and options !=''">
+                AND dom.OPTIONS LIKE CONCAT('%', #{options}, '%')
             </if>
         </where>
     </sql>

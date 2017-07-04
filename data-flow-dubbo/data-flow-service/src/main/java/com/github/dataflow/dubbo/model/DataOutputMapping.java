@@ -33,7 +33,7 @@ public class DataOutputMapping implements Serializable {
      * @描述:其他配置，JSON格式
      * @字段:OPTIONS VARCHAR(200)
      */
-    private java.lang.String topic;
+    private java.lang.String options;
 
     /**
      * * @描述:DataSourceOutput的主键
@@ -101,17 +101,17 @@ public class DataOutputMapping implements Serializable {
     }
 
     /**
-     * @param topic 其他配置，JSON格式
+     * @param options 其他配置，JSON格式
      */
-    public void setTopic(java.lang.String topic) {
-        this.topic = topic;
+    public void setOptions(java.lang.String options) {
+        this.options = options;
     }
 
     /**
      * @return 其他配置，JSON格式
      */
-    public java.lang.String getTopic() {
-        return this.topic;
+    public java.lang.String getOptions() {
+        return this.options;
     }
 
     public DataSourceOutput getDataSourceOutput() {
@@ -136,7 +136,7 @@ public class DataOutputMapping implements Serializable {
                 "id=" + id +
                 ", dataInstanceId=" + dataInstanceId +
                 ", schemaName='" + schemaName + '\'' +
-                ", options='" + topic + '\'' +
+                ", options='" + options + '\'' +
                 '}';
     }
 }

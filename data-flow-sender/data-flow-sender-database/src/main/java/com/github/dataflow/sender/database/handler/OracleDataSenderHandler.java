@@ -5,7 +5,7 @@ import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 import com.github.dataflow.sender.database.OracleDataSender;
-import com.github.dataflow.sender.database.utils.DatabaseConfig;
+import com.github.dataflow.sender.database.config.DatabaseConfig;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.sql.DataSource;

@@ -20,7 +20,7 @@ public class TestDataOutputMappingService extends TestBase {
     public void testInsert() {
         DataOutputMapping dataOutputMapping = new DataOutputMapping();
         dataOutputMapping.setDataInstanceId(2L);
-        dataOutputMapping.setTopic("{'name' :'kevin'}");
+        dataOutputMapping.setOptions("{'name' :'kevin'}");
         dataOutputMapping.setSchemaName("TEST");
         dataOutputMapping.setDataSourceOutputId(2L);
         dataOutputMappingService.insert(dataOutputMapping);
@@ -28,7 +28,7 @@ public class TestDataOutputMappingService extends TestBase {
 
     @Test
     public void testGetById() {
-        Long id = 20L;
+        Long id = 21L;
         print(dataOutputMappingService.getById(id));
     }
 
@@ -37,7 +37,7 @@ public class TestDataOutputMappingService extends TestBase {
         DataOutputMapping dataOutputMapping = new DataOutputMapping();
         dataOutputMapping.setDataInstanceId(2L);
         dataOutputMapping.setId(1L);
-        dataOutputMapping.setTopic("{'name' :'kevin'}");
+        dataOutputMapping.setOptions("{'name' :'kevin'}");
         dataOutputMapping.setSchemaName("TEST");
         dataOutputMapping.setDataSourceOutputId(2L);
         dataOutputMappingService.update(dataOutputMapping);
@@ -53,7 +53,7 @@ public class TestDataOutputMappingService extends TestBase {
     public void testFindByCondition() {
         DataOutputMapping dataOutputMapping = new DataOutputMapping();
         dataOutputMapping.setDataInstanceId(2L);
-        dataOutputMapping.setTopic("{'name' :'kevin'}");
+        dataOutputMapping.setOptions("{'name' :'kevin'}");
         dataOutputMapping.setSchemaName("TEST");
         dataOutputMapping.setDataSourceOutputId(2L);
         print(dataOutputMappingService.findByCondition(dataOutputMapping, new PageSet()));

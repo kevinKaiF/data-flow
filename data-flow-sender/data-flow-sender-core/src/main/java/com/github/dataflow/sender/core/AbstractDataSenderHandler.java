@@ -7,6 +7,7 @@ import com.github.dataflow.sender.core.event.EventHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,12 @@ public abstract class AbstractDataSenderHandler implements DataSenderHandler, Ap
     protected abstract DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception;
 
     protected Properties parseToProperties(String options) {
-        return JSONObject.parseObject(options, Properties.class);
+        if (StringUtils.isEmpty(options)) {
+            return new Properties();
+        } else {
+            return JSONObject.parseObject(options, Properties.class);
+        }
     }
+
+
 }

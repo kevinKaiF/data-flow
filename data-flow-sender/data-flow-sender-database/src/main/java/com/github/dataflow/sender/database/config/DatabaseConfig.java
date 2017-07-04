@@ -1,4 +1,4 @@
-package com.github.dataflow.sender.database.utils;
+package com.github.dataflow.sender.database.config;
 
 /**
  * @author : kevin

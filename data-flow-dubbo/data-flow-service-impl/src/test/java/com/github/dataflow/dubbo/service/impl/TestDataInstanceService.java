@@ -39,7 +39,7 @@ public class TestDataInstanceService extends TestBase {
 
     @Test
     public void testGetByIdFully() {
-        Long id = 2L;
+        Long id = 1L;
         print(dataInstanceService.getByIdFully(id));
     }
 

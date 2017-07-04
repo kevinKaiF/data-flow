@@ -27,6 +27,11 @@ public abstract class DatabaseDataSender extends DataSender {
     protected boolean batch = true;
 
     @Override
+    public boolean isSingleton() {
+        return true;
+    }
+
+    @Override
     public void send(List<RowMetaData> rowMetaDataList) throws Exception {
         List<RowMetaData> batchRowMetaData = new ArrayList<>();
         RowMetaData prev = null;

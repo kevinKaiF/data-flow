@@ -13,6 +13,7 @@
         <module>data-flow-sender-kafka</module>
         <module>data-flow-sender-core</module>
         <module>data-flow-sender-database</module>
+        <module>data-flow-sender-activemq</module>
     </modules>
 
     <artifactId>data-flow-sender</artifactId>

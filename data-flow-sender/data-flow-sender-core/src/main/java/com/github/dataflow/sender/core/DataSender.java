@@ -35,6 +35,13 @@ public abstract class DataSender extends AbstractDataFlowLifeCycle {
     protected String dataSenderName;
 
     /**
+     * 是否是单例
+     *
+     * @return
+     */
+    public abstract boolean isSingleton();
+
+    /**
      * 发送数据
      *
      * @param rowMetaDataList

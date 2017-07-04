@@ -41,7 +41,7 @@
         <result property="id" column="ID"/>
         <result property="dataInstanceId" column="DATA_INSTANCE_ID"/>
         <result property="schemaName" column="SCHEMA_NAME"/>
-        <result property="topic" column="TOPIC"/>
+        <result property="options" column="OPTIONS"/>
         <result property="dataSourceOutputId" column="DATA_SOURCE_OUTPUT_ID"/>
         <association property="dataSourceOutput" columnPrefix="dso_" resultMap="RM_DataSourceOutput"/>
     </resultMap>
@@ -65,7 +65,7 @@
     <sql id="columns_fully">
         <![CDATA[
 			di.ID ID,di.NAME NAME,di.TAG TAG,di.PRODUCER_OR_CONSUMER PRODUCER_OR_CONSUMER,di.TYPE TYPE,di.TRANSFORM_SCRIPT TRANSFORM_SCRIPT,di.OPTIONS OPTIONS,di.NODE_PATH NODE_PATH,di.STATUS STATUS,di.CREATE_TIME CREATE_TIME,di.UPDATE_TIME UPDATE_TIME,
-			dom.ID dom_ID,dom.DATA_INSTANCE_ID dom_DATA_INSTANCE_ID,dom.SCHEMA_NAME dom_SCHEMA_NAME,dom.TOPIC dom_TOPIC,dom.DATA_SOURCE_OUTPUT_ID dom_DATA_SOURCE_OUTPUT_ID,
+			dom.ID dom_ID,dom.DATA_INSTANCE_ID dom_DATA_INSTANCE_ID,dom.SCHEMA_NAME dom_SCHEMA_NAME,dom.OPTIONS dom_OPTIONS,dom.DATA_SOURCE_OUTPUT_ID dom_DATA_SOURCE_OUTPUT_ID,
 			dso.ID dom_dso_ID,dso.NAME dom_dso_NAME,dso.TYPE dom_dso_TYPE,dso.OPTIONS dom_dso_OPTIONS,
 			dt.ID dt_ID,dt.DATA_INSTANCE_ID dt_DATA_INSTANCE_ID,dt.SCHEMA_NAME dt_SCHEMA_NAME,dt.TABLE_NAME dt_TABLE_NAME,dt.COLUMNS dt_COLUMNS
 	    ]]>

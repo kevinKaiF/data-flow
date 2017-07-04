@@ -16,7 +16,8 @@ public enum DataSourceType {
     // mq start with 20
     KAFKA(20),
     METAQ(21),
-    RABBITMQ(22);
+    RABBITMQ(22),
+    ACTIVEMQ(23);
 
     // nosql DB start with 30
 

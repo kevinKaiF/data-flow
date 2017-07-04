@@ -83,6 +83,8 @@
                     return "metaQ";
                 case 22 :
                     return "rabbitMQ"
+                case 23 :
+                    return "activeMQ"
                 default :
                     return '-';
             }
@@ -400,12 +402,9 @@
                         })
 
                         $("#dataOutputMapping-schemaName-group").show();
-                        $("#dataOutputMapping-topic-group").show();
                     } else {
                         $("#dataOutputMapping-schemaName-group").hide();
-                        $("#dataOutputMapping-topic-group").hide();
                         $("#dataOutputMapping-schemaName").empty().html("<option value='*' selected></option>");
-                        $("#dataOutputMapping-topic").val("-");
                     }
                     var dataTable = $('#dataOutputMappingTable').dataTable();
                     dataTable.fnSettings().ajax.data = {dataInstanceId: dataInstanceId};
@@ -498,7 +497,7 @@
                                 return data == "*" ? "全部" : data;
                             }
                             },
-                            {data: "topic", title: "主题", width : "10%"},
+                            {data: "options", title: "配置", width : "35%"},
                             {
                                 data: "dataSourceOutput.id",
                                 title: "输出源id",
@@ -528,13 +527,6 @@
                                     } else {
                                         return "-"
                                     }
-                                }
-                            },
-                            {
-                                data: "dataSourceOutput.options",
-                                title: "输出源配置",
-                                render: function (data, type, full, meta) {
-                                    return full.dataSourceOutput ? full.dataSourceOutput.options : '-';
                                 }
                             }, {
                                 data: null,
@@ -928,7 +920,7 @@
                                     '<table class="table table-hover dataTable no-footer" style="width: 100%;" role="grid">' +
                                     '<thead><tr role="row">' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">库名</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">主题</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">配置</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源id</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源名称</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源类型</th>' +
@@ -941,7 +933,7 @@
                                     dataOutputMappings +=
                                         '<tr role="row">' +
                                         '<td>' + row.schemaName + '</td>' +
-                                        '<td>' + row.topic + '</td>' +
+                                        '<td>' + row.options + '</td>' +
                                         '<td>' + row.dataSourceOutput.id + '</td>' +
                                         '<td>' + row.dataSourceOutput.name + '</td>' +
                                         '<td>' + main.parseDataSourceOutputType(row.dataSourceOutput.type) + '</td>' +

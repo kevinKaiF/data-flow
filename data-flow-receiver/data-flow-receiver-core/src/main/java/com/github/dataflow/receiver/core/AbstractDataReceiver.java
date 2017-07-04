@@ -61,7 +61,10 @@ public class AbstractDataReceiver extends AbstractDataFlowLifeCycle implements A
 
         DataOutputMapping dataOutputMapping = new DataOutputMapping();
         dataOutputMapping.setDataSourceOutput(dataSourceOutput);
-        dataOutputMapping.setTopic(PropertyUtil.getString(prop, DataReceiverConfig.DATA_RECEIVER_TOPIC));
+        String topic = PropertyUtil.getString(prop, DataReceiverConfig.DATA_RECEIVER_TOPIC);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(DataReceiverConfig.DATA_RECEIVER_TOPIC, topic);
+        dataOutputMapping.setOptions(jsonObject.toJSONString());
         return dataOutputMapping;
     }
 

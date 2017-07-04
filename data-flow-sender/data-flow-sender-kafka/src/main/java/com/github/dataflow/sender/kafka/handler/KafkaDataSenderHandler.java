@@ -1,11 +1,12 @@
 package com.github.dataflow.sender.kafka.handler;
 
-import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
+import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.AbstractDataSenderHandler;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.sender.kafka.KafkaDataSender;
+import com.github.dataflow.sender.kafka.config.KafkaConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.util.StringUtils;
 
@@ -23,7 +24,8 @@ public class KafkaDataSenderHandler extends AbstractDataSenderHandler {
     }
 
     public DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
-        String topic = dataOutputMapping.getTopic();
+        Properties dataOutputMappingOptions = parseToProperties(dataOutputMapping.getOptions());
+        String topic = dataOutputMappingOptions.getProperty(KafkaConfig.TOPIC);
         if (StringUtils.isEmpty(topic)) {
             throw new DataSenderException("the topic property of DataOutputMapping must not be null.");
         }
@@ -34,7 +36,7 @@ public class KafkaDataSenderHandler extends AbstractDataSenderHandler {
             throw new DataSenderException("the bootstrap.servers property of DataSourceOutput must not be null.");
         }
 
-        props.put("topic", topic);
+        props.putAll(dataOutputMappingOptions);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         KafkaDataSender kafkaDataSender = new KafkaDataSender(props);

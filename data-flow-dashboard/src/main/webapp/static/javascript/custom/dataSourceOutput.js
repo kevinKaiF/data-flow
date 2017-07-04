@@ -101,6 +101,8 @@
                                         return "metaQ";
                                     case 22 :
                                         return "rabbitMQ"
+                                    case 23 :
+                                        return "activeMQ"
                                     default :
                                         return '-';
                                 }

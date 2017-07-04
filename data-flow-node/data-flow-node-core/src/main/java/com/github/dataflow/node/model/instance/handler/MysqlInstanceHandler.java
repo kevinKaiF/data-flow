@@ -12,7 +12,7 @@ import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.node.model.config.DataFlowContext;
 import com.github.dataflow.node.model.instance.mysql.MysqlInstance;
 import com.github.dataflow.node.model.store.DefaultDataStore;
-import com.github.dataflow.sender.database.utils.DatabaseConfig;
+import com.github.dataflow.sender.database.config.DatabaseConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

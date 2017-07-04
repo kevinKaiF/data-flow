@@ -161,6 +161,7 @@
                                                 <option value="20">Kafka</option>
                                                 <option value="21">metaQ</option>
                                                 <option value="22">rabbitMQ</option>
+                                                <option value="23">activeMQ</option>
                                             </select>
                                         </div>
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
@@ -239,6 +240,7 @@
                                                             <option value="20">Kafka</option>
                                                             <option value="21">metaQ</option>
                                                             <option value="22">rabbitMQ</option>
+                                                            <option value="23">activeMQ</option>
                                                         </select>
                                                     </div>
                                                 </div>
