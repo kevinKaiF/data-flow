@@ -30,6 +30,8 @@
     <!--senders-->
     <!--kafka-->
     <bean id="kafkaDataSenderHandler" class="com.github.dataflow.sender.kafka.handler.KafkaDataSenderHandler"/>
+    <!--activemq-->
+    <bean id="activemqDataSenderHandler" class="com.github.dataflow.sender.activemq.handler.ActivemqDataSenderHandler"/>
     <!--mysql-->
     <bean id="mysqlDataSenderHandler" class="com.github.dataflow.sender.database.handler.MysqlDataSenderHandler"/>
     <!--oracle-->
