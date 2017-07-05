@@ -109,9 +109,6 @@ public class DefaultDataStore extends AbstractDataFlowLifeCycle implements DataS
         return rowMetaDataList;
     }
 
-    ;
-
-
     @Override
     public void start() {
         super.start();

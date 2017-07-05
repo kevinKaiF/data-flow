@@ -7,7 +7,10 @@ import com.github.dataflow.sender.activemq.config.ActivemqConfig;
 import com.github.dataflow.sender.activemq.enums.ActivemqType;
 import com.github.dataflow.sender.activemq.utils.Closer;
 import com.github.dataflow.sender.core.DataSender;
+import com.github.dataflow.sender.core.exception.DataSenderException;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.Properties;
  * @date : 2017/7/4
  */
 public class ActivemqDataSender extends DataSender {
+    private Logger logger = LoggerFactory.getLogger(ActivemqDataSender.class);
     private Properties      options;
     private Session         session;
     private Connection      connection;
@@ -56,7 +60,7 @@ public class ActivemqDataSender extends DataSender {
             producer = session.createProducer(destination);
             producer.setDeliveryMode(PropertyUtil.getInt(options, ActivemqConfig.DELIVERY_MODE));
         } catch (JMSException e) {
-            e.printStackTrace();
+            throw new DataSenderException(e);
         }
     }
 
@@ -74,8 +78,20 @@ public class ActivemqDataSender extends DataSender {
 
     @Override
     protected void doStop() {
-        Closer.closeProducerQuietly(producer);
-        Closer.closeSessionQuietly(session);
-        Closer.closeConnectionQuietly(connection);
+        try {
+            Closer.closeProducer(producer);
+        } catch (JMSException e) {
+            logger.error("close activemq producer failure, detail : ", e);
+        }
+        try {
+            Closer.closeSession(session);
+        } catch (JMSException e) {
+            logger.error("close activemq session failure, detail : ", e);
+        }
+        try {
+            Closer.closeConnection(connection);
+        } catch (JMSException e) {
+            logger.error("close activemq connection failure, detail : ", e);
+        }
     }
 }

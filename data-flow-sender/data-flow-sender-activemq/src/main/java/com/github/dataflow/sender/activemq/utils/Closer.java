@@ -9,44 +9,28 @@ import javax.jms.*;
  * @date : 2017/7/5
  */
 public class Closer {
-    public static void closeSessionQuietly(Session session) {
+    public static void closeSession(Session session) throws JMSException {
         if (session != null) {
-            try {
-                session.close();
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
+            session.close();
         }
     }
 
-    public static void closeConnectionQuietly(Connection connection) {
+    public static void closeConnection(Connection connection) throws JMSException {
         if (connection != null) {
-            try {
-                connection.close();
-                connection.stop();
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
+            connection.stop();
+            connection.close();
         }
     }
 
-    public static void closeProducerQuietly(MessageProducer producer) {
+    public static void closeProducer(MessageProducer producer) throws JMSException {
         if (producer != null) {
-            try {
-                producer.close();
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
+            producer.close();
         }
     }
 
-    public static void closeConsumerQuietly(MessageConsumer consumer) {
+    public static void closeConsumer(MessageConsumer consumer) throws JMSException {
         if (consumer != null) {
-            try {
-                consumer.close();
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
+            consumer.close();
         }
     }
 }

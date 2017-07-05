@@ -26,11 +26,6 @@
             <artifactId>activemq-core</artifactId>
             <version>5.7.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-pool</artifactId>
-            <version>5.14.3</version>
-        </dependency>
     </dependencies>
 
     <artifactId>data-flow-sender-activemq</artifactId>

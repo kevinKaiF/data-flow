@@ -101,7 +101,9 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
                 dataSender = DataSenderManager.get(dataSenderId);
                 if (dataSender == null) {
                     dataSender = createDataSender(dataOutputMapping);
-                    DataSenderManager.put(dataSenderId, dataSender);
+                    if (dataSender.isSingleton()) {
+                        DataSenderManager.put(dataSenderId, dataSender);
+                    }
                     dataSender.setDataSenderId(dataSenderId);
                     dataSender.setDataSenderName(dataSenderName);
                 }
