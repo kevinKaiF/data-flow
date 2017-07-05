@@ -2,6 +2,7 @@ package com.github.dataflow.node.model.instance.activemq;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.PropertyUtil;
+import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.core.instance.AbstractMessageAwareInstance;
 import com.github.dataflow.sender.activemq.config.ActivemqConfig;
 import com.github.dataflow.sender.activemq.enums.ActivemqType;
@@ -88,7 +89,7 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
             consumer = session.createConsumer(destination);
             logger.info("init consumer end!");
         } catch (JMSException e) {
-            e.printStackTrace();
+            throw new InstanceException(e);
         }
     }
 
@@ -102,9 +103,14 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
         return new ReceiveTask() {
             @Override
             protected void closeConsumer() {
-                Closer.closeConsumerQuietly(consumer);
-                semaphore.release();
-                logger.info("close activeMq consumer successfully.");
+                try {
+                    Closer.closeConsumer(consumer);
+                    logger.info("close activeMq consumer successfully.");
+                } catch (JMSException e) {
+                    logger.error("close activeMq consumer failure, detail : ", e);
+                } finally {
+                    semaphore.release();
+                }
             }
 
             @Override
