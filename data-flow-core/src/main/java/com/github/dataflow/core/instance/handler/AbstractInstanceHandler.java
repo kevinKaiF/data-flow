@@ -1,6 +1,10 @@
 package com.github.dataflow.core.instance.handler;
 
+import com.alibaba.fastjson.JSONObject;
+import com.github.dataflow.core.alarm.AlarmService;
 import com.github.dataflow.core.exception.InstanceException;
+import com.github.dataflow.core.instance.AbstractInstance;
+import com.github.dataflow.core.instance.Instance;
 import com.github.dataflow.core.store.DataStore;
 import com.github.dataflow.core.transformer.GroovyShellDataTransformer;
 import com.github.dataflow.dubbo.model.DataInstance;
@@ -22,7 +26,7 @@ import java.util.*;
  * @author kevin
  * @date 2017-05-30 1:13 AM.
  */
-public abstract class AbstractInstanceHandler implements ApplicationContextAware {
+public abstract class AbstractInstanceHandler implements ApplicationContextAware, InstanceHandler {
     /**
      * zk集群地址
      */
@@ -123,7 +127,42 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
         throw new InstanceException("there is no DataSenderHandler support the type [" + type + "] of DataOutputMapping + [" + dataOutputMapping + "].");
     }
 
-    ;
+    @Override
+    public Instance doCreateInstance(DataInstance dataInstance) {
+        Instance instance = createInstance(dataInstance);
+        afterCreateInstance(instance, dataInstance);
+        return instance;
+    }
+
+    protected void afterCreateInstance(Instance instance, DataInstance dataInstance) {
+        if (instance instanceof AbstractInstance) {
+            AbstractInstance abstractInstance = (AbstractInstance) instance;
+            abstractInstance.setId(dataInstance.getId());
+            abstractInstance.setName(dataInstance.getName());
+            abstractInstance.setDataStore(buildDataStore(dataInstance));
+            abstractInstance.setAlarmService(getAlarmService());
+        }
+
+    }
+
+    protected abstract AlarmService getAlarmService();
+
+    protected abstract Instance createInstance(DataInstance dataInstance);
+
+    // util methods
+    protected Properties parseToProperties(String options) {
+        if (StringUtils.isEmpty(options)) {
+            return new Properties();
+        } else {
+            return JSONObject.parseObject(options, Properties.class);
+        }
+    }
+
+    protected void validateProperties(Properties prop, String property) {
+        if (StringUtils.isEmpty(prop.getProperty(property))) {
+            throw new InstanceException("no configure the property [" + property + "]");
+        }
+    }
 
     public String getZookeeperAddresses() {
         return zookeeperAddresses;

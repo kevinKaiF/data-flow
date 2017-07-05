@@ -5,8 +5,8 @@ import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.PropertyUtil;
 import com.github.dataflow.sender.activemq.config.ActivemqConfig;
 import com.github.dataflow.sender.activemq.enums.ActivemqType;
+import com.github.dataflow.sender.activemq.utils.Closer;
 import com.github.dataflow.sender.core.DataSender;
-import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
@@ -20,6 +20,7 @@ import java.util.Properties;
  * @date : 2017/7/4
  */
 public class ActivemqDataSender extends DataSender {
+    private Properties      options;
     private Session         session;
     private Connection      connection;
     private MessageProducer producer;
@@ -29,7 +30,7 @@ public class ActivemqDataSender extends DataSender {
     }
 
     public ActivemqDataSender(Properties properties) {
-        init(properties);
+        this.options = properties;
     }
 
     @Override
@@ -37,23 +38,23 @@ public class ActivemqDataSender extends DataSender {
         return false;
     }
 
-    private void init(Properties properties) {
+    private void init() {
         try {
             ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-                    PropertyUtil.getString(properties, ActivemqConfig.USERNAME, ActiveMQConnection.DEFAULT_USER),
-                    PropertyUtil.getString(properties, ActivemqConfig.PASSWORD, ActiveMQConnection.DEFAULT_PASSWORD),
-                    PropertyUtil.getString(properties, ActivemqConfig.BROKE_URL));
+                    PropertyUtil.getString(options, ActivemqConfig.USERNAME),
+                    PropertyUtil.getString(options, ActivemqConfig.PASSWORD),
+                    PropertyUtil.getString(options, ActivemqConfig.BROKE_URL));
             connection = connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
             Destination destination = null;
-            if (PropertyUtil.getInt(properties, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
-                destination = session.createQueue(PropertyUtil.getString(properties, ActivemqConfig.QUEUE));
+            if (PropertyUtil.getInt(options, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
+                destination = session.createQueue(PropertyUtil.getString(options, ActivemqConfig.QUEUE));
             } else {
-                destination = session.createTopic(PropertyUtil.getString(properties, ActivemqConfig.TOPIC));
+                destination = session.createTopic(PropertyUtil.getString(options, ActivemqConfig.TOPIC));
             }
             producer = session.createProducer(destination);
-            producer.setDeliveryMode(PropertyUtil.getInt(properties, ActivemqConfig.DELIVERY_MODE, DeliveryMode.NON_PERSISTENT));
+            producer.setDeliveryMode(PropertyUtil.getInt(options, ActivemqConfig.DELIVERY_MODE));
         } catch (JMSException e) {
             e.printStackTrace();
         }
@@ -68,24 +69,13 @@ public class ActivemqDataSender extends DataSender {
 
     @Override
     protected void doStart() {
-
+        init();
     }
 
     @Override
     protected void doStop() {
-        try {
-            session.close();
-        } catch (JMSException e) {
-            e.printStackTrace();
-        }
-
-        if (connection != null) {
-            try {
-                connection.close();
-                connection.stop();
-            } catch (JMSException e) {
-                e.printStackTrace();
-            }
-        }
+        Closer.closeProducerQuietly(producer);
+        Closer.closeSessionQuietly(session);
+        Closer.closeConnectionQuietly(connection);
     }
 }

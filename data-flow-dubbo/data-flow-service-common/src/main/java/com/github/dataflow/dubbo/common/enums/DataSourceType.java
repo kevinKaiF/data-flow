@@ -12,6 +12,7 @@ public enum DataSourceType {
     ORACLE(11),
     POSTGRESQL(12),
     SQLSERVER(13),
+    HIVE(14),
 
     // mq start with 20
     KAFKA(20),

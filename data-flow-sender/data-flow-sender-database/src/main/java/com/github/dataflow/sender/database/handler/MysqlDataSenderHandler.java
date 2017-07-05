@@ -5,6 +5,7 @@ import com.github.dataflow.common.utils.PropertyUtil;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
+import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.sender.database.MysqlDataSender;
 import com.github.dataflow.sender.database.config.DatabaseConfig;
 
@@ -52,8 +53,7 @@ public class MysqlDataSenderHandler extends DatabaseDataSenderHandler {
             druidDataSource.setValidConnectionCheckerClassName("com.alibaba.druid.pool.vendor.MySqlValidConnectionChecker");
             return druidDataSource;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new DataSenderException(e);
         }
-        return null;
     }
 }

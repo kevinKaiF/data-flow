@@ -24,24 +24,28 @@ public class KafkaDataSenderHandler extends AbstractDataSenderHandler {
     }
 
     public DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
-        Properties dataOutputMappingOptions = parseToProperties(dataOutputMapping.getOptions());
-        String topic = dataOutputMappingOptions.getProperty(KafkaConfig.TOPIC);
-        if (StringUtils.isEmpty(topic)) {
-            throw new DataSenderException("the topic property of DataOutputMapping must not be null.");
-        }
 
         Properties props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
         String servers = props.getProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG);
         if (StringUtils.isEmpty(servers)) {
             throw new DataSenderException("the bootstrap.servers property of DataSourceOutput must not be null.");
         }
-
-        props.putAll(dataOutputMappingOptions);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-        KafkaDataSender kafkaDataSender = new KafkaDataSender(props);
-        return kafkaDataSender;
+
+        Properties dataOutputMappingOptions = refreshDataOutputMapping(dataOutputMapping);
+        props.putAll(dataOutputMappingOptions);
+        return new KafkaDataSender(props);
     }
 
+    @Override
+    protected Properties refreshDataOutputMapping(DataOutputMapping dataOutputMapping) {
+        Properties dataOutputMappingOptions = parseToProperties(dataOutputMapping.getOptions());
+        String topic = dataOutputMappingOptions.getProperty(KafkaConfig.TOPIC);
+        if (StringUtils.isEmpty(topic)) {
+            throw new DataSenderException("the topic property of DataOutputMapping must not be null.");
+        }
 
+        return dataOutputMappingOptions;
+    }
 }

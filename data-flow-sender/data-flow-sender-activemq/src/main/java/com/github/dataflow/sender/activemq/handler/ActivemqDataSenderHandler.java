@@ -9,8 +9,10 @@ import com.github.dataflow.sender.activemq.enums.ActivemqType;
 import com.github.dataflow.sender.core.AbstractDataSenderHandler;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.exception.DataSenderException;
+import org.apache.activemq.ActiveMQConnection;
 import org.springframework.util.StringUtils;
 
+import javax.jms.DeliveryMode;
 import java.util.Properties;
 
 /**
@@ -35,6 +37,12 @@ public class ActivemqDataSenderHandler extends AbstractDataSenderHandler {
             throw new DataSenderException("the brokeUrl property of DataOutputMapping.DataSourceOutput must not be null.");
         }
 
+        Properties dataOutputMappingOptions = refreshDataOutputMapping(dataOutputMapping);
+        properties.putAll(dataOutputMappingOptions);
+        return new ActivemqDataSender(properties);
+    }
+
+    protected Properties refreshDataOutputMapping(DataOutputMapping dataOutputMapping) {
         Properties dataOutputMappingOptions = parseToProperties(dataOutputMapping.getOptions());
         int type = PropertyUtil.getInt(dataOutputMappingOptions, ActivemqConfig.TYPE, ActivemqType.QUEUE.getType());
         if (type == ActivemqType.QUEUE.getType()) {
@@ -49,7 +57,12 @@ public class ActivemqDataSenderHandler extends AbstractDataSenderHandler {
             }
         }
 
-        properties.putAll(dataOutputMappingOptions);
-        return new ActivemqDataSender(properties);
+        String username = PropertyUtil.getString(dataOutputMappingOptions, ActivemqConfig.USERNAME, ActiveMQConnection.DEFAULT_USER);
+        String password = PropertyUtil.getString(dataOutputMappingOptions, ActivemqConfig.PASSWORD, ActiveMQConnection.DEFAULT_PASSWORD);
+        int deliverMode = PropertyUtil.getInt(dataOutputMappingOptions, ActivemqConfig.DELIVERY_MODE, DeliveryMode.NON_PERSISTENT);
+        dataOutputMappingOptions.put(ActivemqConfig.USERNAME, username);
+        dataOutputMappingOptions.put(ActivemqConfig.PASSWORD, password);
+        dataOutputMappingOptions.put(ActivemqConfig.DELIVERY_MODE, deliverMode);
+        return dataOutputMappingOptions;
     }
 }

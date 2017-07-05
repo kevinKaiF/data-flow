@@ -42,6 +42,14 @@ public abstract class AbstractDataSenderHandler implements DataSenderHandler, Ap
 
     protected abstract DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception;
 
+    /**
+     * 设置DataOutputMapping的options默认值，校验必须属性
+     *
+     * @param dataOutputMapping
+     * @return
+     */
+    protected abstract Properties refreshDataOutputMapping(DataOutputMapping dataOutputMapping);
+
     protected Properties parseToProperties(String options) {
         if (StringUtils.isEmpty(options)) {
             return new Properties();

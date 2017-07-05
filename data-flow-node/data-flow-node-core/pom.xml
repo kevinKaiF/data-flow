@@ -192,6 +192,11 @@
             <artifactId>data-flow-sender-database</artifactId>
             <version>${data-flow.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.data-flow</groupId>
+            <artifactId>data-flow-sender-activemq</artifactId>
+            <version>${data-flow.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

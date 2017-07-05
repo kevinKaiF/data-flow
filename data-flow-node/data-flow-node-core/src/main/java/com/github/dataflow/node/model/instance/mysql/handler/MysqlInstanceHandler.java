@@ -1,8 +1,9 @@
-package com.github.dataflow.node.model.instance.handler;
+package com.github.dataflow.node.model.instance.mysql.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.otter.canal.instance.manager.model.CanalParameter;
+import com.github.dataflow.core.alarm.AlarmService;
 import com.github.dataflow.core.instance.Instance;
 import com.github.dataflow.core.instance.handler.AbstractInstanceHandler;
 import com.github.dataflow.core.instance.handler.InstanceHandler;
@@ -11,6 +12,7 @@ import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.node.model.config.DataFlowContext;
 import com.github.dataflow.node.model.instance.mysql.MysqlInstance;
+import com.github.dataflow.node.model.instance.mysql.config.MysqlInstanceConfig;
 import com.github.dataflow.node.model.store.DefaultDataStore;
 import com.github.dataflow.sender.database.config.DatabaseConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,19 +37,15 @@ public class MysqlInstanceHandler extends AbstractInstanceHandler implements Ins
         return this.instanceType.getType() == instanceType;
     }
 
-    public Instance doCreateInstance(DataInstance dataInstance) {
+    public Instance createInstance(DataInstance dataInstance) {
         JSONObject options = JSON.parseObject(dataInstance.getOptions());
         MysqlInstance mysqlInstance = new MysqlInstance();
-        mysqlInstance.setId(dataInstance.getId());
-        mysqlInstance.setName(dataInstance.getName());
-        mysqlInstance.setWhiteFilter(options.getString("whiteFilter"));
-        mysqlInstance.setCanalParameter(buildCanalParameter(dataInstance, options));
-        mysqlInstance.setAlarmService(dataFlowContext.getAlarmService());
-        mysqlInstance.setDataStore(buildDataStore(dataInstance));
+        mysqlInstance.setWhiteFilter(options.getString(MysqlInstanceConfig.WHITE_FILTER));
+        mysqlInstance.setCanalParameter(buildCanalParameter(options));
         return mysqlInstance;
     }
 
-    private CanalParameter buildCanalParameter(DataInstance dataInstance, JSONObject options) {
+    private CanalParameter buildCanalParameter(JSONObject options) {
         CanalParameter parameter = new CanalParameter();
         parameter.setMetaMode(CanalParameter.MetaMode.ZOOKEEPER);
         parameter.setHaMode(CanalParameter.HAMode.HEARTBEAT);
@@ -69,7 +67,7 @@ public class MysqlInstanceHandler extends AbstractInstanceHandler implements Ins
         parameter.setReceiveBufferSize(8 * 1024);
         parameter.setSendBufferSize(8 * 1024);
         //过滤掉库
-        parameter.setBlackFilter(options.getString("blackFilter"));
+        parameter.setBlackFilter(options.getString(MysqlInstanceConfig.BLACK_FILTER));
 
         parameter.setDetectingEnable(false);
         parameter.setDetectingIntervalInSeconds(10);
@@ -82,5 +80,10 @@ public class MysqlInstanceHandler extends AbstractInstanceHandler implements Ins
     @Override
     protected DataStore doBuildDataStore() {
         return new DefaultDataStore();
+    }
+
+    @Override
+    protected AlarmService getAlarmService() {
+        return dataFlowContext.getAlarmService();
     }
 }
