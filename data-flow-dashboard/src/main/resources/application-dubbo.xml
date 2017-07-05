@@ -8,7 +8,7 @@
     <d:application name="${pom.application.name}" owner="${pom.application.name}"/>
     <d:consumer loadbalance="roundrobin" timeout="${pom.dubbo.consumer.timeout}" check="true"/>
 
-    <d:registry id="dubboRegistry" address="${pom.dubbo.registry.address}" protocol="zookeeper"/>
+    <d:registry id="dubboRegistry" address="${node.zookeeper.addresses}" protocol="zookeeper"/>
     <d:reference id="dubboDataTableService" interface="com.github.dataflow.dubbo.service.DubboDataTableService"
                  registry="dubboRegistry"/>
     <d:reference id="dubboDataSourceOutputService"

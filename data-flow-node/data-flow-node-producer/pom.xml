@@ -78,7 +78,6 @@
                 <pom.application.name>data-flow-node-producer</pom.application.name>
                 <pom.application.port>7088</pom.application.port>
                 <pom.dubbo.consumer.timeout>5000</pom.dubbo.consumer.timeout>
-                <pom.dubbo.registry.address>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</pom.dubbo.registry.address>
                 <pom.zookeeper.addresses>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</pom.zookeeper.addresses>
                 <pom.log.rootLogger>debug, stdout, FILE</pom.log.rootLogger>
                 <pom.log.dir>logs</pom.log.dir>
@@ -93,7 +92,6 @@
                 <pom.application.name>data-flow-node-producer</pom.application.name>
                 <pom.application.port>7088</pom.application.port>
                 <pom.dubbo.consumer.timeout>5000</pom.dubbo.consumer.timeout>
-                <pom.dubbo.registry.address>10.4.0.186:2181,10.4.0.186:2182,10.4.0.186:2183</pom.dubbo.registry.address>
                 <pom.zookeeper.addresses>10.4.0.186:2181,10.4.0.186:2182,10.4.0.186:2183</pom.zookeeper.addresses>
                 <pom.log.rootLogger>info, FILE</pom.log.rootLogger>
                 <pom.log.dir>logs</pom.log.dir>
@@ -105,7 +103,6 @@
                 <pom.application.name>data-flow-node-producer</pom.application.name>
                 <pom.application.port>7088</pom.application.port>
                 <pom.dubbo.consumer.timeout>5000</pom.dubbo.consumer.timeout>
-                <pom.dubbo.registry.address>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</pom.dubbo.registry.address>
                 <pom.zookeeper.addresses>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</pom.zookeeper.addresses>
                 <pom.log.rootLogger>info, FILE</pom.log.rootLogger>
                 <pom.log.dir>logs</pom.log.dir>
