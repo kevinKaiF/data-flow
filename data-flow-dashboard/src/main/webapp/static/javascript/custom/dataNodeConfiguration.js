@@ -4,16 +4,6 @@
             this.initForm();
             this.eventBind();
             this.initValidation();
-            this.initScroll();
-        },
-        initScroll: function () {
-            $("body").niceScroll({
-                cursorcolor: "#2A3F54",
-                cursorwidth: "10px",
-                cursorborder: "0",
-                cursoropacitymax: 0.7,
-                mousescrollstep: 15
-            })
         },
         initForm: function () {
             $.ajax({

@@ -367,7 +367,6 @@
 <script src="https://cdn.bootcss.com/datatables/1.10.15/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.bootcss.com/datatables/1.10.15/js/dataTables.bootstrap.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery.form/4.2.1/jquery.form.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery.nicescroll/3.7.0/jquery.nicescroll.min.js"></script>
 <script src="../javascript/validator/validator.min.js"></script>
 <script src="../javascript/custom/global.js"></script>
 <script src="../javascript/custom/dataSourceOutput.js"></script>

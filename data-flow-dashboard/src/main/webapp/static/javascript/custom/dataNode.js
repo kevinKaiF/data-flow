@@ -2,7 +2,6 @@
     var main = {
         init: function () {
             this.initNodeList();
-            this.initScroll();
         },
         _renderNodeList : function (result) {
             var nodeList = "";
@@ -93,15 +92,6 @@
 
                     $("#nodeList>div:eq(0)").click();
                 }
-            })
-        },
-        initScroll: function () {
-            $("body").niceScroll({
-                cursorcolor: "#2A3F54",
-                cursorwidth: "10px",
-                cursorborder: "0",
-                cursoropacitymax: 0.7,
-                mousescrollstep: 15
             })
         },
         messageAlert: function (message, callback) {
