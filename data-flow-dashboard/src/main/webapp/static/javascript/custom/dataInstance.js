@@ -47,12 +47,12 @@
                 $("#dataInstance-table-detail").empty().html(promptingMessage)
             })
 
-            // the reference for DataInstance's options
+            // the document for DataInstance's options
             $("#dataInstance-options-doc").on("click", function () {
                 $("#dataInstance-options-modal").modal("show");
             })
 
-            // the reference for DataOutputMapping's options
+            // the document for DataOutputMapping's options
             $("#dataOutputMapping-options-doc").on("click", function () {
                 $("#dataOutputMapping-options-modal").modal("show");
             })
