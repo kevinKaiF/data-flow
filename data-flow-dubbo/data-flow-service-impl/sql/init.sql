@@ -27,6 +27,7 @@ CREATE TABLE `data_output_mapping` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `DATA_INSTANCE_ID` bigint(20) NOT NULL COMMENT 'DataInstance的主键',
   `SCHEMA_NAME` varchar(50) NOT NULL COMMENT '库名',
+  `TRANSFORM_SCRIPT` varchar(2000) DEFAULT NULL COMMENT '转换脚本',
   `DATA_SOURCE_OUTPUT_ID` bigint(20) NOT NULL COMMENT '输出数据源的主键',
   `OPTIONS` varchar(200) NOT NULL COMMENT '其他配置，JSON格式',
   PRIMARY KEY (`ID`),

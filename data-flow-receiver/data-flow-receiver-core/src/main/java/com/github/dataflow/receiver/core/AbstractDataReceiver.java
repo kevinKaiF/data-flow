@@ -9,7 +9,7 @@ import com.github.dataflow.dubbo.model.DataSourceOutput;
 import com.github.dataflow.receiver.core.exception.ReceiverException;
 import com.github.dataflow.receiver.core.utils.DataReceiverConfig;
 import com.github.dataflow.sender.core.DataSender;
-import com.github.dataflow.sender.core.DataSenderHandler;
+import com.github.dataflow.sender.core.handler.DataSenderHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

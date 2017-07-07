@@ -2,8 +2,8 @@ package com.github.dataflow.core.store;
 
 import com.github.dataflow.common.model.DataFlowLifeCycle;
 import com.github.dataflow.common.model.RowMetaData;
-import com.github.dataflow.core.transformer.DataTransformer;
 import com.github.dataflow.sender.core.DataSender;
+import com.github.dataflow.transformer.core.pre.PreDataTransformer;
 
 import java.util.List;
 import java.util.Map;
@@ -17,7 +17,7 @@ import java.util.Map;
 public interface DataStore extends DataFlowLifeCycle {
     void handle(List<RowMetaData> rowMetaDataList);
 
-    void setDataTransformer(DataTransformer dataTransformer);
+    void setDataTransformer(PreDataTransformer dataTransformer);
 
     void setDataSenderMap(Map<String, DataSender> dataSenderMap);
 

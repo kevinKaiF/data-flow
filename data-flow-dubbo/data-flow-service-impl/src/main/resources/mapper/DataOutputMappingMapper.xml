@@ -10,6 +10,7 @@
         <result property="dataInstanceId" column="DATA_INSTANCE_ID"/>
         <result property="schemaName" column="SCHEMA_NAME"/>
         <result property="options" column="OPTIONS"/>
+        <result property="transformScript" column="TRANSFORM_SCRIPT"/>
         <result property="dataSourceOutputId" column="DATA_SOURCE_OUTPUT_ID"/>
         <association property="dataSourceOutput" columnPrefix="dso_" resultMap="RM_DataSourceOutput"/>
     </resultMap>
@@ -24,7 +25,7 @@
     <!-- 用于select查询公用抽取的列 -->
     <sql id="columns">
         <![CDATA[
-			dom.ID ID,dom.DATA_INSTANCE_ID DATA_INSTANCE_ID,dom.SCHEMA_NAME SCHEMA_NAME,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,dom.OPTIONS OPTIONS,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,
+			dom.ID ID,dom.DATA_INSTANCE_ID DATA_INSTANCE_ID,dom.SCHEMA_NAME SCHEMA_NAME,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,dom.OPTIONS OPTIONS,dom.TRANSFORM_SCRIPT TRANSFORM_SCRIPT,dom.DATA_SOURCE_OUTPUT_ID DATA_SOURCE_OUTPUT_ID,
 			dso.ID dso_ID, dso.NAME dso_NAME, dso.TYPE dso_TYPE, dso.OPTIONS dso_OPTIONS
 	    ]]>
     </sql>
@@ -37,12 +38,14 @@
 	        	DATA_INSTANCE_ID ,
 	        	SCHEMA_NAME ,
 	        	DATA_SOURCE_OUTPUT_ID ,
+	        	TRANSFORM_SCRIPT ,
 	        	OPTIONS
 	        ) VALUES (
 	        	#{id} ,
 	        	#{dataInstanceId} ,
 	        	#{schemaName} ,
 	        	#{dataSourceOutputId} ,
+	        	#{transformScript} ,
 	        	#{options}
 	        )
 	    ]]>
@@ -59,6 +62,9 @@
             </if>
             <if test="dataSourceOutputId != null">
                 DATA_SOURCE_OUTPUT_ID = #{dataSourceOutputId} ,
+            </if>
+            <if test="transformScript != null and transformScript != ''">
+                TRANSFORM_SCRIPT = #{transformScript} ,
             </if>
             <if test="options != null and options != ''">
                 OPTIONS = #{options}
@@ -124,6 +130,9 @@
             </if>
             <if test="options != null and options !=''">
                 AND dom.OPTIONS LIKE CONCAT('%', #{options}, '%')
+            </if>
+            <if test="transformScript != null and transformScript !=''">
+                AND dom.TRANSFORM_SCRIPT LIKE CONCAT('%', #{transformScript}, '%')
             </if>
         </where>
     </sql>

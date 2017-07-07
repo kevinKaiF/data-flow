@@ -4,8 +4,8 @@ import com.github.dataflow.common.model.AbstractDataFlowLifeCycle;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.core.exception.DataStoreHandleException;
 import com.github.dataflow.core.store.DataStore;
-import com.github.dataflow.core.transformer.DataTransformer;
 import com.github.dataflow.sender.core.DataSender;
+import com.github.dataflow.transformer.core.pre.PreDataTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -32,7 +32,7 @@ public class DefaultDataStore extends AbstractDataFlowLifeCycle implements DataS
     /**
      * 数据转换
      */
-    protected DataTransformer dataTransformer;
+    protected PreDataTransformer dataTransformer;
 
     /**
      * schema映射一个DataSender
@@ -150,11 +150,12 @@ public class DefaultDataStore extends AbstractDataFlowLifeCycle implements DataS
         return transformedRowMetaData;
     }
 
-    public DataTransformer getDataTransformer() {
+    public PreDataTransformer getDataTransformer() {
         return dataTransformer;
     }
 
-    public void setDataTransformer(DataTransformer dataTransformer) {
+    @Override
+    public void setDataTransformer(PreDataTransformer dataTransformer) {
         this.dataTransformer = dataTransformer;
     }
 

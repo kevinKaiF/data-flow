@@ -1,8 +1,9 @@
-package com.github.dataflow.sender.core;
+package com.github.dataflow.sender.core.handler;
 
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
+import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.event.EventHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -30,7 +31,7 @@ public abstract class AbstractDataSenderHandler implements DataSenderHandler, Ap
         return dataSender;
     }
 
-    protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataSourceOutput) {
+    protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataOutputMapping) {
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.github.dataflow.sender.core;
 
 import com.github.dataflow.common.model.AbstractDataFlowLifeCycle;
 import com.github.dataflow.common.model.RowMetaData;
+import com.github.dataflow.transformer.core.post.PostDataTransformer;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,6 +34,11 @@ public abstract class DataSender extends AbstractDataFlowLifeCycle {
      * DataSender的名称，对应数据库name
      */
     protected String dataSenderName;
+
+    /**
+     * DataSender send之前的转换
+     */
+    protected PostDataTransformer dataTransformer;
 
     /**
      * 是否是单例
@@ -97,5 +103,13 @@ public abstract class DataSender extends AbstractDataFlowLifeCycle {
 
     public void setDataSenderName(String dataSenderName) {
         this.dataSenderName = dataSenderName;
+    }
+
+    public PostDataTransformer getDataTransformer() {
+        return dataTransformer;
+    }
+
+    public void setDataTransformer(PostDataTransformer dataTransformer) {
+        this.dataTransformer = dataTransformer;
     }
 }

@@ -40,7 +40,7 @@
             color: rgba(255, 255, 255, 0.75);
         }
 
-        #dataInstance-options-doc {
+        .doc {
             position: absolute;
             right: 10px;
             top: -1px;
@@ -291,7 +291,7 @@
                                                                   class="form-control col-md-7 col-xs-12"
                                                                   rows="9" required="required"
                                                                   name="options"></textarea>
-                                                                <span id="dataInstance-options-doc">doc</span>
+                                                                <span id="dataInstance-options-doc" class="doc">doc</span>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
@@ -332,7 +332,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="step-3" style="height: 450px">
+                                                <div id="step-3" style="height: 550px">
                                                     <div class="accordion" id="accordion" role="tablist"
                                                          aria-multiselectable="false">
                                                         <div class="panel">
@@ -387,7 +387,19 @@
                                                                                            class="form-control col-md-7 col-xs-12"
                                                                                            rows="5" required="required"
                                                                                            name="options"></textarea>
-                                                                                <#--<span id="dataOutputMapping-options-doc">doc</span>-->
+                                                                                <span id="dataOutputMapping-options-doc" class="doc">doc</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="item form-group">
+                                                                            <label class="control-label col-md-2 col-sm-2 col-xs-12"
+                                                                                   for="dataOutputMapping-transformScript">转换脚本
+                                                                            </label>
+                                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                                 <textarea id="dataOutputMapping-transformScript"
+                                                                                           class="form-control col-md-7 col-xs-12"
+                                                                                           rows="5"
+                                                                                           name="transformScript"></textarea>
+                                                                            <#--<span id="dataOutputMapping-transformScript-doc">doc</span>-->
                                                                             </div>
                                                                         </div>
                                                                         <div class="item form-group">
@@ -402,6 +414,8 @@
                                                                                 </table>
                                                                             </div>
                                                                         </div>
+                                                                        <input id="dataOutputMapping-dataSourceOutputType"
+                                                                               type="hidden">
                                                                         <input id="dataOutputMapping-dataSourceOutputId"
                                                                                type="hidden"
                                                                                name="dataSourceOutputId">
@@ -459,6 +473,7 @@
                     </div>
                 </div>
 
+                <#--dataInstance options-->
                 <div id="dataInstance-options-modal" class="modal fade bs-example-modal-lg" tabindex="-1"
                      role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-md">
@@ -474,9 +489,9 @@
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Mysql</a>
                                     </li>
-                                    <#--<li role="presentation" class=""><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Oracle</a>-->
-                                    <#--</li>-->
-                                    <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                    <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                    </li>
+                                    <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">Mysql</a>
                                     </li>
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
@@ -492,11 +507,65 @@
     "blackFilter":"black\\..*"
 }</textarea>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab5">
                                         <textarea style="width: 100%;" rows="12" readonly>{
     "bootstrap.servers":"",
     "topic":"",
     "group.id":""
+} </textarea>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="profile-tab6">
+                                        <textarea style="width: 100%;" rows="12" readonly>{
+    "type":0,
+    "topic":"",
+    "queue":"",
+    "broke.url":""
+} </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="alert-close" class="btn btn-default antoclose"
+                                        data-dismiss="modal">关闭
+                                </button>
+                                <button type="button" id="alert-submit" class="btn btn-primary antosubmit">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <#--dataOutputMapping-->
+                <div id="dataOutputMapping-options-modal" class="modal fade bs-example-modal-lg" tabindex="-1"
+                     role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel1">模板</h4>
+                            </div>
+                            <div class="modal-body">
+                                <ul id="myTab1" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tab_content11" role="tab" id="profile-tab11" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                    </li>
+                                    <li role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab21" data-toggle="tab" aria-expanded="false">ActiveMq</a>
+                                    </li>
+                                </ul>
+                                <div id="myTabContent1" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="profile-tab11">
+                                        <textarea style="width: 100%;" rows="12" readonly>{
+    "bootstrap.servers":"",
+    "topic":""
+}</textarea>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content21" aria-labelledby="profile-tab21">
+                                        <textarea style="width: 100%;" rows="12" readonly>{
+    "type":0=queue,1=topic,
+    "topic":"",
+    "queue":"",
+    "broke.url":""
 } </textarea>
                                     </div>
                                 </div>

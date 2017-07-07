@@ -2,7 +2,7 @@ package com.github.dataflow.sender.database.handler;
 
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
-import com.github.dataflow.sender.core.AbstractDataSenderHandler;
+import com.github.dataflow.sender.core.handler.AbstractDataSenderHandler;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.sender.database.DatabaseDataSender;
@@ -40,7 +40,8 @@ public abstract class DatabaseDataSenderHandler extends AbstractDataSenderHandle
     }
 
     @Override
-    protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataSourceOutput) {
+    protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataOutputMapping) {
+        super.afterCreateDataSender(dataSender, dataOutputMapping);
         if (CollectionUtils.isEmpty(eventHandlers)) {
             throw new DataSenderException("there is no EventHandler bean");
         } else {

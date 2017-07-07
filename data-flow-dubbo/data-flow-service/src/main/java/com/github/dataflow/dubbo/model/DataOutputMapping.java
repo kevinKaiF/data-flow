@@ -45,6 +45,8 @@ public class DataOutputMapping implements Serializable {
 
     private DataSourceOutput dataSourceOutput;
 
+    private String transformScript;
+
     /**
      *
      */
@@ -137,6 +139,15 @@ public class DataOutputMapping implements Serializable {
                 ", dataInstanceId=" + dataInstanceId +
                 ", schemaName='" + schemaName + '\'' +
                 ", options='" + options + '\'' +
+                ", transformScript='" + transformScript + '\'' +
                 '}';
+    }
+
+    public String getTransformScript() {
+        return transformScript;
+    }
+
+    public void setTransformScript(String transformScript) {
+        this.transformScript = transformScript;
     }
 }

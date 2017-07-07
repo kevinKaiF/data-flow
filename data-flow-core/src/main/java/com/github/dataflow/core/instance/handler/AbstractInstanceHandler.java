@@ -6,13 +6,13 @@ import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.core.instance.AbstractInstance;
 import com.github.dataflow.core.instance.Instance;
 import com.github.dataflow.core.store.DataStore;
-import com.github.dataflow.core.transformer.GroovyShellDataTransformer;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.dubbo.model.DataTable;
 import com.github.dataflow.sender.core.DataSender;
-import com.github.dataflow.sender.core.DataSenderHandler;
 import com.github.dataflow.sender.core.DataSenderManager;
+import com.github.dataflow.sender.core.handler.DataSenderHandler;
+import com.github.dataflow.transformer.core.pre.PreGroovyShellDataTransformer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -54,7 +54,7 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
         // transform
         DataStore dataStore = doBuildDataStore();
         if (!StringUtils.isEmpty(dataInstance.getTransformScript())) {
-            dataStore.setDataTransformer(new GroovyShellDataTransformer(dataInstance.getTransformScript()));
+            dataStore.setDataTransformer(new PreGroovyShellDataTransformer(dataInstance.getTransformScript()));
         }
 
         // filter

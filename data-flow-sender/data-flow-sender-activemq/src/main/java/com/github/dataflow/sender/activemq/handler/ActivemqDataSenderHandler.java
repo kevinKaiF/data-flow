@@ -6,9 +6,9 @@ import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.activemq.ActivemqDataSender;
 import com.github.dataflow.sender.activemq.config.ActivemqConfig;
 import com.github.dataflow.sender.activemq.enums.ActivemqType;
-import com.github.dataflow.sender.core.AbstractDataSenderHandler;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.exception.DataSenderException;
+import com.github.dataflow.sender.core.handler.TransformedDataSenderHandler;
 import org.apache.activemq.ActiveMQConnection;
 import org.springframework.util.StringUtils;
 
@@ -21,7 +21,7 @@ import java.util.Properties;
  * @description :
  * @date : 2017/7/4
  */
-public class ActivemqDataSenderHandler extends AbstractDataSenderHandler {
+public class ActivemqDataSenderHandler extends TransformedDataSenderHandler {
     private DataSourceType dataSourceType = DataSourceType.ACTIVEMQ;
 
     @Override

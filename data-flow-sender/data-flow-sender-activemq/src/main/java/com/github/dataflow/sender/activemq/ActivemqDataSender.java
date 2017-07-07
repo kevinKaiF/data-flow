@@ -1,19 +1,16 @@
 package com.github.dataflow.sender.activemq;
 
-import com.alibaba.fastjson.JSON;
-import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.PropertyUtil;
 import com.github.dataflow.sender.activemq.config.ActivemqConfig;
 import com.github.dataflow.sender.activemq.enums.ActivemqType;
 import com.github.dataflow.sender.activemq.utils.Closer;
-import com.github.dataflow.sender.core.DataSender;
+import com.github.dataflow.sender.core.TransformedDataSender;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -22,7 +19,7 @@ import java.util.Properties;
  * @description :
  * @date : 2017/7/4
  */
-public class ActivemqDataSender extends DataSender {
+public class ActivemqDataSender extends TransformedDataSender {
     private Logger logger = LoggerFactory.getLogger(ActivemqDataSender.class);
     private Properties      options;
     private Session         session;
@@ -65,8 +62,8 @@ public class ActivemqDataSender extends DataSender {
     }
 
     @Override
-    public void send(List<RowMetaData> rowMetaDataList) throws Exception {
-        TextMessage message = session.createTextMessage(JSON.toJSONString(rowMetaDataList));
+    protected void doSend(String transformedValue) throws Exception {
+        TextMessage message = session.createTextMessage(transformedValue);
         producer.send(message);
         session.commit();
     }

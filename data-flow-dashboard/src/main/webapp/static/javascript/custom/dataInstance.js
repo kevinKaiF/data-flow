@@ -5,7 +5,7 @@
             this.eventBind();
             this.initValidation();
             this.initDataOutputMappingTable();
-            this.initDataSourceOutputMapping();
+            this.initDataSourceOutputTable();
         },
         messageAlert: function (message, callback) {
             $("#alertMessage").modal('show');
@@ -50,6 +50,11 @@
             // the reference for DataInstance's options
             $("#dataInstance-options-doc").on("click", function () {
                 $("#dataInstance-options-modal").modal("show");
+            })
+
+            // the reference for DataOutputMapping's options
+            $("#dataOutputMapping-options-doc").on("click", function () {
+                $("#dataOutputMapping-options-modal").modal("show");
             })
 
             // collapse the search panel
@@ -336,38 +341,36 @@
                         }
                     })
                 },
-                __validateDataInstanceOptions: function (type, options) {
-                    function isEmpty(data) {
-                        if (data || (data == 0 && (data + "").length > 0)) {
-                            return false;
-                        } else {
-                            return true;
-                        }
-                    }
-
-                    function validateProperty(json, property) {
-                        for (var i in property) {
-                            if (isEmpty(json[property[i]])) {
-                                return false;
-                            }
-                        }
+                __isEmpty : function (data) {
+                    if (data || (data + "").length > 0) {
+                        return false;
+                    } else {
                         return true;
                     }
-
+                },
+                __validateProperty : function (json, property) {
+                    for (var i in property) {
+                        if (wizard.__isEmpty(json[property[i]])) {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+                __validateDataInstanceOptions: function (type, options) {
                     try {
                         var json = JSON.parse(options);
-                        switch (type) {
+                        switch (parseInt(type)) {
                             case 10 : // MySQL
                                 var props = ["username", "password", "host", "port", "jdbcUrl", "slaveId"];
-                                return validateProperty(json, props);
+                                return wizard.__validateProperty(json, props);
                             case 11: // Oracle
                             case 12: // PostGreSQL
                             case 13: // SQLServer
                                 var props = ["username", "password", "host", "port", "jdbcUrl"];
-                                return validateProperty(json, props);
+                                return wizard.__validateProperty(json, props);
                             case 20 : // Kafka
                                 var props = ["bootstrap.servers", "topic"]
-                                return validateProperty(json, props);
+                                return wizard.__validateProperty(json, props);
                             case 21 : // metaQ
                                 // TODO
                                 return true;
@@ -375,12 +378,12 @@
                                 return true;
                             case 23 : // activeMQ
                                 var props = ["brokeUrl", "type"];
-                                if (validateProperty(json, props)) {
+                                if (wizard.__validateProperty(json, props)) {
                                     // topic or queue
                                     if (json[props[1]] == 1) {  // topic
-                                        return !isEmpty(json["topic"])
+                                        return !wizard.__isEmpty(json["topic"])
                                     } else {                    // queue
-                                        return !isEmpty(json["queue"])
+                                        return !wizard.__isEmpty(json["queue"])
                                     }
                                 } else {
                                     return false;
@@ -389,7 +392,7 @@
                                 return false;
                         }
                     } catch (e) {
-                        main.messageAlert("配置非JSON格式")
+                        console.error("配置非JSON格式", e);
                         return false;
                     }
                 },
@@ -400,10 +403,14 @@
                     }
 
                     // validate the options property of DataInstance
-                    var options = $("#dataInstance-options").val();
+                    var $dataInstanceOptions = $("#dataInstance-options");
+                    var options = $dataInstanceOptions.val();
                     var type = $("#dataInstance-type").val();
                     if (!wizard.__validateDataInstanceOptions(type, options)) {
+                        window.validator.mark($dataInstanceOptions, "配置非法")
                         return false;
+                    } else {
+                        window.validator.unmark($dataInstanceOptions)
                     }
 
                     var success = false;
@@ -468,6 +475,42 @@
                 __step3: function () {
                     return true;
                 },
+                __validateDataOutputMappingOptions : function (type, options) {
+                    if (type < 20) {
+                        return true;
+                    }
+
+                    try {
+                        var json = JSON.parse(options);
+                        switch (parseInt(type)) {
+                            case 20 : // Kafka
+                                var props = ["bootstrap.servers", "topic"]
+                                return wizard.__validateProperty(json, props);
+                            case 21 : // metaQ
+                                // TODO
+                                return true;
+                            case 22 : // rabbitMQ
+                                return true;
+                            case 23 : // activeMQ
+                                var props = ["brokeUrl", "type"];
+                                if (wizard.__validateProperty(json, props)) {
+                                    // topic or queue
+                                    if (json[props[1]] == 1) {  // topic
+                                        return !wizard.__isEmpty(json["topic"])
+                                    } else {                    // queue
+                                        return !wizard.__isEmpty(json["queue"])
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            default :
+                                return false;
+                        }
+                    } catch (e) {
+                        console.error("配置非JSON格式", e)
+                        return false;
+                    }
+                },
                 eventBind: function () {
                     $("#dataOutputMapping-submit").on("click", function () {
                         var $dataOutputMapping = $("#dataOutputMapping-form");
@@ -487,15 +530,14 @@
                             return false;
                         }
 
-                        var options = $("#dataOutputMapping-options").val();
-                        if (options) {
-                            try {
-                                JSON.parse(options)
-                            } catch (e) {
-                                main.messageAlert('配置非JSON格式');
-                                console.error(e);
-                                return false;
-                            }
+                        var type = $("#dataOutputMapping-dataSourceOutputType").val();
+                        var $dataOutputMappingOptions = $("#dataOutputMapping-options");
+                        var options = $dataOutputMappingOptions.val();
+                        if (!wizard.__validateDataOutputMappingOptions(type, options)) {
+                            window.validator.mark($dataOutputMappingOptions, "配置非法");
+                            return false;
+                        } else {
+                            window.validator.unmark($dataOutputMappingOptions);
                         }
 
                         $dataOutputMapping.ajaxSubmit({
@@ -987,11 +1029,12 @@
                                     '<table class="table table-hover dataTable no-footer" style="width: 100%;" role="grid">' +
                                     '<thead><tr role="row">' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">库名</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">配置</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 15%;">配置</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 20%;">转换脚本</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源id</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源名称</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">输出源类型</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 50%;">输出源配置</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 25%;">输出源配置</th>' +
                                     '</tr>' +
                                     '</thead>' +
                                     '<tbody>';
@@ -1001,6 +1044,7 @@
                                         '<tr role="row">' +
                                         '<td>' + row.schemaName + '</td>' +
                                         '<td>' + row.options + '</td>' +
+                                        '<td>' + row.transformScript + '</td>' +
                                         '<td>' + row.dataSourceOutput.id + '</td>' +
                                         '<td>' + row.dataSourceOutput.name + '</td>' +
                                         '<td>' + main.parseDataSourceOutputType(row.dataSourceOutput.type) + '</td>' +
@@ -1027,7 +1071,7 @@
 
             Table.init();
         },
-        initDataSourceOutputMapping: function () {
+        initDataSourceOutputTable: function () {
             var Table = {
                 init: function () {
                     var id = "dataSourceOutputTable";
@@ -1091,6 +1135,7 @@
                             $this.addClass('selected');
                             var data = table.row($this).data();
                             $("#dataOutputMapping-dataSourceOutputId").val(data.id)
+                            $("#dataOutputMapping-dataSourceOutputType").val(data.type)
                         }
                     });
                 },

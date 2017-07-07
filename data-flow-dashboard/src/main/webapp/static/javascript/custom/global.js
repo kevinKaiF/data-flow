@@ -163,7 +163,7 @@
                     $(this).find("select").each(function () {
                         var $this = $(this);
                         var name = $this.attr("name");
-                        if (data[name] || (data[name] == 0 && (data[name] + "").length > 0)) {
+                        if (data[name] || (data[name] + "").length > 0) {
                             // remove the selected attribute of option dom
                             $this.find("option").each(function() {
                                 $(this).removeAttr("selected")
