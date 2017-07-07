@@ -556,7 +556,6 @@
                                 <div id="myTabContent1" class="tab-content">
                                     <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="profile-tab11">
                                         <textarea style="width: 100%;" rows="12" readonly>{
-    "bootstrap.servers":"",
     "topic":""
 }</textarea>
                                     </div>
@@ -565,7 +564,6 @@
     "type":0=queue,1=topic,
     "topic":"",
     "queue":"",
-    "broke.url":""
 } </textarea>
                                     </div>
                                 </div>

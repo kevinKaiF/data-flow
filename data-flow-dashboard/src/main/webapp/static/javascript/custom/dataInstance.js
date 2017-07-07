@@ -484,7 +484,7 @@
                         var json = JSON.parse(options);
                         switch (parseInt(type)) {
                             case 20 : // Kafka
-                                var props = ["bootstrap.servers", "topic"]
+                                var props = ["topic"]
                                 return wizard.__validateProperty(json, props);
                             case 21 : // metaQ
                                 // TODO
@@ -492,7 +492,7 @@
                             case 22 : // rabbitMQ
                                 return true;
                             case 23 : // activeMQ
-                                var props = ["brokeUrl", "type"];
+                                var props = ["type"];
                                 if (wizard.__validateProperty(json, props)) {
                                     // topic or queue
                                     if (json[props[1]] == 1) {  // topic

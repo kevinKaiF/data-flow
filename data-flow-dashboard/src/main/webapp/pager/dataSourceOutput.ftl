@@ -220,7 +220,7 @@
                                                             class="required">*</span>
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input class="form-control col-md-7 col-xs-12"
+                                                        <input class="form-control col-md-7 col-xs-12" type="text"
                                                                 id="dataSourceOutput-name" name="name" required="required" data-validate-length-range="1,20">
                                                         </input>
                                                     </div>
@@ -315,9 +315,9 @@
                             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Mysql</a>
                                 </li>
-                            <#--<li role="presentation" class=""><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Oracle</a>-->
-                            <#--</li>-->
-                                <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                </li>
+                                <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">activeMQ</a>
                                 </li>
                             </ul>
                             <div id="myTabContent" class="tab-content">
@@ -330,9 +330,14 @@
     "jdbcUrl":""
 }</textarea>
                                 </div>
-                                <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab">
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab5">
                                         <textarea style="width: 100%;" rows="8" readonly>{
-    "bootstrap.servers":"",
+    "bootstrap.servers":""
+} </textarea>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="profile-tab6">
+                                        <textarea style="width: 100%;" rows="8" readonly>{
+    "broke.url":""
 } </textarea>
                                 </div>
                             </div>
