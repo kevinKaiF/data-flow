@@ -12,16 +12,16 @@ public enum DataSourceType {
     ORACLE(11),
     POSTGRESQL(12),
     SQLSERVER(13),
-    HIVE(14),
+
 
     // mq start with 20
     KAFKA(20),
     METAQ(21),
     RABBITMQ(22),
-    ACTIVEMQ(23);
+    ACTIVEMQ(23),
 
-    // nosql DB start with 30
-
+    // other DB start with 30
+    HIVE(30);
     private int type;
 
     DataSourceType(int type) {

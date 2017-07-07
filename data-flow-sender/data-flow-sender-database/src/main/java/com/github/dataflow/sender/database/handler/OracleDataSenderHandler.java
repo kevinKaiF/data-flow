@@ -19,7 +19,7 @@ import java.util.Properties;
  * @description :
  * @date : 2017/6/24
  */
-public class OracleDataSenderHandler extends DatabaseDataSenderHandler {
+public class OracleDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         OracleDataSender dataSender = new OracleDataSender();

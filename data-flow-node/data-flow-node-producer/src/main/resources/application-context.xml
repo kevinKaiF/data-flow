@@ -38,9 +38,9 @@
     <bean id="oracleDataSenderHandler" class="com.github.dataflow.sender.database.handler.OracleDataSenderHandler"/>
 
     <!--event handles-->
-    <bean id="databaseDeleteEventHandler" class="com.github.dataflow.sender.database.event.DatabaseDeleteEventHandler"></bean>
-    <bean id="databaseInsertEventHandler" class="com.github.dataflow.sender.database.event.DatabaseInsertEventHandler"></bean>
-    <bean id="databaseUpdateEventHandler" class="com.github.dataflow.sender.database.event.DatabaseUpdateEventHandler"></bean>
+    <bean id="databaseDeleteEventHandler" class="com.github.dataflow.sender.database.event.handler.DatabaseDeleteEventHandler"></bean>
+    <bean id="databaseInsertEventHandler" class="com.github.dataflow.sender.database.event.handler.DatabaseInsertEventHandler"></bean>
+    <bean id="databaseUpdateEventHandler" class="com.github.dataflow.sender.database.event.handler.DatabaseUpdateEventHandler"></bean>
 
     <import resource="application-dubbo.xml"/>
 

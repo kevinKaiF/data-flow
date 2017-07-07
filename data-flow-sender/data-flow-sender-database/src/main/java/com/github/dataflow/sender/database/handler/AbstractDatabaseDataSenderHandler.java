@@ -18,7 +18,7 @@ import java.util.Properties;
  * @description :
  * @date : 2017/6/23
  */
-public abstract class DatabaseDataSenderHandler extends AbstractDataSenderHandler {
+public abstract class AbstractDatabaseDataSenderHandler extends AbstractDataSenderHandler {
     protected static final List<DataSourceType> DATA_SOURCE_TYPES = new ArrayList<>();
 
     static {

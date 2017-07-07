@@ -1,8 +1,8 @@
-package com.github.dataflow.sender.database.event;
+package com.github.dataflow.sender.database.event.handler;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
-import org.springframework.stereotype.Component;
+import com.github.dataflow.sender.database.event.InsertEvent;
 
 import java.util.List;
 
@@ -12,13 +12,11 @@ import java.util.List;
  * @description :
  * @date : 2017/6/20
  */
-@Component
-public class DatabaseInsertEventHandler extends AbstractDatabaseEventHandler {
-    private RowMetaData.EventType eventType = RowMetaData.EventType.INSERT;
+public class DatabaseInsertEventHandler extends AbstractDatabaseEventHandler implements InsertEvent {
 
     @Override
     public boolean support(DataSourceType dataSourceType, RowMetaData.EventType eventType) {
-        return DATA_SOURCE_TYPEs.contains(dataSourceType) && this.eventType == eventType;
+        return DATA_SOURCE_TYPEs.contains(dataSourceType) && INSERT == eventType;
     }
 
     @Override

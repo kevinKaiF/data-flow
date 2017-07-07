@@ -1,8 +1,8 @@
-package com.github.dataflow.sender.database.event;
+package com.github.dataflow.sender.database.event.handler;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
-import org.springframework.stereotype.Component;
+import com.github.dataflow.sender.database.event.UpdateEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +13,11 @@ import java.util.List;
  * @description :
  * @date : 2017/6/20
  */
-@Component
-public class DatabaseUpdateEventHandler extends AbstractDatabaseEventHandler {
-    private RowMetaData.EventType eventType = RowMetaData.EventType.UPDATE;
+public class DatabaseUpdateEventHandler extends AbstractDatabaseEventHandler implements UpdateEvent {
 
     @Override
     public boolean support(DataSourceType dataSourceType, RowMetaData.EventType eventType) {
-        return DATA_SOURCE_TYPEs.contains(dataSourceType) && this.eventType == eventType;
+        return DATA_SOURCE_TYPEs.contains(dataSourceType) && UPDATE == eventType;
     }
 
     @Override

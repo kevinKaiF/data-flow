@@ -17,7 +17,7 @@ import java.util.List;
 public interface EventHandler {
     boolean support(DataSourceType dataSourceType, RowMetaData.EventType eventType);
 
-    void singleHandle(DataSourceHolder dataSourceHolder, RowMetaData rowMetaData) throws SQLException;
+    void singleHandle(DataSourceHolder dataSourceHolder, RowMetaData rowMetaData) throws Exception;
 
     /**
      * 批处理
@@ -26,5 +26,5 @@ public interface EventHandler {
      * @param rowMetaDataList
      * @throws SQLException
      */
-    void batchHandle(DataSourceHolder dataSourceHolder, List<RowMetaData> rowMetaDataList) throws SQLException;
+    void batchHandle(DataSourceHolder dataSourceHolder, List<RowMetaData> rowMetaDataList) throws Exception;
 }

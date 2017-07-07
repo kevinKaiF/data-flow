@@ -17,7 +17,7 @@ import java.util.Properties;
  * @description :
  * @date : 2017/6/24
  */
-public class MysqlDataSenderHandler extends DatabaseDataSenderHandler {
+public class MysqlDataSenderHandler extends AbstractDatabaseDataSenderHandler {
 
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {

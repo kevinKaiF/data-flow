@@ -315,6 +315,8 @@
                             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Mysql</a>
                                 </li>
+                                <li role="presentation" class="active"><a href="#tab_content4" role="tab" id="profile-tab4" data-toggle="tab" aria-expanded="false">Hive</a>
+                            </li>
                                 <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Kafka</a>
                                 </li>
                                 <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">activeMQ</a>
@@ -330,15 +332,22 @@
     "jdbcUrl":""
 }</textarea>
                                 </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab4">
+                                        <textarea style="width: 100%;" rows="8" readonly>{
+    "username":"",
+    "password":"",
+    "jdbcUrl":""
+}</textarea>
+                                </div>
                                 <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab5">
                                         <textarea style="width: 100%;" rows="8" readonly>{
     "bootstrap.servers":""
-} </textarea>
+}</textarea>
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="profile-tab6">
                                         <textarea style="width: 100%;" rows="8" readonly>{
     "broke.url":""
-} </textarea>
+}</textarea>
                                 </div>
                             </div>
                         </div>

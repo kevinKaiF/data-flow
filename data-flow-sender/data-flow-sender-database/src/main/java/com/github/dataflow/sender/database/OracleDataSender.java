@@ -4,8 +4,6 @@ import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.sender.core.event.EventHandler;
 
-//import com.github.dataflow.dubbo.common.enums.DataSourceOutputType;
-
 /**
  * @author : kevin
  * @version : Ver 1.0

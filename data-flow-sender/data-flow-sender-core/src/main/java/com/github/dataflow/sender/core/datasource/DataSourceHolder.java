@@ -9,7 +9,7 @@ package com.github.dataflow.sender.core.datasource;
 public class DataSourceHolder {
     private Object dataSource;
 
-    public DataSourceHolder() {
+    private DataSourceHolder() {
     }
 
     public DataSourceHolder(Object dataSource) {

@@ -1,4 +1,4 @@
-package com.github.dataflow.sender.database.event;
+package com.github.dataflow.sender.database.event.handler;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.Closer;
@@ -32,6 +32,7 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
         DATA_SOURCE_TYPEs.add(DataSourceType.ORACLE);
         DATA_SOURCE_TYPEs.add(DataSourceType.POSTGRESQL);
         DATA_SOURCE_TYPEs.add(DataSourceType.SQLSERVER);
+        DATA_SOURCE_TYPEs.add(DataSourceType.HIVE);
     }
 
     @Override

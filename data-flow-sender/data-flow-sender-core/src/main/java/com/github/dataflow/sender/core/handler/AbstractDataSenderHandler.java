@@ -32,6 +32,10 @@ public abstract class AbstractDataSenderHandler implements DataSenderHandler, Ap
     }
 
     protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataOutputMapping) {
+        Long dataSenderId = dataOutputMapping.getDataSourceOutput().getId();
+        String dataSenderName = dataOutputMapping.getDataSourceOutput().getName();
+        dataSender.setDataSenderId(dataSenderId);
+        dataSender.setDataSenderName(dataSenderName);
     }
 
     @Override

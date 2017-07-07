@@ -79,7 +79,7 @@ public abstract class DatabaseDataSender extends DataSender {
     private void singleHandle(RowMetaData rowMetaData, EventHandler eventHandler) {
         try {
             eventHandler.singleHandle(dataSourceHolder, rowMetaData);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             if (e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY")) {
                 logger.warn("ignore table[{}] 'PRIMARY' violation, rowMetaData : {}", rowMetaData.getFullTableName(), rowMetaData);
             }

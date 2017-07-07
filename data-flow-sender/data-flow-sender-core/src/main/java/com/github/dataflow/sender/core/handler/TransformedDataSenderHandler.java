@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 public abstract class TransformedDataSenderHandler extends AbstractDataSenderHandler {
     @Override
     protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataOutputMapping) {
+        super.afterCreateDataSender(dataSender, dataOutputMapping);
         if (StringUtils.isEmpty(dataOutputMapping.getTransformScript())) {
             dataSender.setDataTransformer(new JSONDataTransformer());
         } else {
