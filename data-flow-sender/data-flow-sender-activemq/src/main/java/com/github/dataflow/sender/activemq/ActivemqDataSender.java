@@ -53,7 +53,6 @@ public class ActivemqDataSender extends TransformedDataSender {
             int deliveryMode = PropertyUtil.getInt(options, ActivemqConfig.DELIVERY_MODE);
             if (PropertyUtil.getInt(options, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
                 String queues = PropertyUtil.getString(options, ActivemqConfig.QUEUE);
-                logger.debug("init activeMq with {} mode : [{}]", ActivemqType.QUEUE, queues);
                 String[] queueArr = queues.split(",");
                 int length = queueArr.length;
                 for (int i = 0; i < length; i++) {
@@ -64,7 +63,6 @@ public class ActivemqDataSender extends TransformedDataSender {
                 }
             } else {
                 String topics = PropertyUtil.getString(options, ActivemqConfig.TOPIC);
-                logger.debug("init activeMq with {} mode : [{}]", ActivemqType.TOPIC, topics);
                 String[] topicArr = topics.split(",");
                 int length = topicArr.length;
                 for (int i = 0; i < length; i++) {
@@ -98,31 +96,26 @@ public class ActivemqDataSender extends TransformedDataSender {
     @Override
     protected void doStop() {
         logger.info("start to stop ActivemqDataSender [{}:{}], params : {}", dataSenderId, dataSenderName, options);
-        logger.info("start to close Producers : {}", producers);
-        for (MessageProducer producer : producers) {
+        int size = producers.size();
+        for (int i = 0; i < size; i++) {
             try {
-                Closer.closeProducer(producer);
+                Closer.closeProducer(producers.get(i));
             } catch (JMSException e) {
-                logger.error("close activemq producer [{}] failure, detail : ", producer, e);
+                logger.error("close activemq producer [{}] failure, index = {}, Producers = {}, detail : ", producers.get(i), i, producers, e);
             }
         }
-        logger.info("start to close Producers successfully.");
 
-        logger.info("start to close Session : {}", session);
         try {
             Closer.closeSession(session);
         } catch (JMSException e) {
             logger.error("close activemq session failure, detail : ", e);
         }
-        logger.info("start to close Session successfully.");
 
-        logger.info("start to close Connection : {}", connection);
         try {
             Closer.closeConnection(connection);
         } catch (JMSException e) {
             logger.error("close activemq connection failure, detail : ", e);
         }
-        logger.info("start to close Connection successfully.");
 
         logger.info("start to stop ActivemqDataSender successfully.");
     }
