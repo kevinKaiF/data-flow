@@ -17,4 +17,9 @@ public class HiveDataSender extends DatabaseDataSender{
     protected boolean isSupport(RowMetaData rowMetaData, EventHandler eventHandler) {
         return eventHandler.support(dataSourceType, rowMetaData.getEventType());
     }
+
+    @Override
+    protected boolean supportSingleSend(Exception e) {
+        return false;
+    }
 }

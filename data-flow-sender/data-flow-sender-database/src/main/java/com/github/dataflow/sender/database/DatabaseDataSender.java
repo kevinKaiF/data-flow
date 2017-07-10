@@ -4,11 +4,10 @@ import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 import com.github.dataflow.sender.core.event.EventHandler;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import com.github.dataflow.sender.core.exception.DataSenderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,12 +59,14 @@ public abstract class DatabaseDataSender extends DataSender {
                                 eventHandler.batchHandle(dataSourceHolder, batchRowMetaData);
                                 batchRowMetaData.clear();
                             }
-                        } catch (SQLException e) {
-                            if (e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY")) {
+                        } catch (Exception e) {
+                            if (supportSingleSend(e)) {
                                 logger.warn("batch handle RowMetaData failure and try to single handle RowMetaData, detail : ", e);
                                 for (RowMetaData metaData : batchRowMetaData) {
                                     singleHandle(metaData, eventHandler);
                                 }
+                            } else {
+                                throw new DataSenderException(e);
                             }
                         }
                     } else {
@@ -76,12 +77,16 @@ public abstract class DatabaseDataSender extends DataSender {
         }
     }
 
+    protected abstract boolean supportSingleSend(Exception e);
+
     private void singleHandle(RowMetaData rowMetaData, EventHandler eventHandler) {
         try {
             eventHandler.singleHandle(dataSourceHolder, rowMetaData);
         } catch (Exception e) {
-            if (e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY")) {
-                logger.warn("ignore table[{}] 'PRIMARY' violation, rowMetaData : {}", rowMetaData.getFullTableName(), rowMetaData);
+            if (supportSingleSend(e)) {
+                logger.warn("ignore to handle table[{}], rowMetaData : {}", rowMetaData.getFullTableName(), rowMetaData);
+            } else {
+                throw new DataSenderException(e);
             }
         }
     }
@@ -125,5 +130,11 @@ public abstract class DatabaseDataSender extends DataSender {
         this.dataSourceHolder = dataSourceHolder;
     }
 
+    public boolean isBatch() {
+        return batch;
+    }
 
+    public void setBatch(boolean batch) {
+        this.batch = batch;
+    }
 }

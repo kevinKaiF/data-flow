@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -20,11 +22,11 @@ import java.util.Properties;
  * @date : 2017/7/4
  */
 public class ActivemqDataSender extends TransformedDataSender {
-    private Logger logger = LoggerFactory.getLogger(ActivemqDataSender.class);
-    private Properties      options;
-    private Session         session;
-    private Connection      connection;
-    private MessageProducer producer;
+    private Logger                logger    = LoggerFactory.getLogger(ActivemqDataSender.class);
+    private List<MessageProducer> producers = new ArrayList<>();
+    private Properties options;
+    private Session    session;
+    private Connection connection;
 
     private ActivemqDataSender() throws IllegalAccessException {
         throw new IllegalAccessException();
@@ -48,14 +50,30 @@ public class ActivemqDataSender extends TransformedDataSender {
             connection = connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
-            Destination destination = null;
+            int deliveryMode = PropertyUtil.getInt(options, ActivemqConfig.DELIVERY_MODE);
             if (PropertyUtil.getInt(options, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
-                destination = session.createQueue(PropertyUtil.getString(options, ActivemqConfig.QUEUE));
+                String queues = PropertyUtil.getString(options, ActivemqConfig.QUEUE);
+                logger.debug("init activeMq with {} mode : [{}]", ActivemqType.QUEUE, queues);
+                String[] queueArr = queues.split(",");
+                int length = queueArr.length;
+                for (int i = 0; i < length; i++) {
+                    Queue queue = session.createQueue(queueArr[i]);
+                    MessageProducer producer = session.createProducer(queue);
+                    producer.setDeliveryMode(deliveryMode);
+                    producers.add(producer);
+                }
             } else {
-                destination = session.createTopic(PropertyUtil.getString(options, ActivemqConfig.TOPIC));
+                String topics = PropertyUtil.getString(options, ActivemqConfig.TOPIC);
+                logger.debug("init activeMq with {} mode : [{}]", ActivemqType.TOPIC, topics);
+                String[] topicArr = topics.split(",");
+                int length = topicArr.length;
+                for (int i = 0; i < length; i++) {
+                    Topic topic = session.createTopic(topicArr[i]);
+                    MessageProducer producer = session.createProducer(topic);
+                    producer.setDeliveryMode(deliveryMode);
+                    producers.add(producer);
+                }
             }
-            producer = session.createProducer(destination);
-            producer.setDeliveryMode(PropertyUtil.getInt(options, ActivemqConfig.DELIVERY_MODE));
         } catch (JMSException e) {
             throw new DataSenderException(e);
         }
@@ -64,31 +82,48 @@ public class ActivemqDataSender extends TransformedDataSender {
     @Override
     protected void doSend(String transformedValue) throws Exception {
         TextMessage message = session.createTextMessage(transformedValue);
-        producer.send(message);
+        for (MessageProducer producer : producers) {
+            producer.send(message);
+        }
         session.commit();
     }
 
     @Override
     protected void doStart() {
+        logger.info("start to init ActivemqDataSender [{}:{}], params : {}", dataSenderId, dataSenderName, options);
         init();
+        logger.info("start to init ActivemqDataSender successfully.");
     }
 
     @Override
     protected void doStop() {
-        try {
-            Closer.closeProducer(producer);
-        } catch (JMSException e) {
-            logger.error("close activemq producer failure, detail : ", e);
+        logger.info("start to stop ActivemqDataSender [{}:{}], params : {}", dataSenderId, dataSenderName, options);
+        logger.info("start to close Producers : {}", producers);
+        for (MessageProducer producer : producers) {
+            try {
+                Closer.closeProducer(producer);
+            } catch (JMSException e) {
+                logger.error("close activemq producer [{}] failure, detail : ", producer, e);
+            }
         }
+        logger.info("start to close Producers successfully.");
+
+        logger.info("start to close Session : {}", session);
         try {
             Closer.closeSession(session);
         } catch (JMSException e) {
             logger.error("close activemq session failure, detail : ", e);
         }
+        logger.info("start to close Session successfully.");
+
+        logger.info("start to close Connection : {}", connection);
         try {
             Closer.closeConnection(connection);
         } catch (JMSException e) {
             logger.error("close activemq connection failure, detail : ", e);
         }
+        logger.info("start to close Connection successfully.");
+
+        logger.info("start to stop ActivemqDataSender successfully.");
     }
 }
