@@ -23,8 +23,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * @description :
  * @date : 2017/7/4
  */
-public class ActivemqInstance extends AbstractMessageAwareInstance {
-    private Logger     logger = LoggerFactory.getLogger(ActivemqInstance.class);
+public class ActiveMqInstance extends AbstractMessageAwareInstance {
+    private Logger     logger = LoggerFactory.getLogger(ActiveMqInstance.class);
 
     private static final AtomicLong atomicLong = new AtomicLong(0);
 
@@ -34,11 +34,11 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
 
     private MessageConsumer consumer;
 
-    private ActivemqInstance() throws IllegalAccessException {
+    private ActiveMqInstance() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
 
-    public ActivemqInstance(Properties options) {
+    public ActiveMqInstance(Properties options) {
         this.options = options;
     }
 
