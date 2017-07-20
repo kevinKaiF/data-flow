@@ -9,7 +9,6 @@ import com.github.dataflow.sender.activemq.enums.ActivemqType;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.sender.core.handler.TransformedDataSenderHandler;
-import org.apache.activemq.ActiveMQConnection;
 import org.springframework.util.StringUtils;
 
 import javax.jms.DeliveryMode;
@@ -57,11 +56,16 @@ public class ActivemqDataSenderHandler extends TransformedDataSenderHandler {
             }
         }
 
-        String username = PropertyUtil.getString(dataOutputMappingOptions, ActivemqConfig.USERNAME, ActiveMQConnection.DEFAULT_USER);
-        String password = PropertyUtil.getString(dataOutputMappingOptions, ActivemqConfig.PASSWORD, ActiveMQConnection.DEFAULT_PASSWORD);
+        String username = PropertyUtil.getString(dataOutputMappingOptions, ActivemqConfig.USERNAME);
+        String password = PropertyUtil.getString(dataOutputMappingOptions, ActivemqConfig.PASSWORD);
         int deliverMode = PropertyUtil.getInt(dataOutputMappingOptions, ActivemqConfig.DELIVERY_MODE, DeliveryMode.NON_PERSISTENT);
-        dataOutputMappingOptions.put(ActivemqConfig.USERNAME, username);
-        dataOutputMappingOptions.put(ActivemqConfig.PASSWORD, password);
+        if (username != null) {
+            dataOutputMappingOptions.put(ActivemqConfig.USERNAME, username);
+        }
+
+        if (password != null) {
+            dataOutputMappingOptions.put(ActivemqConfig.PASSWORD, password);
+        }
         dataOutputMappingOptions.put(ActivemqConfig.DELIVERY_MODE, deliverMode);
         return dataOutputMappingOptions;
     }
