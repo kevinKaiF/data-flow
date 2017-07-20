@@ -10,7 +10,7 @@ import com.github.dataflow.core.store.DataStore;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.node.model.config.DataFlowContext;
-import com.github.dataflow.node.model.instance.activemq.ActiveMqInstance;
+import com.github.dataflow.node.model.instance.activemq.ActivemqInstance;
 import com.github.dataflow.node.model.store.DefaultDataStore;
 import com.github.dataflow.sender.activemq.config.ActivemqConfig;
 import com.github.dataflow.sender.activemq.enums.ActivemqType;
@@ -27,7 +27,7 @@ import java.util.Properties;
  * @date : 2017/7/4
  */
 @Component
-public class ActiveMqInstanceHandler extends AbstractMessageAwareInstanceHandler implements InstanceHandler {
+public class ActivemqInstanceHandler extends AbstractMessageAwareInstanceHandler implements InstanceHandler {
     @Autowired
     private DataFlowContext dataFlowContext;
 
@@ -64,7 +64,7 @@ public class ActiveMqInstanceHandler extends AbstractMessageAwareInstanceHandler
         options.put(MessageAwareInstanceConfig.POLL_TIMEOUT, timeout);
         options.put(MessageAwareInstanceConfig.POLL_PERIOD, period);
         // create instance
-        return new ActiveMqInstance(options);
+        return new ActivemqInstance(options);
     }
 
     @Override
