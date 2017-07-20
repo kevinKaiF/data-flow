@@ -89,6 +89,9 @@
                             case 23 : // activeMQ
                                 var props = ["brokeUrl"];
                                 return Table.__validateProperty(json, props);
+                            case 30: // hive
+                                var props = ["username", "password", "jdbcUrl"];
+                                return Table.__validateProperty(json, props);
                             default :
                                 return false;
                         }
@@ -137,6 +140,8 @@
                                         return "rabbitMQ"
                                     case 23 :
                                         return "activeMQ"
+                                    case 30 :
+                                        return "hive"
                                     default :
                                         return '-';
                                 }

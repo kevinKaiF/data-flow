@@ -241,6 +241,7 @@
                                                             <option value="21">metaQ</option>
                                                             <option value="22">rabbitMQ</option>
                                                             <option value="23">activeMQ</option>
+                                                            <option value="30">hive</option>
                                                         </select>
                                                     </div>
                                                 </div>

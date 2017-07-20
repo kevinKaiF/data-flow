@@ -89,7 +89,9 @@
                 case 22 :
                     return "rabbitMQ"
                 case 23 :
-                    return "activeMQ"
+                    return "activeMQ"      
+                case 30 :
+                    return "hive"
                 default :
                     return '-';
             }
