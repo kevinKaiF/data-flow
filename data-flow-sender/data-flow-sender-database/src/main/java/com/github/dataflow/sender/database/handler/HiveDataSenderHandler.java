@@ -50,7 +50,7 @@ public class HiveDataSenderHandler extends AbstractDatabaseDataSenderHandler {
             try {
                 Class.forName(driverName);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                throw new DataSenderException("there is no hive driver.");
             }
         }
 
