@@ -34,8 +34,6 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
 
     private MessageConsumer consumer;
 
-    private long period;
-
     private ActivemqInstance() throws IllegalAccessException {
         throw new IllegalAccessException();
     }

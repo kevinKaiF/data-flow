@@ -41,7 +41,7 @@ public abstract class AbstractDatabaseDataSenderHandler extends AbstractDataSend
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         Map<String, EventHandler> eventHandlerMap = applicationContext.getBeansOfType(EventHandler.class);
-        if (CollectionUtils.isEmpty(eventHandlers)) {
+        if (CollectionUtils.isEmpty(eventHandlerMap)) {
             throw new DataSenderException("there is no EventHandler bean");
         } else {
             eventHandlers.clear();
