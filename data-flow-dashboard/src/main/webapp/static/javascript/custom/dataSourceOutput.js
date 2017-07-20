@@ -53,6 +53,50 @@
                     var table = Table._initTable(id);
                     Table.eventBind(id, table);
                 },
+                __isEmpty : function (data) {
+                    if (typeof data === "undefined") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                },
+                __validateProperty : function (json, property) {
+                    for (var i in property) {
+                        if (Table.__isEmpty(json[property[i]])) {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+                __validateDataOutputOptions: function (type, options) {
+                    try {
+                        var json = JSON.parse(options);
+                        switch (parseInt(type)) {
+                            case 10 : // MySQL
+                            case 11: // Oracle
+                            case 12: // PostGreSQL
+                            case 13: // SQLServer
+                                var props = ["username", "password", "host", "port", "jdbcUrl"];
+                                return Table.__validateProperty(json, props);
+                            case 20 : // Kafka
+                                var props = ["bootstrap.servers"]
+                                return Table.__validateProperty(json, props);
+                            case 21 : // metaQ
+                                // TODO
+                                return true;
+                            case 22 : // rabbitMQ
+                                return true;
+                            case 23 : // activeMQ
+                                var props = ["brokeUrl"];
+                                return Table.__validateProperty(json, props);
+                            default :
+                                return false;
+                        }
+                    } catch (e) {
+                        console.error("配置非JSON格式", e);
+                        return false;
+                    }
+                },
                 _initTable: function (id) {
                     var table = $("#" + id).DataTable({
                         searching: false,
@@ -86,7 +130,7 @@
                                     case 13 :
                                         return "SQLServer";
                                     case 20 :
-                                        return "kafka";
+                                        return "Kafka";
                                     case 21 :
                                         return "metaQ";
                                     case 22 :
@@ -208,18 +252,14 @@
                             return false;
                         }
                         // validate options
-                        var options = $("#dataSourceOutput-options").val();
-                        if (options) {
-                            try {
-                                var json = JSON.parse(options);
-                                if ($.isEmptyObject(json)) {
-                                    main.messageAlert("options不能为空JSON")
-                                    return false;
-                                }
-                            } catch (e) {
-                                main.messageAlert("options必须是JSON格式")
-                                return false;
-                            }
+                        var $dataSourceOutputOptions = $("#dataSourceOutput-options");
+                        var options = $dataSourceOutputOptions.val();
+                        var type = $("#dataSourceOutput-type").val();
+                        if (!Table.__validateDataOutputOptions(type, options)) {
+                            window.validator.mark($dataSourceOutputOptions, "配置非法")
+                            return false;
+                        } else {
+                            window.validator.unmark($dataSourceOutputOptions)
                         }
 
                         $("#dataSourceOutput-form").ajaxSubmit({

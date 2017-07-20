@@ -88,16 +88,16 @@
                         <ul class="nav side-menu">
                             <li class="active"><a href="../dataInstance/"><i class="fa fa-random"></i> 数据实例 <span
                                     class="fa fa-chevron-right"></span></a>
-                                <#--<ul class="nav child_menu" style="display: block">-->
-                                    <#--<li class="current-page"><a href="../dataInstance/producer">生产者</a></li>-->
-                                    <#--<li><a href="../dataInstance/consumer">消费者</a></li>-->
-                                <#--</ul>-->
+                            <#--<ul class="nav child_menu" style="display: block">-->
+                            <#--<li class="current-page"><a href="../dataInstance/producer">生产者</a></li>-->
+                            <#--<li><a href="../dataInstance/consumer">消费者</a></li>-->
+                            <#--</ul>-->
                             </li>
                             <li><a href="../dataSourceOutput/"><i class="fa fa-database"></i>
                                 输出数据源 <span class="fa fa-chevron-right"></span></a>
                             </li>
                             <li><a href="../dataNode/"><i class="fa fa-eye"></i> 节点监控 <span
-                                class="fa fa-chevron-right"></span></a>
+                                    class="fa fa-chevron-right"></span></a>
                             </li>
                             <li><a href="../dataNodeConfiguration/"><i class="fa fa-cog"></i> 系统配置 <span
                                     class="fa fa-chevron-right"></span></a>
@@ -297,11 +297,12 @@
                                                         <div class="item form-group">
                                                             <label for="dataInstance-transformScript"
                                                                    class="control-label col-md-2 col-sm-2 col-xs-12">转换脚本 </label>
-                                                            <div class="col-md-8 col-sm-8 col-xs-12">
+                                                            <div class="col-md-8 col-sm-8 col-xs-12" style="position: relative">
                                                         <textarea id="dataInstance-transformScript"
                                                                   class="form-control col-md-7 col-xs-12"
                                                                   rows="7"
                                                                   name="transformScript"></textarea>
+                                                                <span id="dataInstance-transformScript-doc" class="doc">doc</span>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
@@ -382,7 +383,7 @@
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                                                    for="dataOutputMapping-options">配置
                                                                             </label>
-                                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <div class="col-md-9 col-sm-9 col-xs-12" style="position: relative;">
                                                                                  <textarea id="dataOutputMapping-options"
                                                                                            class="form-control col-md-7 col-xs-12"
                                                                                            rows="5" required="required"
@@ -394,12 +395,12 @@
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                                                    for="dataOutputMapping-transformScript">转换脚本
                                                                             </label>
-                                                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                            <div class="col-md-9 col-sm-9 col-xs-12" style="position: relative">
                                                                                  <textarea id="dataOutputMapping-transformScript"
                                                                                            class="form-control col-md-7 col-xs-12"
                                                                                            rows="5"
                                                                                            name="transformScript"></textarea>
-                                                                            <#--<span id="dataOutputMapping-transformScript-doc">doc</span>-->
+                                                                                <span id="dataOutputMapping-transformScript-doc" class="doc">doc</span>
                                                                             </div>
                                                                         </div>
                                                                         <div class="item form-group">
@@ -473,7 +474,7 @@
                     </div>
                 </div>
 
-                <#--dataInstance options-->
+            <#--dataInstance options-->
                 <div id="dataInstance-options-modal" class="modal fade bs-example-modal-lg" tabindex="-1"
                      role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-md">
@@ -491,7 +492,7 @@
                                     </li>
                                     <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Kafka</a>
                                     </li>
-                                    <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">Mysql</a>
+                                    <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">ActiveMQ</a>
                                     </li>
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
@@ -519,7 +520,7 @@
     "type":0,
     "topic":"",
     "queue":"",
-    "broke.url":""
+    "brokeUrl":""
 } </textarea>
                                     </div>
                                 </div>
@@ -534,7 +535,76 @@
                     </div>
                 </div>
 
-                <#--dataOutputMapping-->
+                <div id="dataInstance-transformScript-modal" class="modal fade bs-example-modal-lg" tabindex="-1"
+                     role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">×</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">脚本</h4>
+                            </div>
+                            <div class="modal-body">
+                                <textarea style="width: 100%;" rows="15" readonly>
+    /**
+     * 该转换方法主要用于数据库库名，表名，更改以及字段的添加、删除、修改
+     * 注意：如果你使用了第三方的jar包请import需要的类名，并在maven依赖中
+     * 添加相应的依赖
+     *
+     * RowMetaData的字段
+     * @param {String}           tableName       表名
+     * @param {String}           schemaName      库名
+     * @param {enum}             eventType       DDL类型
+     * @param {List<ColumnMeta>} beforeColumns   变化前的字段
+     * @param {List<ColumnMeta>} afterColumns    变化后的字段
+     *
+     * EventType枚举
+     * @param {enum}             INSERT          插入
+     * @param {enum}             UPDATE          更新
+     * @param {enum}             DELETE          删除
+     *
+     * ColumnMeta的字段
+     * @param {String}           columnName      字段名称
+     * @param {int}              jdbcType        jdbc类型
+     * @param {boolean}          isKey           是否是主键
+     * @param {String}           value           字段值
+     *
+     * @see cn.bidlink.dataflow.common.model.RowMetaData
+     */
+    public List<RowMetaData> transform(List<RowMetaData> rowMetaDataList) {
+        // 自定义的处理转换
+        for (RowMetaData rowMetaData : rowMetaDatas) {
+            if ("testTable".equals(rowMetaData.getTableName()) && "testSchema".equals(rowMetaData.getSchemaName())) {
+                // 更换表名
+                rowMetaData.setTableName("newTestTable");
+                // 添加字段
+                if (rowMetaData.getEventType().equals(EventType.INSERT)) {
+                    rowMetaData.getAfterColumns().add(new ColumnMeta("test", 4, false, "10"));
+                }
+            }
+
+            if ("testSchema".equals(rowMetaData.getSchemaName())) {
+                // 更换库名
+                rowMetaData.setSchemaName("newTestSchema");
+            }
+        }
+        return rowMetaDataList;
+    }
+                                </textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="alert-close" class="btn btn-default antoclose"
+                                        data-dismiss="modal">关闭
+                                </button>
+                                <button type="button" id="alert-submit" class="btn btn-primary antosubmit">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <#--dataOutputMapping-->
                 <div id="dataOutputMapping-options-modal" class="modal fade bs-example-modal-lg" tabindex="-1"
                      role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-md">
@@ -563,7 +633,7 @@
                                         <textarea style="width: 100%;" rows="12" readonly>{
     "type":0=queue,1=topic,
     "topic":"",
-    "queue":"",
+    "queue":""
 } </textarea>
                                     </div>
                                 </div>
@@ -574,6 +644,63 @@
                                 </button>
                                 <button type="button" id="alert-submit" class="btn btn-primary antosubmit">确定</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dataOutputMapping-transformScript-modal" class="modal fade bs-example-modal-lg" tabindex="-1"
+                 role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                    aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">脚本</h4>
+                        </div>
+                        <div class="modal-body">
+                                <textarea style="width: 100%;" rows="15" readonly>
+    /**
+     * 该转换方法主要用于将rowMetaDataList转换为JSON字符串的一些处理
+     * 注意：如果你使用了第三方的jar包请import需要的类名，并在maven依
+     * 赖中添加相应的依赖
+     *
+     * RowMetaData的字段
+     * @param {String}           tableName       表名
+     * @param {String}           schemaName      库名
+     * @param {enum}             eventType       DDL类型
+     * @param {List<ColumnMeta>} beforeColumns   变化前的字段
+     * @param {List<ColumnMeta>} afterColumns    变化后的字段
+     *
+     * EventType枚举
+     * @param {enum}             INSERT          插入
+     * @param {enum}             UPDATE          更新
+     * @param {enum}             DELETE          删除
+     *
+     * ColumnMeta的字段
+     * @param {String}           columnName      字段名称
+     * @param {int}              jdbcType        jdbc类型
+     * @param {boolean}          isKey           是否是主键
+     * @param {String}           value           字段值
+     *
+     * @see cn.bidlink.dataflow.common.model.RowMetaData
+     */
+
+    import com.alibaba.fastjson.JSON;
+
+    public String transform(List<RowMetaData> rowMetaDataList) {
+        // 自定义的处理转换
+        return JSON.toJSONString(rowMetaDataList);
+    }
+                                </textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="alert-close" class="btn btn-default antoclose"
+                                    data-dismiss="modal">关闭
+                            </button>
+                            <button type="button" id="alert-submit" class="btn btn-primary antosubmit">确定</button>
                         </div>
                     </div>
                 </div>

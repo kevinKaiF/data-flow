@@ -52,9 +52,19 @@
                 $("#dataInstance-options-modal").modal("show");
             })
 
+            // the document for DataInstance's transformScript
+            $("#dataInstance-transformScript-doc").on("click", function () {
+                $("#dataInstance-transformScript-modal").modal("show");
+            })
+
             // the document for DataOutputMapping's options
             $("#dataOutputMapping-options-doc").on("click", function () {
                 $("#dataOutputMapping-options-modal").modal("show");
+            })
+
+            // the document for DataOutputMapping's transformScript
+            $("#dataOutputMapping-transformScript-doc").on("click", function () {
+                $("#dataOutputMapping-transformScript-modal").modal("show");
             })
 
             // collapse the search panel
@@ -342,10 +352,10 @@
                     })
                 },
                 __isEmpty : function (data) {
-                    if (data || (data + "").length > 0) {
-                        return false;
-                    } else {
+                    if (typeof data === "undefined") {
                         return true;
+                    } else {
+                        return false;
                     }
                 },
                 __validateProperty : function (json, property) {
