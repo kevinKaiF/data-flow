@@ -117,11 +117,12 @@
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textarea">告警配置 <span
                                             class="required">*</span>
                                     </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-6 col-sm-6 col-xs-12" style="position: relative">
                                         <textarea id="dataNodeConfiguration-options"
                                                   class="form-control col-md-7 col-xs-12"
                                                   rows="6"
                                                   name="options" required="required" placeholder="JSON格式"></textarea>
+                                        <span id="dataNodeConfiguration-options-doc" class="doc">doc</span>
                                     </div>
                                 </div>
                                 <div class="ln_solid"></div>
@@ -155,6 +156,63 @@
                         </div>
                         <div class="modal-body">
                             <div id="alert-content" style="padding: 5px 20px"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="alert-close" class="btn btn-default antoclose"
+                                    data-dismiss="modal">关闭
+                            </button>
+                            <button type="button" id="alert-submit" class="btn btn-primary antosubmit">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <#--dataNodeConfiguration-options-modal-->
+            <div id="dataNodeConfiguration-options-modal" class="modal fade bs-example-modal-lg" tabindex="-1"
+                 role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                    aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">模板</h4>
+                        </div>
+                        <div class="modal-body">
+                            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">mail</a>
+                                </li>
+                            <#--<li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Kafka</a>-->
+                            <#--</li>-->
+                            <#--<li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">ActiveMQ</a>-->
+                            <#--</li>-->
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="profile-tab">
+                                        <textarea style="width: 100%;" rows="12" readonly>{
+    "emailHost":"smtp.163.com",
+    "emailUsername":"xxx@163.com",
+    "emailPassword":"xxx",
+    "emailReceiver":"xx@163.com"
+}</textarea>
+                                </div>
+                            <#--<div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab5">-->
+                            <#--<textarea style="width: 100%;" rows="12" readonly>{-->
+                            <#--"bootstrap.servers":"",-->
+                            <#--"topic":"",-->
+                            <#--"group.id":""-->
+                            <#--} </textarea>-->
+                            <#--</div>-->
+                            <#--<div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="profile-tab6">-->
+                            <#--<textarea style="width: 100%;" rows="12" readonly>{-->
+                            <#--"type":0,-->
+                            <#--"topic":"",-->
+                            <#--"queue":"",-->
+                            <#--"brokeUrl":""-->
+                            <#--} </textarea>-->
+                            <#--</div>-->
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" id="alert-close" class="btn btn-default antoclose"

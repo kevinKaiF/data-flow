@@ -40,18 +40,6 @@
             color: rgba(255, 255, 255, 0.75);
         }
 
-        .doc {
-            position: absolute;
-            right: 10px;
-            top: -1px;
-            border: 1px solid #e5e5e5;
-            padding: 3px 5px;
-            border-radius: 3px;
-            background: #e5e5e5;
-            color: #1abb9c;
-            font-weight: 800;
-        }
-
     </style>
 </head>
 

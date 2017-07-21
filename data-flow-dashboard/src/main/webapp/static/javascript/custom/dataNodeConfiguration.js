@@ -67,6 +67,11 @@
                 })
             })
 
+            // the document for DataNodeConfiguration's options
+            $("#dataNodeConfiguration-options-doc").on("click", function () {
+                $("#dataNodeConfiguration-options-modal").modal("show");
+            })
+
             $("#dataNodeConfiguration-clear").on("click", function () {
                 var id = $("#dataNodeConfiguration-id").val();
                 if (id) {
