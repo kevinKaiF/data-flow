@@ -229,7 +229,7 @@
                                                                         tableDetailForm += '   <label class="control-label col-md-2 col-sm-2 col-xs-6" for="dataInstance-name">name <span class="required">*</span></label>'
                                                                         tableDetailForm += '    <div class="col-md-9 col-sm-9 col-xs-12">'
                                                                         // columns
-                                                                        var columns = data.result.columns;
+                                                                        var columns = data.result.allColumns;
                                                                         for (var i in columns) {
                                                                             var column = columns[i];
                                                                             if (i == 0) {
@@ -247,8 +247,11 @@
                                                                         tableDetailForm += ' <div class="ln_solid"></div>'
                                                                         // submit button
                                                                         tableDetailForm += ' <div class="form-group">'
-                                                                        tableDetailForm += '   <div class="col-md-offset-2 col-sm-offset-2 col-md-4 col-sm-4 col-xs-8">'
+                                                                        tableDetailForm += '   <div class="col-md-offset-2 col-sm-offset-2 col-md-2 col-sm-2 col-xs-4">'
                                                                         tableDetailForm += '      <button id="dataTable-submit" type="button" class="btn btn-success">保存</button>'
+                                                                        tableDetailForm += '   </div>'
+                                                                        tableDetailForm += '   <div class="col-md-4 col-sm-4 col-xs-8"> '
+                                                                        tableDetailForm += '      <button id="dataTable-cancel" type="button" class="btn btn-primary">清空</button>'
                                                                         tableDetailForm += '   </div>'
                                                                         tableDetailForm += ' </div>'
 
@@ -260,15 +263,9 @@
                                                                         var $dataInstanceTable = $("#dataInstance-table-detail");
                                                                         $dataInstanceTable.empty().html(tableDetailForm);
 
-                                                                        var dataInstance = $("#dataInstance-form").data("dataInstance");
-                                                                        if (dataInstance && data.result.id) {
-                                                                            var dataTables = dataInstance.dataTables;
-                                                                            for (var i in dataTables) {
-                                                                                if (dataTables[i].id == data.result.id) {
-                                                                                    data.result.columns = dataTables[i].columns.split(",");
-                                                                                }
-                                                                            }
-                                                                        }
+                                                                        // load form data
+                                                                        delete data.result.allColumns;
+                                                                        data.result.columns = data.result.columns.split(",")
                                                                         // load data into form fields when update
                                                                         data.result.id && $dataInstanceTable.loadData(data.result);
 
@@ -279,12 +276,10 @@
                                                                             if (checkboxList && checkboxList.length > 0) {
                                                                                 // when create
                                                                                 var hasPrimaryKey = false;
-                                                                                if (!$("#dataTable-id").val()) {
-                                                                                    var primaryKeys = data.result.primaryKeys;
-                                                                                    for (var i in checkboxList) {
-                                                                                        if (!hasPrimaryKey && primaryKeys.indexOf(checkboxList[i]) > -1) {
-                                                                                            hasPrimaryKey = true;
-                                                                                        }
+                                                                                var primaryKeys = data.result.primaryKeys;
+                                                                                for (var i in checkboxList) {
+                                                                                    if (!hasPrimaryKey && primaryKeys.indexOf(checkboxList[i]) > -1) {
+                                                                                        hasPrimaryKey = true;
                                                                                     }
                                                                                 }
 
@@ -295,6 +290,28 @@
                                                                                 }
                                                                             } else {
                                                                                 main.messageAlert("请勾选需要过滤的列");
+                                                                            }
+                                                                        })
+
+                                                                        // bind deleting form event
+                                                                        $("#dataTable-cancel").off('click').on('click', function () {
+                                                                            var dataTableId = $("#dataTable-id").val();
+                                                                            if (dataTableId) {
+                                                                                $.ajax({
+                                                                                    url : "deleteTable",
+                                                                                    dataType : "json",
+                                                                                    data : {id : dataTableId}
+                                                                                }).then(function(data) {
+                                                                                    if (data.responseStatus == 200) {
+                                                                                        $("#dataTable-id").val('');
+                                                                                        $("#dataTable-form").clearForm(false);
+                                                                                    } else {
+                                                                                        main.messageAlert("清除table失败");
+                                                                                    }
+                                                                                })
+                                                                            } else {
+                                                                                $("#dataTable-id").val('');
+                                                                                $("#dataTable-form").clearForm(false);
                                                                             }
                                                                         })
                                                                     } else {
@@ -338,7 +355,7 @@
                         tableName: $("#dataTable-form input[name='tableName']").val(),
                         id: $("#dataTable-form input[name='id']").val()
                     }
-                    $("#dataTable-form").ajaxSubmit({
+                    $.ajax({
                         url: "addTable",
                         dataType: "json",
                         type: "POST",
@@ -346,7 +363,8 @@
                         success: function (data) {
                             if (data.responseStatus == 200) {
                                 var $dataTableId = $("#dataTable-id");
-                                !$dataTableId.val() && $dataTableId.val(data.result);
+                                $dataTableId.val(data.result);
+                                main.messageAlert("添加table成功");
                             } else {
                                 main.messageAlert("添加table失败");
                             }
@@ -488,7 +506,7 @@
                     return true;
                 },
                 __validateDataOutputMappingOptions : function (type, options) {
-                    if (type < 20) {
+                    if (type < 20 || type == 30) {
                         return true;
                     }
 
@@ -995,7 +1013,7 @@
                                     }
 
                                     dataInstanceForm += '</div>'
-                                        + '</div>';
+                                    dataInstanceForm += '</div>';
                                 }
                             }
                             dataInstanceForm += '</form></div>';
@@ -1003,15 +1021,17 @@
                             // render dataTable [Table]
                             var dataTable = '';
                             if (result["dataTables"] && result["dataTables"].length > 0) {
+                                var dataInstanceId = result["id"]
                                 dataTable +=
-                                    '<div class="container">' +
+                                    '<div class="container" id="dataTableDetail_' + dataInstanceId + '">' +
                                     '<span class="section">过滤表</span>' +
                                     '<div class="col-sm-12">' +
                                     '<table class="table table-hover dataTable no-footer" style="width: 100%;" role="grid">' +
                                     '<thead><tr role="row">' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">库名</th>' +
                                     '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">表名</th>' +
-                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 80%;">列</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 70%;">列</th>' +
+                                    '<th class="sorting_disabled" rowspan="1" colspan="1" style="width: 10%;">操作</th>' +
                                     '</tr>' +
                                     '</thead>' +
                                     '<tbody>';
@@ -1022,6 +1042,7 @@
                                         '<td>' + row.schemaName + '</td>' +
                                         '<td>' + row.tableName + '</td>' +
                                         '<td>' + row.columns + '</td>' +
+                                        '<td><span class="label label-info dataTable-delete" data-instanceId="' + dataInstanceId + '" data-id="' + row.id + '" style="font-weight: 100">删除</span></td>' +
                                         '</tr>'
                                 }
                                 dataTable +=
@@ -1071,9 +1092,32 @@
                             }
 
                             var html = dataInstanceForm + dataTable + dataOutputMappings;
-                            div
-                                .html(html)
-                                .removeClass('loading');
+                            div.html(html).removeClass('loading');
+                            // bind deleting dataTable
+                            $(".dataTable-delete").each(function() {
+                                var $this = $(this);
+                                $this.off('click').on('click', function() {
+                                    var dataTableId = $this.attr('data-id');
+                                    var dataInstanceId = $this.attr('data-instanceId');
+                                    $.ajax({
+                                        url : "deleteTable",
+                                        dataType : "json",
+                                        data : {id : dataTableId}
+                                    }).then(function(data) {
+                                        if (data.responseStatus == 200) {
+                                            var $tr = $this.parent().parent();
+                                            var siblings = $tr.siblings();
+                                            if (siblings && siblings.length == 0) {
+                                                $("#dataTableDetail_" + dataInstanceId).remove();
+                                            } else {
+                                                $tr.remove();
+                                            }
+                                        } else {
+                                            main.messageAlert("删除table失败")
+                                        }
+                                    })
+                                })
+                            })
                         }
                     });
 

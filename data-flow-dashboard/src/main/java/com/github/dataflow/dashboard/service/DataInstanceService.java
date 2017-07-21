@@ -168,20 +168,21 @@ public class DataInstanceService {
         condition.setTableName(tableName);
         ServiceResult<List<DataTable>> listServiceResult = dubboDataTableService.findByCondition(condition, new PageSet());
         if (!listServiceResult.isSuccess()) {
-            logger.error("{}调用{}时发生未知异常,error Message:{}", "com.github.dataflow.dashboard.service.DataInstanceService.getTableDetail",
+            logger.error("{}调用{}时发生未知异常,error Message:{}", "cn.bidlink.dataflow.dashboard.service.DataInstanceService.getTableDetail",
                          "listServiceResult", listServiceResult.getErrorMessage());
             throw new DataFlowException();
         }
         List<DataTable> dataTableList = listServiceResult.getResult();
         Map<String, List<String>> columnListMap = getColumn(id, schemaName, tableName);
         if (CollectionUtils.isEmpty(dataTableList)) {
-            logger.warn("com.github.dataflow.dashboard.service.DataInstanceService.getTableDetail时未获取到结果");
+            logger.warn("cn.bidlink.dataflow.dashboard.service.DataInstanceService.getTableDetail时未获取到结果");
             Map<String, Object> map = new HashMap<>();
             map.put("tableName", condition.getTableName());
             map.put("schemaName", condition.getSchemaName());
-            map.put("dataInstaceId", condition.getDataInstanceId());
+            map.put("columns", "");
+            map.put("dataInstanceId", condition.getDataInstanceId());
             map.put("primaryKeys", columnListMap.get("primaryKeys"));
-            map.put("columns", columnListMap.get("columns"));
+            map.put("allColumns", columnListMap.get("columns"));
             return map;
         } else {
             DataTable dataTable = dataTableList.get(0);
@@ -189,9 +190,10 @@ public class DataInstanceService {
             map.put("id", dataTable.getId());
             map.put("tableName", dataTable.getTableName());
             map.put("schemaName", dataTable.getSchemaName());
-            map.put("dataInstaceId", dataTable.getDataInstanceId());
+            map.put("columns", dataTable.getColumns());
+            map.put("dataInstanceId", dataTable.getDataInstanceId());
             map.put("primaryKeys", columnListMap.get("primaryKeys"));
-            map.put("columns", columnListMap.get("columns"));
+            map.put("allColumns", columnListMap.get("columns"));
             return map;
         }
     }

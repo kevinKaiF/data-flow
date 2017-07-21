@@ -386,7 +386,7 @@
                                                                             <div class="col-md-9 col-sm-9 col-xs-12" style="position: relative;">
                                                                                  <textarea id="dataOutputMapping-options"
                                                                                            class="form-control col-md-7 col-xs-12"
-                                                                                           rows="5" required="required"
+                                                                                           rows="5"
                                                                                            name="options"></textarea>
                                                                                 <span id="dataOutputMapping-options-doc" class="doc">doc</span>
                                                                             </div>
