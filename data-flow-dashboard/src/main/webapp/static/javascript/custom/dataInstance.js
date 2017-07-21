@@ -226,7 +226,7 @@
                                                                         var tableDetailForm = "";
                                                                         tableDetailForm += '<form id="dataTable-form" class="form-horizontal form-label-left">'
                                                                         tableDetailForm += ' <div class="item form-group">'
-                                                                        tableDetailForm += '   <label class="control-label col-md-2 col-sm-2 col-xs-6" for="dataInstance-name">name <span class="required">*</span></label>'
+                                                                        tableDetailForm += '   <label class="control-label col-md-2 col-sm-2 col-xs-6" for="dataInstance-name">列名 <span class="required">*</span></label>'
                                                                         tableDetailForm += '    <div class="col-md-9 col-sm-9 col-xs-12">'
                                                                         // columns
                                                                         var columns = data.result.allColumns;
