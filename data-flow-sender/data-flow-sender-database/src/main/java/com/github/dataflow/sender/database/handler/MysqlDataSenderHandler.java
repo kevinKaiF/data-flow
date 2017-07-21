@@ -1,15 +1,14 @@
 package com.github.dataflow.sender.database.handler;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.github.dataflow.common.utils.PropertyUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.sender.database.MysqlDataSender;
 import com.github.dataflow.sender.database.config.DatabaseConfig;
-
-import java.util.Properties;
 
 /**
  * @author : kevin
@@ -22,27 +21,27 @@ public class MysqlDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         MysqlDataSender dataSender = new MysqlDataSender();
-        Properties props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
         dataSender.setDataSourceHolder(new DataSourceHolder(getMySqlDataSource(props)));
         return dataSender;
     }
 
-    private javax.sql.DataSource getMySqlDataSource(Properties props) {
+    private javax.sql.DataSource getMySqlDataSource(JSONObject props) {
         try {
-            String maxWait = "5000";
-            String minIdle = "0";
-            String initialSize = "0";
-            String maxActive = "32";
+            int maxWait = 5000;
+            int minIdle = 0;
+            int initialSize = 0;
+            int maxActive = 32;
             DruidDataSource druidDataSource = new DruidDataSource();
-            druidDataSource.setUrl(PropertyUtil.getString(props, DatabaseConfig.JDBC_URL));
-            druidDataSource.setUsername(PropertyUtil.getString(props, DatabaseConfig.USERNAME));
-            druidDataSource.setPassword(PropertyUtil.getString(props, DatabaseConfig.PASSWORD));
+            druidDataSource.setUrl(JSONObjectUtil.getString(props, DatabaseConfig.JDBC_URL));
+            druidDataSource.setUsername(JSONObjectUtil.getString(props, DatabaseConfig.USERNAME));
+            druidDataSource.setPassword(JSONObjectUtil.getString(props, DatabaseConfig.PASSWORD));
             druidDataSource.setUseUnfairLock(true);
             druidDataSource.setNotFullTimeoutRetryCount(2);
-            druidDataSource.setInitialSize(PropertyUtil.getInt(props, "initialSize", initialSize));
-            druidDataSource.setMinIdle(PropertyUtil.getInt(props, "minIdle", minIdle));
-            druidDataSource.setMaxActive(PropertyUtil.getInt(props, "maxActive", maxActive));
-            druidDataSource.setMaxWait(PropertyUtil.getInt(props, "maxWait", maxWait));
+            druidDataSource.setInitialSize(JSONObjectUtil.getInt(props, "initialSize", initialSize));
+            druidDataSource.setMinIdle(JSONObjectUtil.getInt(props, "minIdle", minIdle));
+            druidDataSource.setMaxActive(JSONObjectUtil.getInt(props, "maxActive", maxActive));
+            druidDataSource.setMaxWait(JSONObjectUtil.getInt(props, "maxWait", maxWait));
             druidDataSource.setDriverClassName("com.mysql.jdbc.Driver");
             druidDataSource.addConnectionProperty("useServerPrepStmts", "false");
             druidDataSource.addConnectionProperty("rewriteBatchedStatements", "true");

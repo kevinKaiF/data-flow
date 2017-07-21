@@ -1,7 +1,8 @@
 package com.github.dataflow.node.model.instance.activemq;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.model.RowMetaData;
-import com.github.dataflow.common.utils.PropertyUtil;
+import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.core.instance.AbstractMessageAwareInstance;
 import com.github.dataflow.sender.activemq.config.ActivemqConfig;
@@ -14,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -38,7 +38,7 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
         throw new IllegalAccessException();
     }
 
-    public ActivemqInstance(Properties options) {
+    public ActivemqInstance(JSONObject options) {
         this.options = options;
     }
 
@@ -71,17 +71,17 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
         try {
             logger.info("init consumer begin...");
             ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-                    PropertyUtil.getString(options, ActivemqConfig.USERNAME),
-                    PropertyUtil.getString(options, ActivemqConfig.PASSWORD),
-                    PropertyUtil.getString(options, ActivemqConfig.BROKE_URL));
+                    JSONObjectUtil.getString(options, ActivemqConfig.USERNAME),
+                    JSONObjectUtil.getString(options, ActivemqConfig.PASSWORD),
+                    JSONObjectUtil.getString(options, ActivemqConfig.BROKE_URL));
             connection = connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(Boolean.FALSE, Session.AUTO_ACKNOWLEDGE);
             Destination destination = null;
-            if (PropertyUtil.getInt(options, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
-                destination = session.createQueue(PropertyUtil.getString(options, ActivemqConfig.QUEUE));
+            if (JSONObjectUtil.getInt(options, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
+                destination = session.createQueue(JSONObjectUtil.getString(options, ActivemqConfig.QUEUE));
             } else {
-                destination = session.createTopic(PropertyUtil.getString(options, ActivemqConfig.TOPIC));
+                destination = session.createTopic(JSONObjectUtil.getString(options, ActivemqConfig.TOPIC));
             }
 
             consumer = session.createConsumer(destination);

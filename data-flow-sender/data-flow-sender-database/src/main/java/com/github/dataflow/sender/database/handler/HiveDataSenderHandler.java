@@ -1,7 +1,8 @@
 package com.github.dataflow.sender.database.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.utils.Closer;
-import com.github.dataflow.common.utils.PropertyUtil;
+import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
@@ -15,7 +16,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
@@ -28,16 +28,16 @@ public class HiveDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         HiveDataSender dataSender = new HiveDataSender();
-        Properties props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
         dataSender.setDataSourceHolder(new DataSourceHolder(getHiveDataSource(props)));
         return dataSender;
     }
 
-    private DataSource getHiveDataSource(Properties props) {
+    private DataSource getHiveDataSource(JSONObject props) {
         try {
-            HiveDataSource dataSource = new HiveDataSource(PropertyUtil.getString(props, DatabaseConfig.JDBC_URL),
-                                                           PropertyUtil.getString(props, DatabaseConfig.USERNAME),
-                                                           PropertyUtil.getString(props, DatabaseConfig.PASSWORD));
+            HiveDataSource dataSource = new HiveDataSource(JSONObjectUtil.getString(props, DatabaseConfig.JDBC_URL),
+                                                           JSONObjectUtil.getString(props, DatabaseConfig.USERNAME),
+                                                           JSONObjectUtil.getString(props, DatabaseConfig.PASSWORD));
             return dataSource;
         } catch (SQLException e) {
             throw new DataSenderException(e);

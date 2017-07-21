@@ -1,6 +1,7 @@
 package com.github.dataflow.sender.activemq;
 
-import com.github.dataflow.common.utils.PropertyUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.sender.activemq.config.ActivemqConfig;
 import com.github.dataflow.sender.activemq.enums.ActivemqType;
 import com.github.dataflow.sender.activemq.utils.Closer;
@@ -13,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import javax.jms.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * @author : kevin
@@ -24,7 +24,7 @@ import java.util.Properties;
 public class ActivemqDataSender extends TransformedDataSender {
     private Logger                logger    = LoggerFactory.getLogger(ActivemqDataSender.class);
     private List<MessageProducer> producers = new ArrayList<>();
-    private Properties options;
+    private JSONObject options;
     private Session    session;
     private Connection connection;
 
@@ -32,7 +32,7 @@ public class ActivemqDataSender extends TransformedDataSender {
         throw new IllegalAccessException();
     }
 
-    public ActivemqDataSender(Properties properties) {
+    public ActivemqDataSender(JSONObject properties) {
         this.options = properties;
     }
 
@@ -44,15 +44,15 @@ public class ActivemqDataSender extends TransformedDataSender {
     private void init() {
         try {
             ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-                    PropertyUtil.getString(options, ActivemqConfig.USERNAME),
-                    PropertyUtil.getString(options, ActivemqConfig.PASSWORD),
-                    PropertyUtil.getString(options, ActivemqConfig.BROKE_URL));
+                    JSONObjectUtil.getString(options, ActivemqConfig.USERNAME),
+                    JSONObjectUtil.getString(options, ActivemqConfig.PASSWORD),
+                    JSONObjectUtil.getString(options, ActivemqConfig.BROKE_URL));
             connection = connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
-            int deliveryMode = PropertyUtil.getInt(options, ActivemqConfig.DELIVERY_MODE);
-            if (PropertyUtil.getInt(options, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
-                String queues = PropertyUtil.getString(options, ActivemqConfig.QUEUE);
+            int deliveryMode = JSONObjectUtil.getInt(options, ActivemqConfig.DELIVERY_MODE);
+            if (JSONObjectUtil.getInt(options, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
+                String queues = JSONObjectUtil.getString(options, ActivemqConfig.QUEUE);
                 String[] queueArr = queues.split(",");
                 int length = queueArr.length;
                 for (int i = 0; i < length; i++) {
@@ -62,7 +62,7 @@ public class ActivemqDataSender extends TransformedDataSender {
                     producers.add(producer);
                 }
             } else {
-                String topics = PropertyUtil.getString(options, ActivemqConfig.TOPIC);
+                String topics = JSONObjectUtil.getString(options, ActivemqConfig.TOPIC);
                 String[] topicArr = topics.split(",");
                 int length = topicArr.length;
                 for (int i = 0; i < length; i++) {

@@ -6,8 +6,6 @@ import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
 import org.springframework.util.StringUtils;
 
-import java.util.Properties;
-
 /**
  * @author : kevin
  * @version : Ver 1.0
@@ -37,13 +35,13 @@ public abstract class AbstractDataSenderHandler implements DataSenderHandler {
      * @param dataOutputMapping
      * @return
      */
-    protected abstract Properties refreshDataOutputMapping(DataOutputMapping dataOutputMapping);
+    protected abstract JSONObject refreshDataOutputMapping(DataOutputMapping dataOutputMapping);
 
-    protected Properties parseToProperties(String options) {
+    protected JSONObject parseToProperties(String options) {
         if (StringUtils.isEmpty(options)) {
-            return new Properties();
+            return new JSONObject();
         } else {
-            return JSONObject.parseObject(options, Properties.class);
+            return JSONObject.parseObject(options);
         }
     }
 

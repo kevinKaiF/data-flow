@@ -1,6 +1,5 @@
 package com.github.dataflow.node.model.instance.mysql.handler;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.otter.canal.instance.manager.model.CanalParameter;
 import com.github.dataflow.core.alarm.AlarmService;
@@ -38,7 +37,7 @@ public class MysqlInstanceHandler extends AbstractInstanceHandler implements Ins
     }
 
     public Instance createInstance(DataInstance dataInstance) {
-        JSONObject options = JSON.parseObject(dataInstance.getOptions());
+        JSONObject options = parseToProperties(dataInstance.getOptions());
         MysqlInstance mysqlInstance = new MysqlInstance();
         mysqlInstance.setWhiteFilter(options.getString(MysqlInstanceConfig.WHITE_FILTER));
         mysqlInstance.setCanalParameter(buildCanalParameter(options));

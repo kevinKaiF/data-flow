@@ -1,6 +1,7 @@
 package com.github.dataflow.node.model.instance.kafka.handler;
 
-import com.github.dataflow.common.utils.PropertyUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.core.alarm.AlarmService;
 import com.github.dataflow.core.instance.Instance;
 import com.github.dataflow.core.instance.config.MessageAwareInstanceConfig;
@@ -16,8 +17,6 @@ import com.github.dataflow.sender.kafka.config.KafkaConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Properties;
 
 /**
  * @author : kevin
@@ -44,13 +43,13 @@ public class KafkaInstanceHandler extends AbstractMessageAwareInstanceHandler im
 
     @Override
     public Instance createInstance(DataInstance dataInstance) {
-        Properties options = parseToProperties(dataInstance.getOptions());
+        JSONObject options = parseToProperties(dataInstance.getOptions());
         validateProperties(options, ConsumerConfig.GROUP_ID_CONFIG);
         validateProperties(options, ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG);
         validateProperties(options, KafkaConfig.TOPIC);
         // set property
-        Long timeout = PropertyUtil.getLong(options, MessageAwareInstanceConfig.POLL_TIMEOUT, DEFAULT_TIMEOUT);
-        Long period = PropertyUtil.getLong(options, MessageAwareInstanceConfig.POLL_PERIOD, DEFAULT_PERIOD);
+        Long timeout = JSONObjectUtil.getLong(options, MessageAwareInstanceConfig.POLL_TIMEOUT, DEFAULT_TIMEOUT);
+        Long period = JSONObjectUtil.getLong(options, MessageAwareInstanceConfig.POLL_PERIOD, DEFAULT_PERIOD);
         options.put(MessageAwareInstanceConfig.POLL_TIMEOUT, timeout);
         options.put(MessageAwareInstanceConfig.POLL_PERIOD, period);
         options.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");

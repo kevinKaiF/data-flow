@@ -1,12 +1,11 @@
 package com.github.dataflow.sender.kafka;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.sender.core.TransformedDataSender;
 import com.github.dataflow.sender.kafka.config.KafkaConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-
-import java.util.Properties;
 
 /**
  * @author kevin
@@ -21,9 +20,9 @@ public class KafkaDataSender extends TransformedDataSender {
         return false;
     }
 
-    public KafkaDataSender(Properties props) {
+    public KafkaDataSender(JSONObject props) {
         producer = new KafkaProducer<>(props);
-        topic = props.getProperty(KafkaConfig.TOPIC);
+        topic = props.getString(KafkaConfig.TOPIC);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package com.github.dataflow.node.model.instance.kafka;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.model.RowMetaData;
-import com.github.dataflow.common.utils.PropertyUtil;
+import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.core.instance.AbstractMessageAwareInstance;
-import com.github.dataflow.core.instance.config.MessageAwareInstanceConfig;
 import com.github.dataflow.sender.kafka.config.KafkaConfig;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -30,18 +29,14 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
     private static AtomicLong atomicLong = new AtomicLong(0);
     private Consumer<String, String> consumer;
     private String                   topic;
-    private long                     timeout;
-    private long                     period;
 
     private KafkaInstance() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
 
-    public KafkaInstance(Properties options) {
+    public KafkaInstance(JSONObject options) {
         this.options = options;
-        this.topic = PropertyUtil.getString(options, KafkaConfig.TOPIC);
-        this.timeout = PropertyUtil.getLong(options, MessageAwareInstanceConfig.POLL_TIMEOUT);
-        this.period = PropertyUtil.getLong(options, MessageAwareInstanceConfig.POLL_PERIOD);
+        this.topic = JSONObjectUtil.getString(options, KafkaConfig.TOPIC);
     }
 
     protected void initReceiveThread() {
@@ -80,14 +75,6 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
     @Override
     public String getPosition(String instanceName) {
         return null;
-    }
-
-    public void setOptions(Properties options) {
-        this.options = options;
-    }
-
-    public Properties getOptions() {
-        return options;
     }
 
     @Override

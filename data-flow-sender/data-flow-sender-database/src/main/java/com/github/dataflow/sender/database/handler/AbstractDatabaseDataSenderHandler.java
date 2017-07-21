@@ -1,12 +1,13 @@
 package com.github.dataflow.sender.database.handler;
 
-import com.github.dataflow.common.utils.PropertyUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
-import com.github.dataflow.sender.core.event.EventHandler;
-import com.github.dataflow.sender.core.handler.AbstractDataSenderHandler;
 import com.github.dataflow.sender.core.DataSender;
+import com.github.dataflow.sender.core.event.EventHandler;
 import com.github.dataflow.sender.core.exception.DataSenderException;
+import com.github.dataflow.sender.core.handler.AbstractDataSenderHandler;
 import com.github.dataflow.sender.database.DatabaseDataSender;
 import com.github.dataflow.sender.database.config.DatabaseConfig;
 import org.springframework.beans.BeansException;
@@ -17,7 +18,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * @author : kevin
@@ -55,7 +55,7 @@ public abstract class AbstractDatabaseDataSenderHandler extends AbstractDataSend
     }
 
     @Override
-    protected Properties refreshDataOutputMapping(DataOutputMapping dataOutputMapping) {
+    protected JSONObject refreshDataOutputMapping(DataOutputMapping dataOutputMapping) {
         return null;
     }
 
@@ -63,9 +63,9 @@ public abstract class AbstractDatabaseDataSenderHandler extends AbstractDataSend
     protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataOutputMapping) {
         super.afterCreateDataSender(dataSender, dataOutputMapping);
         // set batch
-        Properties properties = parseToProperties(dataOutputMapping.getOptions());
+        JSONObject properties = parseToProperties(dataOutputMapping.getOptions());
         DatabaseDataSender databaseDataSender = (DatabaseDataSender) dataSender;
-        databaseDataSender.setBatch(PropertyUtil.getBoolean(properties, DatabaseConfig.BATCH, "true"));
+        databaseDataSender.setBatch(JSONObjectUtil.getBoolean(properties, DatabaseConfig.BATCH, Boolean.TRUE));
         // set eventHandlers
         databaseDataSender.setEventHandlers(eventHandlers);
     }

@@ -1,6 +1,7 @@
 package com.github.dataflow.sender.database.handler;
 
-import com.github.dataflow.common.utils.PropertyUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
@@ -11,7 +12,6 @@ import oracle.jdbc.pool.OracleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.Properties;
 
 /**
  * @author : kevin
@@ -23,19 +23,19 @@ public class OracleDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         OracleDataSender dataSender = new OracleDataSender();
-        Properties props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
         dataSender.setDataSourceHolder(new DataSourceHolder(getOracleDataSource(props)));
         return dataSender;
     }
 
-    private DataSource getOracleDataSource(Properties props) {
+    private DataSource getOracleDataSource(JSONObject props) {
         // TODO 优化连接池
         OracleDataSource oracleDataSource = null;
         try {
             oracleDataSource = new OracleDataSource();
-            oracleDataSource.setURL(PropertyUtil.getString(props, DatabaseConfig.JDBC_URL));
-            oracleDataSource.setUser(PropertyUtil.getString(props, DatabaseConfig.USERNAME));
-            oracleDataSource.setPassword(PropertyUtil.getString(props, DatabaseConfig.PASSWORD));
+            oracleDataSource.setURL(JSONObjectUtil.getString(props, DatabaseConfig.JDBC_URL));
+            oracleDataSource.setUser(JSONObjectUtil.getString(props, DatabaseConfig.USERNAME));
+            oracleDataSource.setPassword(JSONObjectUtil.getString(props, DatabaseConfig.PASSWORD));
             return oracleDataSource;
         } catch (SQLException e) {
             throw new DataSenderException(e);
