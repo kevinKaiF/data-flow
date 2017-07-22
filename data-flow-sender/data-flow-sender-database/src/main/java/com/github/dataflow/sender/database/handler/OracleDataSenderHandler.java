@@ -23,7 +23,7 @@ public class OracleDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         OracleDataSender dataSender = new OracleDataSender();
-        JSONObject props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
         dataSender.setDataSourceHolder(new DataSourceHolder(getOracleDataSource(props)));
         return dataSender;
     }

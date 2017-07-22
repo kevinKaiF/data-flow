@@ -63,7 +63,7 @@ public abstract class AbstractDatabaseDataSenderHandler extends AbstractDataSend
     protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataOutputMapping) {
         super.afterCreateDataSender(dataSender, dataOutputMapping);
         // set batch
-        JSONObject properties = parseToProperties(dataOutputMapping.getOptions());
+        JSONObject properties = parseJSON(dataOutputMapping.getOptions());
         DatabaseDataSender databaseDataSender = (DatabaseDataSender) dataSender;
         databaseDataSender.setBatch(JSONObjectUtil.getBoolean(properties, DatabaseConfig.BATCH, Boolean.TRUE));
         // set eventHandlers

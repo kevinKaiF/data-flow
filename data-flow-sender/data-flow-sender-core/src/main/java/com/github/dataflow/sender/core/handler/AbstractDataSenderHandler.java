@@ -37,7 +37,7 @@ public abstract class AbstractDataSenderHandler implements DataSenderHandler {
      */
     protected abstract JSONObject refreshDataOutputMapping(DataOutputMapping dataOutputMapping);
 
-    protected JSONObject parseToProperties(String options) {
+    protected JSONObject parseJSON(String options) {
         if (StringUtils.isEmpty(options)) {
             return new JSONObject();
         } else {

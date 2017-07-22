@@ -28,7 +28,7 @@ public class HiveDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         HiveDataSender dataSender = new HiveDataSender();
-        JSONObject props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
         dataSender.setDataSourceHolder(new DataSourceHolder(getHiveDataSource(props)));
         return dataSender;
     }

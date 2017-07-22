@@ -24,7 +24,7 @@ public class KafkaDataSenderHandler extends TransformedDataSenderHandler {
 
     public DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
 
-        JSONObject props = parseToProperties(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
         String servers = props.getString(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG);
         if (StringUtils.isEmpty(servers)) {
             throw new DataSenderException("the bootstrap.servers property of DataSourceOutput must not be null.");
@@ -39,7 +39,7 @@ public class KafkaDataSenderHandler extends TransformedDataSenderHandler {
 
     @Override
     protected JSONObject refreshDataOutputMapping(DataOutputMapping dataOutputMapping) {
-        JSONObject dataOutputMappingOptions = parseToProperties(dataOutputMapping.getOptions());
+        JSONObject dataOutputMappingOptions = parseJSON(dataOutputMapping.getOptions());
         String topic = dataOutputMappingOptions.getString(KafkaConfig.TOPIC);
         if (StringUtils.isEmpty(topic)) {
             throw new DataSenderException("the topic property of DataOutputMapping must not be null.");

@@ -149,7 +149,7 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
     protected abstract Instance createInstance(DataInstance dataInstance);
 
     // util methods
-    protected JSONObject parseToProperties(String options) {
+    protected JSONObject parseJSON(String options) {
         if (StringUtils.isEmpty(options)) {
             return new JSONObject();
         } else {
