@@ -59,13 +59,8 @@ public class ActivemqDataSenderHandler extends TransformedDataSenderHandler {
         String username = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.USERNAME);
         String password = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.PASSWORD);
         int deliverMode = JSONObjectUtil.getInt(dataOutputMappingOptions, ActivemqConfig.DELIVERY_MODE, DeliveryMode.NON_PERSISTENT);
-        if (username != null) {
-            dataOutputMappingOptions.put(ActivemqConfig.USERNAME, username);
-        }
-
-        if (password != null) {
-            dataOutputMappingOptions.put(ActivemqConfig.PASSWORD, password);
-        }
+        dataOutputMappingOptions.put(ActivemqConfig.USERNAME, username);
+        dataOutputMappingOptions.put(ActivemqConfig.PASSWORD, password);
         dataOutputMappingOptions.put(ActivemqConfig.DELIVERY_MODE, deliverMode);
         return dataOutputMappingOptions;
     }
