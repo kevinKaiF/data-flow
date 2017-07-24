@@ -57,4 +57,8 @@ public class ZookeeperClient implements InitializingBean {
             zkClientx.createPersistent(path, null, true);
         }
     }
+
+    public boolean exists(String path) {
+        return zkClientx.exists(path);
+    }
 }

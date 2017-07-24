@@ -45,7 +45,7 @@ public class DashboardLauncher {
             System.exit(-1);
         } finally {
             server.destroy();
-            logger.info("Stop Jetty Server successful.");
+            logger.info("Stop Jetty Server successfully.");
         }
     }
 

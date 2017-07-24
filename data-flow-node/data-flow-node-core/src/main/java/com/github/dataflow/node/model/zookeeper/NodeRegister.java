@@ -84,7 +84,7 @@ public class NodeRegister implements InitializingBean {
                 clusterNodes = children;
                 oldClusterNodes.removeAll(children);
                 // 监听到节点删除事件
-                if (!CollectionUtils.isEmpty(oldClusterNodes)) {
+                if (!CollectionUtils.isEmpty(oldClusterNodes) && zookeeperClient.exists(nodePath)) {
                     AlarmService alarmService = dataFlowContext.getAlarmService();
                     // 发送通知给负责人
                     alarmService.sendAlarm(Notice.NODE_RECOVERY.getSubject(), format(Notice.NODE_RECOVERY.getMessage(), getNodeName(), oldClusterNodes), false);
@@ -101,7 +101,7 @@ public class NodeRegister implements InitializingBean {
                             alarmService.sendAlarm(Notice.GET_INSTANCES_FAILURE.getSubject(), format(Notice.GET_INSTANCES_FAILURE.getMessage(), getNodeName(), nodePath, exceptionToString(e)), false);
                         }
 
-                        if (CollectionUtils.isEmpty(dataInstanceList)) {
+                        if (!CollectionUtils.isEmpty(dataInstanceList)) {
                             for (DataInstance dataInstance : dataInstanceList) {
                                 Exception snatchInstanceRegistryException = null;
                                 try {
