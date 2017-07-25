@@ -14,7 +14,9 @@ import java.util.List;
  * @date 2017-05-29 10:11 PM.
  */
 public class GroovyShellDataTransformer<T> implements DataTransformer<T> {
-    private static final String IMPORT_ROW_META_DATA = "import com.github.dataflow.common.model.RowMetaData;\n\r";
+    private static final String IMPORT_ROW_META_DATA = "import com.github.dataflow.common.model.RowMetaData;\n\r" +
+                                                       "import com.github.dataflow.common.model.RowMetaData.ColumnMeta;\n\r" +
+                                                       "import com.github.dataflow.common.model.RowMetaData.EventType;\n\r";
 
     private static final String SCRIPT_METHOD_NAME = "transform";
 
@@ -68,7 +70,7 @@ public class GroovyShellDataTransformer<T> implements DataTransformer<T> {
         try {
             return (T) scriptInvoker.invokeMethod(SCRIPT_METHOD_NAME, rowMetaDataList);
         } catch (Exception e) {
-            throw new DataTransformerException();
+            throw new DataTransformerException(e);
         }
     }
 

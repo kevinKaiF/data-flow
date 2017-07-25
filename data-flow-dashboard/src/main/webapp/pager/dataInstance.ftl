@@ -559,11 +559,11 @@
      * @param {boolean}          isKey           是否是主键
      * @param {String}           value           字段值
      *
-     * @see cn.bidlink.dataflow.common.model.RowMetaData
+     * @see com.github.dataflow.common.model.RowMetaData
      */
     public List<RowMetaData> transform(List<RowMetaData> rowMetaDataList) {
         // 自定义的处理转换
-        for (RowMetaData rowMetaData : rowMetaDatas) {
+        for (RowMetaData rowMetaData : rowMetaDataList) {
             if ("testTable".equals(rowMetaData.getTableName()) && "testSchema".equals(rowMetaData.getSchemaName())) {
                 // 更换表名
                 rowMetaData.setTableName("newTestTable");
@@ -673,7 +673,7 @@
      * @param {boolean}          isKey           是否是主键
      * @param {String}           value           字段值
      *
-     * @see cn.bidlink.dataflow.common.model.RowMetaData
+     * @see com.github.dataflow.common.model.RowMetaData
      */
 
     import com.alibaba.fastjson.JSON;
