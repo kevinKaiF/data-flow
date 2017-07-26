@@ -3,7 +3,7 @@ package com.github.dataflow.common.utils;
 import java.io.IOException;
 
 /**
- * @author : version
+ * @author : kevin
  * @version : Ver 1.0
  * @description :
  * @date : 2017/5/5

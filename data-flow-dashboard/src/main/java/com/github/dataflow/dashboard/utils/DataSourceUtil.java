@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * @author : version
+ * @author : kevin
  * @version : Ver 1.0
  * @description :
  * @date : 2017/5/9
