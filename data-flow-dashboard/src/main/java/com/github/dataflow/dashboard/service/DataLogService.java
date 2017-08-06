@@ -49,6 +49,7 @@ public class DataLogService {
             return map;
         } else {
             PageSet pageSet = new PageSet(start, length);
+            pageSet.setSortColumns(" CREATE_TIME DESC ");
             ServiceResult<List<DataLog>> listServiceResult = dubboDataLogService.findByCondition(dataLog, pageSet);
             if (!listServiceResult.isSuccess()) {
                 logger.error("{}调用{}时发生未知异常,error Message:{}", "com.github.dataflow.dashboard.service.DataLogService.getDataLogListByInstanceName",

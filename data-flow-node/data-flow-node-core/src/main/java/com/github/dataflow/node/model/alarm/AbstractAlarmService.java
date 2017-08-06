@@ -5,6 +5,9 @@ import com.github.dataflow.core.alarm.AlarmService;
 import com.github.dataflow.node.model.config.GlobalExecutor;
 import com.github.dataflow.node.service.DataLogService;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 
 /**
  * @author : kevin
@@ -16,6 +19,11 @@ public abstract class AbstractAlarmService extends AbstractDataFlowLifeCycle imp
     protected GlobalExecutor executorService;
 
     protected DataLogService dataLogService;
+
+    /**
+     * 对需要存储的同一消息进行缓存，防止频繁发送邮件，频繁存储等
+     */
+    private static Map<String, String> cachedAlarmMessage = new WeakHashMap<>();
 
     @Override
     public void start() {
@@ -45,6 +53,13 @@ public abstract class AbstractAlarmService extends AbstractDataFlowLifeCycle imp
     @Override
     public void sendAlarm(final String instanceName, final String message, boolean store) {
         if (store) {
+            String cachedMessage = cachedAlarmMessage.get(instanceName);
+            if (cachedMessage == null || !cachedMessage.equals(message)) {
+                cachedAlarmMessage.put(instanceName, message);
+            } else {
+                return;
+            }
+
             if (executorService != null) {
                 executorService.execute(new Runnable() {
                     @Override

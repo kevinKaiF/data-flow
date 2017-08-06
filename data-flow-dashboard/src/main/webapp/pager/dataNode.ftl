@@ -128,14 +128,14 @@
                         </div>
                     </div>
                     <div class="row" id="logList" style="display: none">
-                            <div class="col-md-4">
+                            <div class="col-md-4" style="padding-left: 0px">
                                 <div class="x_panel">
                                     <span class="section">日志列表</span>
                                     <table id="dataLogTable" class="table table-hover jambo_table" style="width: 100%">
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-8" style="padding-right: 0px">
                                 <div class="x_panel">
                                     <span class="section">日志详情</span>
                                     <div id="logDetail"></div>
@@ -174,7 +174,7 @@
         <!-- footer content -->
         <footer>
             <div class="pull-right github-ico">
-                Github <a href="https://github.com/kevinKaiF/data-flow" target="_blank">Dataflow</a>
+                <a href="https://github.com/kevinKaiF/data-flow" target="_blank">Github Dataflow</a>
             </div>
             <div class="clearfix"></div>
         </footer>

@@ -284,7 +284,8 @@
                         ordering: false,
                         lengthChange: false,
                         serverSide: true,
-                        pageLength: 20,
+                        pageLength: 10,
+                        pagingType : "full",
                         ajax: {
                             "url": "./logList",
                             "contentType": "application/x-www-form-urlencoded",
@@ -313,7 +314,7 @@
                         language: {
                             "decimal": "",
                             "emptyTable": "暂无数据",
-                            "info": "显示第 _START_ 条到第 _END_ 条，共 _TOTAL_ 条（每页 20 条）",
+                            "info": "显示第 _START_ 条到第 _END_ 条，共 _TOTAL_ 条（每页 10 条）",
                             "infoEmpty": "第1页/共0页",
                             "infoFiltered": "",
                             "infoPostFix": "",
