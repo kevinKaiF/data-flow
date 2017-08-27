@@ -10,12 +10,14 @@ import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.sender.core.handler.AbstractDataSenderHandler;
 import com.github.dataflow.sender.database.DatabaseDataSender;
 import com.github.dataflow.sender.database.config.DatabaseConfig;
+import com.github.dataflow.sender.database.event.handler.AbstractDatabaseEventHandler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +47,12 @@ public abstract class AbstractDatabaseDataSenderHandler extends AbstractDataSend
             throw new DataSenderException("there is no EventHandler bean");
         } else {
             eventHandlers.clear();
-            eventHandlers.addAll(eventHandlerMap.values());
+            Collection<EventHandler> eventHandlerToUse = eventHandlerMap.values();
+            for (EventHandler eventHandler : eventHandlerToUse) {
+                if (eventHandler instanceof AbstractDatabaseEventHandler) {
+                    eventHandlers.add(eventHandler);
+                }
+            }
         }
     }
 

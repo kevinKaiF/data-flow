@@ -77,6 +77,12 @@ public abstract class DatabaseDataSender extends DataSender {
         }
     }
 
+    /**
+     * 批量处理失败后，是否支持单个处理
+     *
+     * @param e
+     * @return
+     */
     protected abstract boolean supportSingleSend(Exception e);
 
     private void singleHandle(RowMetaData rowMetaData, EventHandler eventHandler) {

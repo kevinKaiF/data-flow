@@ -16,6 +16,7 @@
         <module>data-flow-receiver</module>
         <module>data-flow-sender</module>
         <module>data-flow-transformer</module>
+        <module>data-flow-example</module>
     </modules>
 
     <properties>

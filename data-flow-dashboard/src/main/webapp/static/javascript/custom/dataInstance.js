@@ -92,6 +92,8 @@
                     return "activeMQ"      
                 case 30 :
                     return "hive"
+                case 31 :
+                    return "hbase"
                 default :
                     return '-';
             }

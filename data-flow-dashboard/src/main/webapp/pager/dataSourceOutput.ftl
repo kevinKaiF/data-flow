@@ -162,6 +162,8 @@
                                                 <option value="21">metaQ</option>
                                                 <option value="22">rabbitMQ</option>
                                                 <option value="23">activeMQ</option>
+                                                <option value="30">hive</option>
+                                                <option value="31">hbase</option>
                                             </select>
                                         </div>
                                         <label class="control-label col-md-2 col-sm-2 col-xs-12"
@@ -242,6 +244,7 @@
                                                             <option value="22">rabbitMQ</option>
                                                             <option value="23">activeMQ</option>
                                                             <option value="30">hive</option>
+                                                            <option value="31">hbase</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -316,11 +319,13 @@
                             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Mysql</a>
                                 </li>
-                                <li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab4" data-toggle="tab" aria-expanded="false">Hive</a>
+                                <li role="presentation" class=""><a href="#tab_content4" role="tab" id="profile-tab4" data-toggle="tab" aria-expanded="false">hive</a>
                                 </li>
                                 <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Kafka</a>
                                 </li>
                                 <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">activeMQ</a>
+                                </li>
+                                <li role="presentation" class=""><a href="#tab_content7" role="tab" id="profile-tab7" data-toggle="tab" aria-expanded="false">hbase</a>
                                 </li>
                             </ul>
                             <div id="myTabContent" class="tab-content">
@@ -348,6 +353,13 @@
                                 <div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="profile-tab6">
                                         <textarea style="width: 100%;" rows="8" readonly>{
     "brokeUrl":""
+}</textarea>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content7" aria-labelledby="profile-tab7">
+                                        <textarea style="width: 100%;" rows="8" readonly>{
+    "hbase.zookeeper.property.clientPort":"",
+    "hbase.zookeeper.quorum":"",
+    "hbase.master":""
 }</textarea>
                                 </div>
                             </div>

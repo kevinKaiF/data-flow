@@ -38,11 +38,18 @@
     <bean id="oracleDataSenderHandler" class="com.github.dataflow.sender.database.handler.OracleDataSenderHandler"/>
     <!--hive-->
     <bean id="hiveDataSenderHandler" class="com.github.dataflow.sender.database.handler.HiveDataSenderHandler"/>
+    <!--hbase-->
+    <!--<bean id="hbaseDataSenderHandler" class="com.github.dataflow.sender.hbase.handler.HbaseDataSenderHandler"/>-->
 
     <!--event handles-->
+    <!--database-->
     <bean id="databaseDeleteEventHandler" class="com.github.dataflow.sender.database.event.handler.DatabaseDeleteEventHandler"></bean>
     <bean id="databaseInsertEventHandler" class="com.github.dataflow.sender.database.event.handler.DatabaseInsertEventHandler"></bean>
     <bean id="databaseUpdateEventHandler" class="com.github.dataflow.sender.database.event.handler.DatabaseUpdateEventHandler"></bean>
+    <!--hbase-->
+    <!--<bean id="hbaseInsertEventHandler" class="com.github.dataflow.sender.hbase.event.handler.HbaseInsertEventHandler"></bean>-->
+    <!--<bean id="hbaseUpdateEventHandler" class="com.github.dataflow.sender.hbase.event.handler.HbaseUpdateEventHandler"></bean>-->
+    <!--<bean id="hbaseDeleteEventHandler" class="com.github.dataflow.sender.hbase.event.handler.HbaseDeleteEventHandler"></bean>-->
 
     <import resource="application-dubbo.xml"/>
 
