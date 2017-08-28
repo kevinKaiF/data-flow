@@ -10,7 +10,6 @@ import com.github.dataflow.sender.core.event.EventHandler;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.sender.core.handler.AbstractDataSenderHandler;
 import com.github.dataflow.sender.database.DatabaseDataSender;
-import com.github.dataflow.sender.database.config.DatabaseConfig;
 import com.github.dataflow.sender.hbase.HbaseSender;
 import com.github.dataflow.sender.hbase.config.HbaseConfig;
 import com.github.dataflow.sender.hbase.event.handler.AbstractHbaseEventHandler;
@@ -83,6 +82,10 @@ public class HbaseDataSenderHandler extends AbstractDataSenderHandler implements
                     eventHandlers.add(eventHandler);
                 }
             }
+
+            if (CollectionUtils.isEmpty(eventHandlers)) {
+                throw new DataSenderException("there is no EventHandler bean instanceof AbstractHbaseEventHandler");
+            }
         }
     }
 
@@ -92,7 +95,7 @@ public class HbaseDataSenderHandler extends AbstractDataSenderHandler implements
         // set batch
         JSONObject properties = parseJSON(dataOutputMapping.getOptions());
         DatabaseDataSender databaseDataSender = (DatabaseDataSender) dataSender;
-        databaseDataSender.setBatch(JSONObjectUtil.getBoolean(properties, DatabaseConfig.BATCH, Boolean.TRUE));
+        databaseDataSender.setBatch(JSONObjectUtil.getBoolean(properties, HbaseConfig.BATCH, Boolean.TRUE));
         // set eventHandlers
         databaseDataSender.setEventHandlers(eventHandlers);
     }

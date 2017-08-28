@@ -53,6 +53,10 @@ public abstract class AbstractDatabaseDataSenderHandler extends AbstractDataSend
                     eventHandlers.add(eventHandler);
                 }
             }
+
+            if (CollectionUtils.isEmpty(eventHandlers)) {
+                throw new DataSenderException("there is no EventHandler bean instanceof AbstractDatabaseEventHandler");
+            }
         }
     }
 

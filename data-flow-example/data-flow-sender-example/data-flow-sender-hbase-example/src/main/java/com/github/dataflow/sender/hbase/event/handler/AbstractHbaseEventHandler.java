@@ -1,16 +1,13 @@
 package com.github.dataflow.sender.hbase.event.handler;
 
 import com.github.dataflow.common.model.RowMetaData;
-import com.github.dataflow.common.utils.Closer;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 import com.github.dataflow.sender.core.event.EventHandler;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Connection;
-import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Table;
-import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -35,16 +32,13 @@ public abstract class AbstractHbaseEventHandler implements EventHandler {
 
     @Override
     public void singleHandle(DataSourceHolder dataSourceHolder, RowMetaData rowMetaData) throws Exception {
-        Connection connection = null;
         try {
-            connection = (Connection) dataSourceHolder.getDataSource();
+            Connection connection = (Connection) dataSourceHolder.getDataSource();
             // TODO 表名的如何映射的，可能需要自定义实现
             Table table = connection.getTable(TableName.valueOf(rowMetaData.getTableName()));
             doSingleHandle(table, rowMetaData);
         } catch (IOException e) {
             throw new DataSenderException(e);
-        } finally {
-            Closer.closeQuietly(connection);
         }
     }
 
@@ -53,16 +47,13 @@ public abstract class AbstractHbaseEventHandler implements EventHandler {
 
     @Override
     public void batchHandle(DataSourceHolder dataSourceHolder, List<RowMetaData> rowMetaDataList) throws Exception {
-        Connection connection = null;
         try {
-            connection = (Connection) dataSourceHolder.getDataSource();
+            Connection connection = (Connection) dataSourceHolder.getDataSource();
             // TODO 表名的如何映射的，可能需要自定义实现
             Table table = connection.getTable(TableName.valueOf(rowMetaDataList.get(0).getTableName()));
             doBatchHandle(table, rowMetaDataList);
         } catch (IOException e) {
             throw new DataSenderException(e);
-        } finally {
-            Closer.closeQuietly(connection);
         }
     }
 

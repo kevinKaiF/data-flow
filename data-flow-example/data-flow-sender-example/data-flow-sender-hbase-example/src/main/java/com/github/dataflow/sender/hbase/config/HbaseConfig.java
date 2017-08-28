@@ -11,4 +11,5 @@ public class HbaseConfig {
 
     public static final String HBASE_MASTER = "hbase.master";
 
+    public static final String BATCH = "batch";
 }
