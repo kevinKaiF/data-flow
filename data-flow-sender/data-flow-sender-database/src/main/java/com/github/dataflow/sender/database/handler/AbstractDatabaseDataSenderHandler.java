@@ -5,7 +5,7 @@ import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
-import com.github.dataflow.sender.core.event.EventHandler;
+import com.github.dataflow.sender.core.event.handler.EventHandler;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.sender.core.handler.AbstractDataSenderHandler;
 import com.github.dataflow.sender.database.DatabaseDataSender;

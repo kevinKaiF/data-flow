@@ -2,7 +2,7 @@ package com.github.dataflow.sender.database;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
-import com.github.dataflow.sender.core.event.EventHandler;
+import com.github.dataflow.sender.core.event.handler.EventHandler;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 /**

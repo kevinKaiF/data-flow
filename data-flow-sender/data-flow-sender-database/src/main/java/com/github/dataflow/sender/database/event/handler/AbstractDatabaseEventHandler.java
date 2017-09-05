@@ -4,7 +4,7 @@ import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.Closer;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
-import com.github.dataflow.sender.core.event.EventHandler;
+import com.github.dataflow.sender.core.event.handler.EventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;

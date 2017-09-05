@@ -7,7 +7,7 @@ import com.github.dataflow.transformer.core.post.PostGroovyShellDataTransformer;
 import org.springframework.util.StringUtils;
 
 /**
- * 需求transform的DataSenderHandler
+ * 需求transform的DataSenderHandler，主要用于消息类型Sender
  *
  * @author : kevin
  * @version : Ver 1.0

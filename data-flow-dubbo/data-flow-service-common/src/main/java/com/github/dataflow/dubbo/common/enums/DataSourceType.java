@@ -21,6 +21,7 @@ public enum DataSourceType {
     ACTIVEMQ(23),
 
     // other DB start with 30
+    ELASTICSEARCH(30),
     HBASE(31);
     private int type;
 

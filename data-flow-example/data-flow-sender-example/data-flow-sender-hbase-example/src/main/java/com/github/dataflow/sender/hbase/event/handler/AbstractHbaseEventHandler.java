@@ -3,7 +3,7 @@ package com.github.dataflow.sender.hbase.event.handler;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
-import com.github.dataflow.sender.core.event.EventHandler;
+import com.github.dataflow.sender.core.event.handler.EventHandler;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Connection;

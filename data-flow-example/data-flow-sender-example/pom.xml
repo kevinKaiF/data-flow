@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>data-flow-sender-hbase-example</module>
+        <module>data-flow-sender-elasticsearch-example</module>
     </modules>
 
     <artifactId>data-flow-sender-example</artifactId>

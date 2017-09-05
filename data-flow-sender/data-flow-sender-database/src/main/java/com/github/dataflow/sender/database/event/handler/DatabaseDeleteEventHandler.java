@@ -2,7 +2,7 @@ package com.github.dataflow.sender.database.event.handler;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
-import com.github.dataflow.sender.database.event.DeleteEvent;
+import com.github.dataflow.sender.core.event.DeleteEvent;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;

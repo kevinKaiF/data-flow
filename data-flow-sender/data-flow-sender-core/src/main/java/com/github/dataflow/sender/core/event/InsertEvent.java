@@ -1,4 +1,4 @@
-package com.github.dataflow.sender.database.event;
+package com.github.dataflow.sender.core.event;
 
 import com.github.dataflow.common.model.RowMetaData;
 
