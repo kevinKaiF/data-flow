@@ -32,7 +32,6 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
         DATA_SOURCE_TYPEs.add(DataSourceType.ORACLE);
         DATA_SOURCE_TYPEs.add(DataSourceType.POSTGRESQL);
         DATA_SOURCE_TYPEs.add(DataSourceType.SQLSERVER);
-        DATA_SOURCE_TYPEs.add(DataSourceType.HIVE);
     }
 
     @Override

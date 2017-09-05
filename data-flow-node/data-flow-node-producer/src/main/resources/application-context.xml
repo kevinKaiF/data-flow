@@ -36,8 +36,6 @@
     <bean id="mysqlDataSenderHandler" class="com.github.dataflow.sender.database.handler.MysqlDataSenderHandler"/>
     <!--oracle-->
     <bean id="oracleDataSenderHandler" class="com.github.dataflow.sender.database.handler.OracleDataSenderHandler"/>
-    <!--hive-->
-    <bean id="hiveDataSenderHandler" class="com.github.dataflow.sender.database.handler.HiveDataSenderHandler"/>
     <!--hbase-->
     <!--<bean id="hbaseDataSenderHandler" class="com.github.dataflow.sender.hbase.handler.HbaseDataSenderHandler"/>-->
 

@@ -35,7 +35,6 @@ public abstract class AbstractDatabaseDataSenderHandler extends AbstractDataSend
         DATA_SOURCE_TYPES.add(DataSourceType.ORACLE);
         DATA_SOURCE_TYPES.add(DataSourceType.POSTGRESQL);
         DATA_SOURCE_TYPES.add(DataSourceType.SQLSERVER);
-        DATA_SOURCE_TYPES.add(DataSourceType.HIVE);
     }
 
     protected List<EventHandler> eventHandlers = new ArrayList<>();

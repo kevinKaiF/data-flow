@@ -89,9 +89,6 @@
                             case 23 : // activeMQ
                                 var props = ["brokeUrl"];
                                 return Table.__validateProperty(json, props);
-                            case 30: // hive
-                                var props = ["username", "password", "jdbcUrl"];
-                                return Table.__validateProperty(json, props);
                             case 31 : // hbase
                                 var props = ["hbase.zookeeper.property.clientPort", "hbase.zookeeper.quorum", "hbase.master"]
                                 return Table.__validateProperty(json, props);
@@ -143,8 +140,6 @@
                                         return "rabbitMQ"
                                     case 23 :
                                         return "activeMQ"
-                                    case 30 :
-                                        return "hive"
                                     case 31 :
                                         return "hbase"
                                     default :
