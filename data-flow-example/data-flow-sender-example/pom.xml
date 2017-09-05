@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>data-flow-sender-hbase</module>
+        <module>data-flow-sender-hbase-example</module>
     </modules>
 
     <artifactId>data-flow-sender-example</artifactId>

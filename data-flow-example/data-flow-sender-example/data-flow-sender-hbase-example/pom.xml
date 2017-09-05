@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>data-flow-sender-hbase</artifactId>
+    <artifactId>data-flow-sender-hbase-example</artifactId>
 
     <dependencies>
         <dependency>
