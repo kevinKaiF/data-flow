@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon"/>
     <title>节点监控</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -31,7 +31,8 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire" style="border: none; color:#1abb9c;font-size: 1.5em"></i>
+                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire"
+                                                                       style="border: none; color:#1abb9c;font-size: 1.5em"></i>
                         <span>Data flow</span></a>
                 </div>
 
@@ -128,20 +129,20 @@
                         </div>
                     </div>
                     <div class="row" id="logList" style="display: none">
-                            <div class="col-md-4" style="padding-left: 0px">
-                                <div class="x_panel">
-                                    <span class="section">日志列表</span>
-                                    <table id="dataLogTable" class="table table-hover jambo_table" style="width: 100%">
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="col-md-8" style="padding-right: 0px">
-                                <div class="x_panel">
-                                    <span class="section">日志详情</span>
-                                    <div id="logDetail"></div>
-                                </div>
+                        <div class="col-md-4" style="padding-left: 0px">
+                            <div class="x_panel">
+                                <span class="section">日志列表</span>
+                                <table id="dataLogTable" class="table table-hover jambo_table" style="width: 100%">
+                                </table>
                             </div>
                         </div>
+                        <div class="col-md-8" style="padding-right: 0px">
+                            <div class="x_panel">
+                                <span class="section">日志详情</span>
+                                <div id="logDetail"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

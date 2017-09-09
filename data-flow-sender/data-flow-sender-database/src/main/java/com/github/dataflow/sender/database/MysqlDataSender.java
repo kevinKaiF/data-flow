@@ -2,6 +2,7 @@ package com.github.dataflow.sender.database;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
+import com.github.dataflow.sender.core.EventDataSender;
 import com.github.dataflow.sender.core.event.handler.EventHandler;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
@@ -11,7 +12,7 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationExceptio
  * @description :
  * @date : 2017/6/24
  */
-public class MysqlDataSender extends DatabaseDataSender {
+public class MysqlDataSender extends EventDataSender {
     private DataSourceType dataSourceType = DataSourceType.MYSQL;
 
     @Override
@@ -20,7 +21,7 @@ public class MysqlDataSender extends DatabaseDataSender {
     }
 
     @Override
-    protected boolean supportSingleSend(Exception e) {
+    protected boolean ignoreExceptionAfterSendFailed(Exception e) {
         return e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY");
     }
 }

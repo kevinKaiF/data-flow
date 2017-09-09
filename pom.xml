@@ -13,7 +13,7 @@
         <module>data-flow-node</module>
         <module>data-flow-dubbo</module>
         <module>data-flow-core</module>
-        <module>data-flow-receiver</module>
+        <!--<module>data-flow-receiver</module>-->
         <module>data-flow-sender</module>
         <module>data-flow-transformer</module>
         <module>data-flow-example</module>

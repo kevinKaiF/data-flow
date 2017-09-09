@@ -11,10 +11,10 @@ import java.io.Serializable;
 /**
  * <code>DataLog</code>数据库映射.
  *
+ * @author : kevin
  * @version : Ver 1.0
  * @table : data_log
- * @author    : kevin
- * @date    : 2017-06-26 上午09:32:27
+ * @date : 2017-06-26 上午09:32:27
  */
 public class DataLog implements Serializable {
 
@@ -155,10 +155,10 @@ public class DataLog implements Serializable {
     @Override
     public String toString() {
         return "DataLog{" +
-                "id=" + id +
-                ", instanceName='" + instanceName + '\'' +
-                ", message='" + message + '\'' +
-                ", createTime=" + createTime +
-                '}';
+               "id=" + id +
+               ", instanceName='" + instanceName + '\'' +
+               ", message='" + message + '\'' +
+               ", createTime=" + createTime +
+               '}';
     }
 }

@@ -57,7 +57,7 @@ public interface DubboDataLogService {
      * 根据条件查询对应的条目，不包含message
      *
      * @param dataLog 带有查询条件的对象
-     * @param pageSet               分页对象
+     * @param pageSet 分页对象
      * @return 返回查询的结果集合
      */
     ServiceResult<List<DataLog>> findByCondition(DataLog dataLog, PageSet pageSet);
@@ -67,7 +67,7 @@ public interface DubboDataLogService {
      * 根据条件查询对应的条目
      *
      * @param dataLog 带有查询条件的对象
-     * @param pageSet               分页对象
+     * @param pageSet 分页对象
      * @return 返回查询的结果集合
      */
     ServiceResult<List<DataLog>> findByConditionFully(DataLog dataLog, PageSet pageSet);

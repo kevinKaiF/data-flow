@@ -24,11 +24,11 @@ public class OracleDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         OracleDataSender dataSender = new OracleDataSender();
         JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
-        dataSender.setDataSourceHolder(new DataSourceHolder(getOracleDataSource(props)));
+        dataSender.setDataSourceHolder(new DataSourceHolder(getDataSource(props)));
         return dataSender;
     }
 
-    private DataSource getOracleDataSource(JSONObject props) {
+    protected DataSource getDataSource(JSONObject props) {
         // TODO 优化连接池
         OracleDataSource oracleDataSource = null;
         try {

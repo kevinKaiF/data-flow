@@ -15,7 +15,7 @@ import java.util.Map;
  * @author kevin
  * @date 2017-08-27 6:59 PM.
  */
-public class HbaseDeleteEventHandler extends AbstractHbaseEventHandler{
+public class HbaseDeleteEventHandler extends AbstractHbaseEventHandler {
     @Override
     public boolean support(DataSourceType dataSourceType, RowMetaData.EventType eventType) {
         return dataSourceType == this.dataSourceType && eventType == RowMetaData.EventType.DELETE;

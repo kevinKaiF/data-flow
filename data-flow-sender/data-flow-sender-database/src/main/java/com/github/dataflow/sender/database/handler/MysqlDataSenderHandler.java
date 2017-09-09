@@ -22,11 +22,11 @@ public class MysqlDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         MysqlDataSender dataSender = new MysqlDataSender();
         JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
-        dataSender.setDataSourceHolder(new DataSourceHolder(getMySqlDataSource(props)));
+        dataSender.setDataSourceHolder(new DataSourceHolder(getDataSource(props)));
         return dataSender;
     }
 
-    private javax.sql.DataSource getMySqlDataSource(JSONObject props) {
+    protected javax.sql.DataSource getDataSource(JSONObject props) {
         try {
             int maxWait = 5000;
             int minIdle = 0;
@@ -55,4 +55,5 @@ public class MysqlDataSenderHandler extends AbstractDatabaseDataSenderHandler {
             throw new DataSenderException(e);
         }
     }
+
 }

@@ -53,14 +53,14 @@
                     var table = Table._initTable(id);
                     Table.eventBind(id, table);
                 },
-                __isEmpty : function (data) {
+                __isEmpty: function (data) {
                     if (typeof data === "undefined") {
                         return true;
                     } else {
                         return false;
                     }
                 },
-                __validateProperty : function (json, property) {
+                __validateProperty: function (json, property) {
                     for (var i in property) {
                         if (Table.__isEmpty(json[property[i]])) {
                             return false;
@@ -88,6 +88,9 @@
                                 return true;
                             case 23 : // activeMQ
                                 var props = ["brokeUrl"];
+                                return Table.__validateProperty(json, props);
+                            case 30 : // ElasticSearch
+                                var props = ["cluster.name", "cluster.host"];
                                 return Table.__validateProperty(json, props);
                             case 31 : // hbase
                                 var props = ["hbase.zookeeper.property.clientPort", "hbase.zookeeper.quorum", "hbase.master"]
@@ -120,7 +123,7 @@
                             //     defaultContent: ''
                             // },
                             {data: "id", title: "ID"},
-                            {data : "name", title : "名称"},
+                            {data: "name", title: "名称"},
                             {
                                 data: "type", title: "类型", width: '10%', render: function (data) {
                                 switch (data) {
@@ -140,6 +143,8 @@
                                         return "rabbitMQ"
                                     case 23 :
                                         return "activeMQ"
+                                    case 30 :
+                                        return "ElasticSearch"
                                     case 31 :
                                         return "hbase"
                                     default :

@@ -17,5 +17,5 @@ public abstract class AbstractMessageAwareInstanceHandler extends AbstractInstan
     /**
      * 消费获取时间间隔
      */
-    protected final long DEFAULT_PERIOD  = 100;
+    protected final long DEFAULT_PERIOD = 100;
 }

@@ -86,8 +86,8 @@ public class DataUser implements Serializable {
     @Override
     public String toString() {
         return "DataUser{" +
-                "username='" + username + '\'' +
-                ", id=" + id +
-                '}';
+               "username='" + username + '\'' +
+               ", id=" + id +
+               '}';
     }
 }

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon"/>
     <title>系统配置</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -22,7 +22,8 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire" style="border: none; color:#1abb9c;font-size: 1.5em"></i>
+                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire"
+                                                                       style="border: none; color:#1abb9c;font-size: 1.5em"></i>
                         <span>Data flow</span></a>
                 </div>
 
@@ -181,7 +182,9 @@
                         </div>
                         <div class="modal-body">
                             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">mail</a>
+                                <li role="presentation" class="active"><a href="#tab_content1" role="tab"
+                                                                          id="profile-tab" data-toggle="tab"
+                                                                          aria-expanded="false">mail</a>
                                 </li>
                             <#--<li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Kafka</a>-->
                             <#--</li>-->
@@ -189,7 +192,8 @@
                             <#--</li>-->
                             </ul>
                             <div id="myTabContent" class="tab-content">
-                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="profile-tab">
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
+                                     aria-labelledby="profile-tab">
                                         <textarea style="width: 100%;" rows="12" readonly>{
     "emailHost":"smtp.163.com",
     "emailUsername":"xxx@163.com",

@@ -38,16 +38,25 @@
     <bean id="oracleDataSenderHandler" class="com.github.dataflow.sender.database.handler.OracleDataSenderHandler"/>
     <!--hbase-->
     <!--<bean id="hbaseDataSenderHandler" class="com.github.dataflow.sender.hbase.handler.HbaseDataSenderHandler"/>-->
+    <!--elasticsearch-->
+    <bean id="elasticsearchDataSenderHandler" class="com.github.dataflow.sender.elasticsearch.handler.ElasticsearchDataSenderHandler"/>
 
     <!--event handles-->
     <!--database-->
-    <bean id="databaseDeleteEventHandler" class="com.github.dataflow.sender.database.event.handler.DatabaseDeleteEventHandler"></bean>
-    <bean id="databaseInsertEventHandler" class="com.github.dataflow.sender.database.event.handler.DatabaseInsertEventHandler"></bean>
-    <bean id="databaseUpdateEventHandler" class="com.github.dataflow.sender.database.event.handler.DatabaseUpdateEventHandler"></bean>
+    <bean id="databaseDeleteEventHandler"
+          class="com.github.dataflow.sender.database.event.handler.DatabaseDeleteEventHandler"></bean>
+    <bean id="databaseInsertEventHandler"
+          class="com.github.dataflow.sender.database.event.handler.DatabaseInsertEventHandler"></bean>
+    <bean id="databaseUpdateEventHandler"
+          class="com.github.dataflow.sender.database.event.handler.DatabaseUpdateEventHandler"></bean>
     <!--hbase-->
     <!--<bean id="hbaseInsertEventHandler" class="com.github.dataflow.sender.hbase.event.handler.HbaseInsertEventHandler"></bean>-->
     <!--<bean id="hbaseUpdateEventHandler" class="com.github.dataflow.sender.hbase.event.handler.HbaseUpdateEventHandler"></bean>-->
     <!--<bean id="hbaseDeleteEventHandler" class="com.github.dataflow.sender.hbase.event.handler.HbaseDeleteEventHandler"></bean>-->
+    <!--elasticsearch-->
+    <!--<bean id="elasticsearchInsertEventHandler" class="com.github.dataflow.sender.elasticsearch.event.handler.ElasticsearchInsertEventHandler"></bean>-->
+    <!--<bean id="elasticsearchUpdateEventHandler" class="com.github.dataflow.sender.elasticsearch.event.handler.ElasticsearchUpdateEventHandler"></bean>-->
+    <!--<bean id="elasticsearchDeleteEventHandler" class="com.github.dataflow.sender.elasticsearch.event.handler.ElasticsearchDeleteEventHandler"></bean>-->
 
     <import resource="application-dubbo.xml"/>
 

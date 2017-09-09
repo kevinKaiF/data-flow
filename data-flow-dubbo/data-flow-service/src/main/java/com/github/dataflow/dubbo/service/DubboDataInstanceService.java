@@ -15,7 +15,7 @@ import java.util.List;
 public interface DubboDataInstanceService {
     /**
      * 新增条目
-     *
+     * <p>
      * note : dataInstance的name必须是唯一的
      *
      * @param dataInstance 带有新增数据的对象
@@ -25,7 +25,7 @@ public interface DubboDataInstanceService {
 
     /**
      * 更新条目
-     *
+     * <p>
      * note : dataInstance的name必须是唯一的
      *
      * @param dataInstance 带有更新数据的对象

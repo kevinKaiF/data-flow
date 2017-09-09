@@ -89,7 +89,9 @@
                 case 22 :
                     return "rabbitMQ"
                 case 23 :
-                    return "activeMQ"      
+                    return "activeMQ"
+                case 30 :
+                    return "ElasticSearch"
                 case 31 :
                     return "hbase"
                 default :
@@ -298,10 +300,10 @@
                                                                             var dataTableId = $("#dataTable-id").val();
                                                                             if (dataTableId) {
                                                                                 $.ajax({
-                                                                                    url : "deleteTable",
-                                                                                    dataType : "json",
-                                                                                    data : {id : dataTableId}
-                                                                                }).then(function(data) {
+                                                                                    url: "deleteTable",
+                                                                                    dataType: "json",
+                                                                                    data: {id: dataTableId}
+                                                                                }).then(function (data) {
                                                                                     if (data.responseStatus == 200) {
                                                                                         $("#dataTable-id").val('');
                                                                                         $("#dataTable-form").clearForm(false);
@@ -371,14 +373,14 @@
                         }
                     })
                 },
-                __isEmpty : function (data) {
+                __isEmpty: function (data) {
                     if (typeof data === "undefined") {
                         return true;
                     } else {
                         return false;
                     }
                 },
-                __validateProperty : function (json, property) {
+                __validateProperty: function (json, property) {
                     for (var i in property) {
                         if (wizard.__isEmpty(json[property[i]])) {
                             return false;
@@ -505,7 +507,7 @@
                 __step3: function () {
                     return true;
                 },
-                __validateDataOutputMappingOptions : function (type, options) {
+                __validateDataOutputMappingOptions: function (type, options) {
                     if (type < 20 || type == 30) {
                         return true;
                     }
@@ -1094,16 +1096,16 @@
                             var html = dataInstanceForm + dataTable + dataOutputMappings;
                             div.html(html).removeClass('loading');
                             // bind deleting dataTable
-                            $(".dataTable-delete").each(function() {
+                            $(".dataTable-delete").each(function () {
                                 var $this = $(this);
-                                $this.off('click').on('click', function() {
+                                $this.off('click').on('click', function () {
                                     var dataTableId = $this.attr('data-id');
                                     var dataInstanceId = $this.attr('data-instanceId');
                                     $.ajax({
-                                        url : "deleteTable",
-                                        dataType : "json",
-                                        data : {id : dataTableId}
-                                    }).then(function(data) {
+                                        url: "deleteTable",
+                                        dataType: "json",
+                                        data: {id: dataTableId}
+                                    }).then(function (data) {
                                         if (data.responseStatus == 200) {
                                             var $tr = $this.parent().parent();
                                             var siblings = $tr.siblings();

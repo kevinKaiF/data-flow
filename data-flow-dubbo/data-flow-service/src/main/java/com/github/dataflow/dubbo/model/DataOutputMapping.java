@@ -135,12 +135,12 @@ public class DataOutputMapping implements Serializable {
     @Override
     public String toString() {
         return "DataOutputMapping{" +
-                "id=" + id +
-                ", dataInstanceId=" + dataInstanceId +
-                ", schemaName='" + schemaName + '\'' +
-                ", options='" + options + '\'' +
-                ", transformScript='" + transformScript + '\'' +
-                '}';
+               "id=" + id +
+               ", dataInstanceId=" + dataInstanceId +
+               ", schemaName='" + schemaName + '\'' +
+               ", options='" + options + '\'' +
+               ", transformScript='" + transformScript + '\'' +
+               '}';
     }
 
     public String getTransformScript() {

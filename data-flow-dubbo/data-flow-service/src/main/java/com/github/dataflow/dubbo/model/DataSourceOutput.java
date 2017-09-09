@@ -218,12 +218,12 @@ public class DataSourceOutput implements Serializable {
     @Override
     public String toString() {
         return "DataSourceOutput{" +
-                "id=" + id +
-                ", type=" + type +
-                ", name=" + name +
-                ", options='" + options + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+               "id=" + id +
+               ", type=" + type +
+               ", name=" + name +
+               ", options='" + options + '\'' +
+               ", createTime=" + createTime +
+               ", updateTime=" + updateTime +
+               '}';
     }
 }

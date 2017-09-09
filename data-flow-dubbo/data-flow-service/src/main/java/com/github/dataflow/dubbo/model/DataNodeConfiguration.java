@@ -11,10 +11,10 @@ import java.io.Serializable;
 /**
  * <code>DataNodeConfig</code>数据库映射.
  *
+ * @author : kevin
  * @version : Ver 1.0
  * @table : data_node_config
- * @author    : kevin
- * @date    : 2017-06-14 下午14:13:38
+ * @date : 2017-06-14 下午14:13:38
  */
 public class DataNodeConfiguration implements Serializable {
 
@@ -97,9 +97,9 @@ public class DataNodeConfiguration implements Serializable {
     @Override
     public String toString() {
         return "DataNodeConfiguration{" +
-                "id=" + id +
-                ", type=" + type +
-                ", options='" + options + '\'' +
-                '}';
+               "id=" + id +
+               ", type=" + type +
+               ", options='" + options + '\'' +
+               '}';
     }
 }

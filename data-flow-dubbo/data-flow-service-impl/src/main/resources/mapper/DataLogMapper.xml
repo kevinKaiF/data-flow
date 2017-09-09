@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC 
-	"-//ibatis.apache.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC
+        "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 该文件自动生成,请谨慎修改.不使用namespace的话sql搜索定位会比较方便 -->
 <mapper namespace="com.github.dataflow.dubbo.dao.DataLogDao">
 
-	<resultMap id="RM_DataLog" type="com.github.dataflow.dubbo.model.DataLog">
-		<result property="id" column="ID" />
-		<result property="instanceName" column="INSTANCE_NAME" />
-		<result property="message" column="MESSAGE" />
-		<result property="createTime" column="CREATE_TIME" />
-	</resultMap>
+    <resultMap id="RM_DataLog" type="com.github.dataflow.dubbo.model.DataLog">
+        <result property="id" column="ID"/>
+        <result property="instanceName" column="INSTANCE_NAME"/>
+        <result property="message" column="MESSAGE"/>
+        <result property="createTime" column="CREATE_TIME"/>
+    </resultMap>
 
-	<!-- 用于select查询公用抽取的列 -->
-	<sql id="columns">
-	    <![CDATA[
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columns">
+        <![CDATA[
 			ID,INSTANCE_NAME,CREATE_TIME
 	    ]]>
-	</sql>
+    </sql>
 
-	<!-- 用于select查询公用抽取的列 -->
-	<sql id="columnsFully">
-	    <![CDATA[
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columnsFully">
+        <![CDATA[
 			ID,INSTANCE_NAME,MESSAGE,CREATE_TIME
 	    ]]>
-	</sql>
+    </sql>
 
-	<!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
-	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
-	    <![CDATA[
+    <!-- useGeneratedKeys="true" keyProperty="xxx" for sqlserver and mysql -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        <![CDATA[
 	        INSERT INTO data_log (
 	        	ID ,
 	        	INSTANCE_NAME ,
@@ -41,92 +41,93 @@
 	        	#{createTime} 
 	        )
 	    ]]>
-	</insert>
+    </insert>
 
-	<!-- update -->
-	<sql id="update_sql">
-		<set>
-			<if test="instanceName != null and instanceName != ''">
-				INSTANCE_NAME = #{instanceName} ,
-			</if>
-			<if test="message != null and message != ''">
-				MESSAGE = #{message} ,
-			</if>
-			<if test="createTime != null">
-				CREATE_TIME = #{createTime} 
-			</if>
-		</set>
-	</sql>
-	
-	<update id="update">
-		UPDATE data_log
-		<include refid="update_sql" />
-		WHERE
-			ID = #{id} 	</update>
+    <!-- update -->
+    <sql id="update_sql">
+        <set>
+            <if test="instanceName != null and instanceName != ''">
+                INSTANCE_NAME = #{instanceName} ,
+            </if>
+            <if test="message != null and message != ''">
+                MESSAGE = #{message} ,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime}
+            </if>
+        </set>
+    </sql>
 
-	<!-- delete -->
-	<delete id="delete">
-    	<![CDATA[
+    <update id="update">
+        UPDATE data_log
+        <include refid="update_sql"/>
+        WHERE
+        ID = #{id}
+    </update>
+
+    <!-- delete -->
+    <delete id="delete">
+        <![CDATA[
         	DELETE FROM data_log 
         	WHERE
         		ID = #{id} 
     	]]>
-	</delete>
-	
-	<!--<delete id="deleteBatch">-->
-        <!--DELETE FROM data_log WHERE id IN -->
-        <!--<foreach item="ids" collection="list" open="(" separator="," close=")">-->
-			<!--#{ids}-->
-		<!--</foreach>-->
+    </delete>
+
+    <!--<delete id="deleteBatch">-->
+    <!--DELETE FROM data_log WHERE id IN -->
+    <!--<foreach item="ids" collection="list" open="(" separator="," close=")">-->
+    <!--#{ids}-->
+    <!--</foreach>-->
     <!--</delete>-->
 
-	<!-- selsect -->
-	<select id="getById" resultMap="RM_DataLog">
-		SELECT
-		<include refid="columnsFully" />
-		FROM data_log
-		WHERE
-		ID = #{id} 
-	</select>
+    <!-- selsect -->
+    <select id="getById" resultMap="RM_DataLog">
+        SELECT
+        <include refid="columnsFully"/>
+        FROM data_log
+        WHERE
+        ID = #{id}
+    </select>
 
-	<sql id="findPage_where">
-		<where>
-			<if test="id != null">
-				AND ID = #{id}
-			</if>
-			<if test="instanceName != null and instanceName !=''">
-				AND INSTANCE_NAME = #{instanceName}
-			</if>
-			<if test="message != null and message !=''">
-				AND MESSAGE = #{message}
-			</if>
-			<if test="createTimeBegin != null">
-				AND CREATE_TIME >= #{createTimeBegin}
-			</if>
-			<if test="createTimeEnd != null">
-				AND CREATE_TIME &lt;= #{createTimeEnd}
-			</if>
-		</where>
-	</sql>
+    <sql id="findPage_where">
+        <where>
+            <if test="id != null">
+                AND ID = #{id}
+            </if>
+            <if test="instanceName != null and instanceName !=''">
+                AND INSTANCE_NAME = #{instanceName}
+            </if>
+            <if test="message != null and message !=''">
+                AND MESSAGE = #{message}
+            </if>
+            <if test="createTimeBegin != null">
+                AND CREATE_TIME >= #{createTimeBegin}
+            </if>
+            <if test="createTimeEnd != null">
+                AND CREATE_TIME &lt;= #{createTimeEnd}
+            </if>
+        </where>
+    </sql>
 
-	<select id="countByCondition" resultType="long">
-		SELECT COUNT(1)
-		FROM data_log
-		<include refid="findPage_where" />
-	</select>
+    <select id="countByCondition" resultType="long">
+        SELECT COUNT(1)
+        FROM data_log
+        <include refid="findPage_where"/>
+    </select>
 
-	<select id="findByCondition" resultMap="RM_DataLog">
-		SELECT
-		<include refid="columns" />
-		FROM data_log
-		<include refid="findPage_where" />
-	</select>
+    <select id="findByCondition" resultMap="RM_DataLog">
+        SELECT
+        <include refid="columns"/>
+        FROM data_log
+        <include refid="findPage_where"/>
+    </select>
 
-	<select id="findByConditionFully" resultMap="RM_DataLog">
-		SELECT
-		<include refid="columns" />
-		FROM data_log
-		<include refid="findPage_where" />
-	</select>
+    <select id="findByConditionFully" resultMap="RM_DataLog">
+        SELECT
+        <include refid="columns"/>
+        FROM data_log
+        <include refid="findPage_where"/>
+    </select>
 
 </mapper>

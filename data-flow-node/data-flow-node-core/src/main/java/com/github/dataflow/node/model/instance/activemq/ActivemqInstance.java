@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @date : 2017/7/4
  */
 public class ActivemqInstance extends AbstractMessageAwareInstance {
-    private Logger     logger = LoggerFactory.getLogger(ActivemqInstance.class);
+    private Logger logger = LoggerFactory.getLogger(ActivemqInstance.class);
 
     private static final AtomicLong atomicLong = new AtomicLong(0);
 

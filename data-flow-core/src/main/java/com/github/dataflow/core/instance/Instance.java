@@ -48,8 +48,9 @@ public interface Instance extends DataFlowLifeCycle {
 
     /**
      * 获取最后一次同步的位置信息
-     * @return
+     *
      * @param instanceName
+     * @return
      */
     String getPosition(String instanceName);
 }

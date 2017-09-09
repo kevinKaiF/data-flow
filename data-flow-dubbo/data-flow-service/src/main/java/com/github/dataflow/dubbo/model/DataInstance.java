@@ -344,17 +344,17 @@ public class DataInstance implements Serializable {
     @Override
     public String toString() {
         return "DataInstance{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", producerOrConsumer=" + producerOrConsumer +
-                ", tag='" + tag + '\'' +
-                ", transformScript='" + transformScript + '\'' +
-                ", options='" + options + '\'' +
-                ", nodePath='" + nodePath + '\'' +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", type=" + type +
+               ", producerOrConsumer=" + producerOrConsumer +
+               ", tag='" + tag + '\'' +
+               ", transformScript='" + transformScript + '\'' +
+               ", options='" + options + '\'' +
+               ", nodePath='" + nodePath + '\'' +
+               ", status=" + status +
+               ", createTime=" + createTime +
+               ", updateTime=" + updateTime +
+               '}';
     }
 }

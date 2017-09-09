@@ -34,8 +34,8 @@ public class DataAlarm {
     @Override
     public String toString() {
         return "DataAlarm{" +
-                "type=" + type +
-                ", options='" + options + '\'' +
-                '}';
+               "type=" + type +
+               ", options='" + options + '\'' +
+               '}';
     }
 }

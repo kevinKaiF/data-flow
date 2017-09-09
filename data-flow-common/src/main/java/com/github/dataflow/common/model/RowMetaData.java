@@ -1,7 +1,9 @@
 package com.github.dataflow.common.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kevin
@@ -21,7 +23,10 @@ public class RowMetaData implements Serializable {
 
     private List<ColumnMeta> afterColumns;
 
+    private Map<String, Object> options;
+
     public RowMetaData() {
+        this.options = new HashMap<>();
     }
 
     public RowMetaData(String tableName, String schemaName, EventType eventType, List<ColumnMeta> beforeColumns, List<ColumnMeta> afterColumns) {
@@ -30,6 +35,7 @@ public class RowMetaData implements Serializable {
         this.eventType = eventType;
         this.beforeColumns = beforeColumns;
         this.afterColumns = afterColumns;
+        this.options = new HashMap<>();
     }
 
     public String getTableName() {
@@ -76,15 +82,23 @@ public class RowMetaData implements Serializable {
         return schemaName + "." + tableName;
     }
 
+    public Map<String, Object> getOptions() {
+        return options;
+    }
+
+    public void setOptions(Map<String, Object> options) {
+        this.options = options;
+    }
+
     @Override
     public String toString() {
         return "RowMetaData{" +
-                "tableName='" + tableName + '\'' +
-                ", schemaName='" + schemaName + '\'' +
-                ", eventType=" + eventType +
-                ", beforeColumns=" + beforeColumns +
-                ", afterColumns=" + afterColumns +
-                '}';
+               "tableName='" + tableName + '\'' +
+               ", schemaName='" + schemaName + '\'' +
+               ", eventType=" + eventType +
+               ", beforeColumns=" + beforeColumns +
+               ", afterColumns=" + afterColumns +
+               '}';
     }
 
     public static class ColumnMeta {
@@ -141,11 +155,11 @@ public class RowMetaData implements Serializable {
         @Override
         public String toString() {
             return "ColumnMeta{" +
-                    "columnName='" + columnName + '\'' +
-                    ", jdbcType=" + jdbcType +
-                    ", isKey=" + isKey +
-                    ", value='" + value + '\'' +
-                    '}';
+                   "columnName='" + columnName + '\'' +
+                   ", jdbcType=" + jdbcType +
+                   ", isKey=" + isKey +
+                   ", value='" + value + '\'' +
+                   '}';
         }
     }
 

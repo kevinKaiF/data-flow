@@ -5,11 +5,11 @@ import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
+import com.github.dataflow.sender.core.EventDataSender;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 import com.github.dataflow.sender.core.event.handler.EventHandler;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.sender.core.handler.EventDataSenderHandler;
-import com.github.dataflow.sender.database.DatabaseDataSender;
 import com.github.dataflow.sender.hbase.HbaseSender;
 import com.github.dataflow.sender.hbase.config.HbaseConfig;
 import com.github.dataflow.sender.hbase.event.handler.AbstractHbaseEventHandler;
@@ -36,11 +36,11 @@ public class HbaseDataSenderHandler extends EventDataSenderHandler {
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         HbaseSender hbaseSender = new HbaseSender();
         JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
-        hbaseSender.setDataSourceHolder(new DataSourceHolder(getHbaseDataSource(props)));
+        hbaseSender.setDataSourceHolder(new DataSourceHolder(getDataSource(props)));
         return hbaseSender;
     }
 
-    private Object getHbaseDataSource(JSONObject props) {
+    protected Object getDataSource(JSONObject props) {
         Connection connection = null;
         try {
             Configuration configuration = HBaseConfiguration.create();
@@ -63,11 +63,9 @@ public class HbaseDataSenderHandler extends EventDataSenderHandler {
     protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataOutputMapping) {
         super.afterCreateDataSender(dataSender, dataOutputMapping);
         // set batch
-        JSONObject properties = parseJSON(dataOutputMapping.getOptions());
-        DatabaseDataSender databaseDataSender = (DatabaseDataSender) dataSender;
-        databaseDataSender.setBatch(JSONObjectUtil.getBoolean(properties, HbaseConfig.BATCH, Boolean.TRUE));
-        // set eventHandlers
-        databaseDataSender.setEventHandlers(eventHandlers);
+        JSONObject properties = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
+        EventDataSender eventDataSender = (EventDataSender) dataSender;
+        eventDataSender.setBatch(JSONObjectUtil.getBoolean(properties, HbaseConfig.BATCH, Boolean.TRUE));
     }
 
     @Override

@@ -58,7 +58,7 @@ public class GlobalExecutor implements InitializingBean, DisposableBean {
         executorService.execute(runnable);
     }
 
-    private class NamedThreadFactory implements ThreadFactory{
+    private class NamedThreadFactory implements ThreadFactory {
         @Override
         public Thread newThread(Runnable r) {
             Thread thread = new Thread(r, "dataflow-global-" + atomicInteger.getAndIncrement());

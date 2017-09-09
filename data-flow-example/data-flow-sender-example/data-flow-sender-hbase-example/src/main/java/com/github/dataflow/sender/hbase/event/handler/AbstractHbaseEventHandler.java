@@ -21,7 +21,7 @@ import java.util.Map;
  * 的处理中，有两点需要你自己按照自己的需求实现。
  * 1.RowKey的生成规则
  * 2.hbase的表名与RowMetaData的tableName关系是如何对应的。
- *
+ * <p>
  * 本案例仅是一种示范。
  *
  * @author kevin
@@ -62,8 +62,8 @@ public abstract class AbstractHbaseEventHandler implements EventHandler {
     /**
      * 获取主键
      *
-     * @param rowMetaData       row所有数据信息，包括变化前和变化后的字段数据，字段名称
-     * @param isBeforeColumns   是否是变化前的数据，比如delete只需要变化前的数据
+     * @param rowMetaData     row所有数据信息，包括变化前和变化后的字段数据，字段名称
+     * @param isBeforeColumns 是否是变化前的数据，比如delete只需要变化前的数据
      * @return
      */
     protected Map<String, String> getPrimaryKeys(RowMetaData rowMetaData, boolean isBeforeColumns) {

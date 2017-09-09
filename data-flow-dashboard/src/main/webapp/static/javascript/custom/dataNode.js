@@ -3,7 +3,7 @@
         init: function () {
             this.initNodeList();
         },
-        _renderNodeList : function (result) {
+        _renderNodeList: function (result) {
             var nodeList = "";
             if (result.length > 0) {
                 for (var i in result) {
@@ -285,7 +285,7 @@
                         lengthChange: false,
                         serverSide: true,
                         pageLength: 10,
-                        pagingType : "full",
+                        pagingType: "full",
                         ajax: {
                             "url": "./logList",
                             "contentType": "application/x-www-form-urlencoded",

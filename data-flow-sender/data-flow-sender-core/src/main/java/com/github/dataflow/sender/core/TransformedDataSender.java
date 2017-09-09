@@ -12,7 +12,7 @@ import java.util.List;
  * @description :
  * @date : 2017/7/6
  */
-public abstract class TransformedDataSender extends DataSender{
+public abstract class TransformedDataSender extends DataSender {
     @Override
     public void send(List<RowMetaData> rowMetaDataList) throws Exception {
         String transformedValue = dataTransformer.transform(rowMetaDataList);

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon"/>
     <title>数据实例</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -49,7 +49,8 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire" style="border: none; color:#1abb9c;font-size: 1.5em"></i>
+                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire"
+                                                                       style="border: none; color:#1abb9c;font-size: 1.5em"></i>
                         <span>Data flow</span></a>
                 </div>
 
@@ -249,7 +250,8 @@
                                                             <div class="col-md-8 col-sm-8 col-xs-12">
                                                                 <input type="text" id="dataInstance-tag" name="tag"
                                                                        required="required"
-                                                                       class="form-control col-md-7 col-xs-12" data-validate-length-range="1,20">
+                                                                       class="form-control col-md-7 col-xs-12"
+                                                                       data-validate-length-range="1,20">
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
@@ -257,7 +259,8 @@
                                                                    class="control-label col-md-2 col-sm-2 col-xs-12">类型 <span
                                                                     class="required">*</span></label>
                                                             <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                <select id="dataInstance-type" class="form-control col-md-7 col-xs-12"
+                                                                <select id="dataInstance-type"
+                                                                        class="form-control col-md-7 col-xs-12"
                                                                         name="type" required="required">
                                                                     <option value="10">MySQL</option>
                                                                     <option value="11">Oracle</option>
@@ -274,18 +277,21 @@
                                                             <label for="dataInstance-options"
                                                                    class="control-label col-md-2 col-sm-2 col-xs-12">参数 <span
                                                                     class="required">*</span></label>
-                                                            <div class="col-md-8 col-sm-8 col-xs-12" style="position: relative">
+                                                            <div class="col-md-8 col-sm-8 col-xs-12"
+                                                                 style="position: relative">
                                                         <textarea id="dataInstance-options"
                                                                   class="form-control col-md-7 col-xs-12"
                                                                   rows="9" required="required"
                                                                   name="options"></textarea>
-                                                                <span id="dataInstance-options-doc" class="doc">doc</span>
+                                                                <span id="dataInstance-options-doc"
+                                                                      class="doc">doc</span>
                                                             </div>
                                                         </div>
                                                         <div class="item form-group">
                                                             <label for="dataInstance-transformScript"
                                                                    class="control-label col-md-2 col-sm-2 col-xs-12">转换脚本 </label>
-                                                            <div class="col-md-8 col-sm-8 col-xs-12" style="position: relative">
+                                                            <div class="col-md-8 col-sm-8 col-xs-12"
+                                                                 style="position: relative">
                                                         <textarea id="dataInstance-transformScript"
                                                                   class="form-control col-md-7 col-xs-12"
                                                                   rows="7"
@@ -300,7 +306,8 @@
                                                                        type="hidden" name="id">
                                                             </div>
                                                         </div>
-                                                        <input type="hidden" name="name" value="-1" id="dataInstance-name">
+                                                        <input type="hidden" name="name" value="-1"
+                                                               id="dataInstance-name">
                                                     </form>
 
                                                 </div>
@@ -354,7 +361,8 @@
                                                                     <form id="dataOutputMapping-form"
                                                                           class="form-horizontal form-label-left">
 
-                                                                        <div class="item form-group" id="dataOutputMapping-schemaName-group">
+                                                                        <div class="item form-group"
+                                                                             id="dataOutputMapping-schemaName-group">
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                                                    for="dataOutputMapping-schemaName">库名 <span
                                                                                     class="required">*</span>
@@ -371,24 +379,30 @@
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                                                    for="dataOutputMapping-options">配置
                                                                             </label>
-                                                                            <div class="col-md-9 col-sm-9 col-xs-12" style="position: relative;">
-                                                                                 <textarea id="dataOutputMapping-options"
-                                                                                           class="form-control col-md-7 col-xs-12"
-                                                                                           rows="5"
-                                                                                           name="options"></textarea>
-                                                                                <span id="dataOutputMapping-options-doc" class="doc">doc</span>
+                                                                            <div class="col-md-9 col-sm-9 col-xs-12"
+                                                                                 style="position: relative;">
+                                                                                 <textarea
+                                                                                         id="dataOutputMapping-options"
+                                                                                         class="form-control col-md-7 col-xs-12"
+                                                                                         rows="5"
+                                                                                         name="options"></textarea>
+                                                                                <span id="dataOutputMapping-options-doc"
+                                                                                      class="doc">doc</span>
                                                                             </div>
                                                                         </div>
                                                                         <div class="item form-group">
                                                                             <label class="control-label col-md-2 col-sm-2 col-xs-12"
                                                                                    for="dataOutputMapping-transformScript">转换脚本
                                                                             </label>
-                                                                            <div class="col-md-9 col-sm-9 col-xs-12" style="position: relative">
-                                                                                 <textarea id="dataOutputMapping-transformScript"
-                                                                                           class="form-control col-md-7 col-xs-12"
-                                                                                           rows="5"
-                                                                                           name="transformScript"></textarea>
-                                                                                <span id="dataOutputMapping-transformScript-doc" class="doc">doc</span>
+                                                                            <div class="col-md-9 col-sm-9 col-xs-12"
+                                                                                 style="position: relative">
+                                                                                 <textarea
+                                                                                         id="dataOutputMapping-transformScript"
+                                                                                         class="form-control col-md-7 col-xs-12"
+                                                                                         rows="5"
+                                                                                         name="transformScript"></textarea>
+                                                                                <span id="dataOutputMapping-transformScript-doc"
+                                                                                      class="doc">doc</span>
                                                                             </div>
                                                                         </div>
                                                                         <div class="item form-group">
@@ -476,15 +490,22 @@
                             </div>
                             <div class="modal-body">
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Mysql</a>
+                                    <li role="presentation" class="active"><a href="#tab_content1" role="tab"
+                                                                              id="profile-tab" data-toggle="tab"
+                                                                              aria-expanded="false">Mysql</a>
                                     </li>
-                                    <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                    <li role="presentation" class=""><a href="#tab_content5" role="tab"
+                                                                        id="profile-tab5" data-toggle="tab"
+                                                                        aria-expanded="false">Kafka</a>
                                     </li>
-                                    <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">ActiveMQ</a>
+                                    <li role="presentation" class=""><a href="#tab_content6" role="tab"
+                                                                        id="profile-tab6" data-toggle="tab"
+                                                                        aria-expanded="false">ActiveMQ</a>
                                     </li>
                                 </ul>
                                 <div id="myTabContent" class="tab-content">
-                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="profile-tab">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
+                                         aria-labelledby="profile-tab">
                                         <textarea style="width: 100%;" rows="12" readonly>{
     "username":"",
     "password":"",
@@ -496,14 +517,16 @@
     "blackFilter":"black\\..*"
 }</textarea>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab5">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content5"
+                                         aria-labelledby="profile-tab5">
                                         <textarea style="width: 100%;" rows="12" readonly>{
     "bootstrap.servers":"",
     "topic":"",
     "group.id":""
 } </textarea>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="profile-tab6">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content6"
+                                         aria-labelledby="profile-tab6">
                                         <textarea style="width: 100%;" rows="12" readonly>{
     "type":0,
     "topic":"",
@@ -606,18 +629,24 @@
                             </div>
                             <div class="modal-body">
                                 <ul id="myTab1" class="nav nav-tabs bar_tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tab_content11" role="tab" id="profile-tab11" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                    <li role="presentation" class="active"><a href="#tab_content11" role="tab"
+                                                                              id="profile-tab11" data-toggle="tab"
+                                                                              aria-expanded="false">Kafka</a>
                                     </li>
-                                    <li role="presentation" class=""><a href="#tab_content21" role="tab" id="profile-tab21" data-toggle="tab" aria-expanded="false">ActiveMq</a>
+                                    <li role="presentation" class=""><a href="#tab_content21" role="tab"
+                                                                        id="profile-tab21" data-toggle="tab"
+                                                                        aria-expanded="false">ActiveMq</a>
                                     </li>
                                 </ul>
                                 <div id="myTabContent1" class="tab-content">
-                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="profile-tab11">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content11"
+                                         aria-labelledby="profile-tab11">
                                         <textarea style="width: 100%;" rows="12" readonly>{
     "topic":""
 }</textarea>
                                     </div>
-                                    <div role="tabpanel" class="tab-pane fade" id="tab_content21" aria-labelledby="profile-tab21">
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content21"
+                                         aria-labelledby="profile-tab21">
                                         <textarea style="width: 100%;" rows="12" readonly>{
     "type":0=queue,1=topic,
     "topic":"",
@@ -694,8 +723,10 @@
                 </div>
             </div>
 
-            <div id="loading" class="text-center" style="display:none;z-index:1000;position: absolute;left: 0;bottom: 0;right: 0;top: 0;background: #000;opacity: 0.5">
-                <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="font-size: 4em;color: #13bebf;margin: 20%;"></span>
+            <div id="loading" class="text-center"
+                 style="display:none;z-index:1000;position: absolute;left: 0;bottom: 0;right: 0;top: 0;background: #000;opacity: 0.5">
+                <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"
+                      style="font-size: 4em;color: #13bebf;margin: 20%;"></span>
             </div>
         </div>
         <!-- /page content -->

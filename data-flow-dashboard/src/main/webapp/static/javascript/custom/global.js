@@ -1,4 +1,4 @@
-;(function($) {
+;(function ($) {
     var profile = {
         init: function () {
             profile.initNProgress();
@@ -9,24 +9,24 @@
                 profile.extension();
             })
         },
-        settingValidator : function() {
-          if (validator && validator.message) {
-              validator.message.invalid='非法',
-              validator.message.checked='请勾选',
-              validator.message.empty='非空',
-              validator.message.min='太短',
-              validator.message.max='太长',
-              validator.message.number_min='太小',
-              validator.message.number_max='太大',
-              validator.message.url='非法',
-              validator.message.number='非数字',
-              validator.message.email='非法',
-              validator.message.email_repeat='重复',
-              validator.message.password_repeat='不一致',
-              validator.message.repeat='不一致',
-              validator.message.complete='未完成',
-              validator.message.select='请选择'
-          }
+        settingValidator: function () {
+            if (validator && validator.message) {
+                validator.message.invalid = '非法',
+                    validator.message.checked = '请勾选',
+                    validator.message.empty = '非空',
+                    validator.message.min = '太短',
+                    validator.message.max = '太长',
+                    validator.message.number_min = '太小',
+                    validator.message.number_max = '太大',
+                    validator.message.url = '非法',
+                    validator.message.number = '非数字',
+                    validator.message.email = '非法',
+                    validator.message.email_repeat = '重复',
+                    validator.message.password_repeat = '不一致',
+                    validator.message.repeat = '不一致',
+                    validator.message.complete = '未完成',
+                    validator.message.select = '请选择'
+            }
         },
         init_sidebar: function () {
             var $BODY = $('body'),
@@ -94,8 +94,8 @@
                 });
             }
         },
-        initPanelEvent : function () {
-            $('.collapse-link').on('click', function(e) {
+        initPanelEvent: function () {
+            $('.collapse-link').on('click', function (e) {
                 e.stopPropagation();
                 var $BOX_PANEL = $(this).closest('.x_panel'),
                     $ICON = $(this).find('i'),
@@ -103,7 +103,7 @@
 
                 // fix for some div with hardcoded fix class
                 if ($BOX_PANEL.attr('style')) {
-                    $BOX_CONTENT.slideToggle(200, function(){
+                    $BOX_CONTENT.slideToggle(200, function () {
                         $BOX_PANEL.removeAttr('style');
                     });
                 } else {
@@ -165,13 +165,13 @@
                         var name = $this.attr("name");
                         if (data[name] || (data[name] + "").length > 0) {
                             // remove the selected attribute of option dom
-                            $this.find("option").each(function() {
+                            $this.find("option").each(function () {
                                 $(this).removeAttr("selected")
                             })
 
                             $this.val(data[name]);
-                            $this.find("option").each(function(index) {
-                                if($(this).val() == data[name]) {
+                            $this.find("option").each(function (index) {
+                                if ($(this).val() == data[name]) {
                                     $this.get(0).selectedIndex = index;
                                     $(this).attr("selected", true);
                                 }

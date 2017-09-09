@@ -50,7 +50,7 @@ public class MysqlInstanceHandler extends AbstractInstanceHandler implements Ins
         parameter.setHaMode(CanalParameter.HAMode.HEARTBEAT);
         parameter.setIndexMode(CanalParameter.IndexMode.ZOOKEEPER);
         parameter.setSourcingType(CanalParameter.SourcingType.MYSQL);
-        parameter.setDbAddresses(Collections.singletonList(new InetSocketAddress(options.getString(DatabaseConfig.HOST), options.getInteger(DatabaseConfig.PORT) == null ? 3306 : options.getInteger(DatabaseConfig.PORT) )));
+        parameter.setDbAddresses(Collections.singletonList(new InetSocketAddress(options.getString(DatabaseConfig.HOST), options.getInteger(DatabaseConfig.PORT) == null ? 3306 : options.getInteger(DatabaseConfig.PORT))));
         parameter.setDbUsername(options.getString(DatabaseConfig.USERNAME));
         parameter.setDbPassword(options.getString(DatabaseConfig.PASSWORD));
 //        parameter.setPositions(Arrays.asList("{\"journalName\":\"mysql-bin.000001\",\"position\":6163L,\"timestamp\":1322803601000L}",

@@ -3,19 +3,19 @@ package com.github.dataflow.sender.hbase;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.Closer;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
+import com.github.dataflow.sender.core.EventDataSender;
 import com.github.dataflow.sender.core.event.handler.EventHandler;
-import com.github.dataflow.sender.database.DatabaseDataSender;
 import org.apache.hadoop.hbase.client.Connection;
 
 /**
  * @author kevin
  * @date 2017-08-27 6:13 PM.
  */
-public class HbaseSender extends DatabaseDataSender {
+public class HbaseSender extends EventDataSender {
     private DataSourceType dataSourceType = DataSourceType.HBASE;
 
     @Override
-    protected boolean supportSingleSend(Exception e) {
+    protected boolean ignoreExceptionAfterSendFailed(Exception e) {
         return true;
     }
 

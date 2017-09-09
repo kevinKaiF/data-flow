@@ -25,7 +25,7 @@ import java.util.Map;
  * @date : 2017/6/26
  */
 @Component
-public class DataFlowContext implements ApplicationContextAware, InitializingBean{
+public class DataFlowContext implements ApplicationContextAware, InitializingBean {
     private Logger logger = LoggerFactory.getLogger(DataFlowContext.class);
 
     private DataNodeConfiguration dataNodeConfiguration;

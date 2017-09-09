@@ -2,6 +2,7 @@ package com.github.dataflow.sender.database;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
+import com.github.dataflow.sender.core.EventDataSender;
 import com.github.dataflow.sender.core.event.handler.EventHandler;
 
 /**
@@ -10,7 +11,7 @@ import com.github.dataflow.sender.core.event.handler.EventHandler;
  * @description :
  * @date : 2017/6/24
  */
-public class OracleDataSender extends DatabaseDataSender {
+public class OracleDataSender extends EventDataSender {
     private DataSourceType dataSourceType = DataSourceType.ORACLE;
 
     @Override
@@ -19,7 +20,7 @@ public class OracleDataSender extends DatabaseDataSender {
     }
 
     @Override
-    protected boolean supportSingleSend(Exception e) {
+    protected boolean ignoreExceptionAfterSendFailed(Exception e) {
         return false;
     }
 }

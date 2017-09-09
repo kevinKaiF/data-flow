@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon"/>
 
     <title>输出数据源</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -58,7 +58,8 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire" style="border: none; color:#1abb9c;font-size: 1.5em"></i>
+                    <a href="javascript:void(0)" class="site_title"><i class="fa fa-fire"
+                                                                       style="border: none; color:#1abb9c;font-size: 1.5em"></i>
                         <span>Data flow</span></a>
                 </div>
 
@@ -162,6 +163,7 @@
                                                 <option value="21">metaQ</option>
                                                 <option value="22">rabbitMQ</option>
                                                 <option value="23">activeMQ</option>
+                                                <option value="30">ElasticSearch</option>
                                                 <option value="31">hbase</option>
                                             </select>
                                         </div>
@@ -222,7 +224,8 @@
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <input class="form-control col-md-7 col-xs-12" type="text"
-                                                               id="dataSourceOutput-name" name="name" required="required" data-validate-length-range="1,20">
+                                                               id="dataSourceOutput-name" name="name"
+                                                               required="required" data-validate-length-range="1,20">
                                                         </input>
                                                     </div>
                                                 </div>
@@ -242,6 +245,7 @@
                                                             <option value="21">metaQ</option>
                                                             <option value="22">rabbitMQ</option>
                                                             <option value="23">activeMQ</option>
+                                                            <option value="30">ElasticSearch</option>
                                                             <option value="31">hbase</option>
                                                         </select>
                                                     </div>
@@ -315,17 +319,26 @@
                         </div>
                         <div class="modal-body">
                             <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                                <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Mysql</a>
+                                <li role="presentation" class="active"><a href="#tab_content1" role="tab"
+                                                                          id="profile-tab" data-toggle="tab"
+                                                                          aria-expanded="false">Mysql</a>
                                 </li>
-                                <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5" data-toggle="tab" aria-expanded="false">Kafka</a>
+                                <li role="presentation" class=""><a href="#tab_content5" role="tab" id="profile-tab5"
+                                                                    data-toggle="tab" aria-expanded="false">Kafka</a>
                                 </li>
-                                <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6" data-toggle="tab" aria-expanded="false">activeMQ</a>
+                                <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6"
+                                                                    data-toggle="tab" aria-expanded="false">activeMQ</a>
                                 </li>
-                                <li role="presentation" class=""><a href="#tab_content7" role="tab" id="profile-tab7" data-toggle="tab" aria-expanded="false">hbase</a>
+                                <li role="presentation" class=""><a href="#tab_content7" role="tab" id="profile-tab7"
+                                                                    data-toggle="tab" aria-expanded="false">hbase</a>
+                                </li>
+                                <li role="presentation" class=""><a href="#tab_content8" role="tab" id="profile-tab8"
+                                                                    data-toggle="tab" aria-expanded="false">ElasticSearch</a>
                                 </li>
                             </ul>
                             <div id="myTabContent" class="tab-content">
-                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="profile-tab">
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1"
+                                     aria-labelledby="profile-tab">
                                         <textarea style="width: 100%;" rows="8" readonly>{
     "username":"",
     "password":"",
@@ -334,21 +347,42 @@
     "jdbcUrl":""
 }</textarea>
                                 </div>
-                                <div role="tabpanel" class="tab-pane fade" id="tab_content5" aria-labelledby="profile-tab5">
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content5"
+                                     aria-labelledby="profile-tab5">
                                         <textarea style="width: 100%;" rows="8" readonly>{
     "bootstrap.servers":""
 }</textarea>
                                 </div>
-                                <div role="tabpanel" class="tab-pane fade" id="tab_content6" aria-labelledby="profile-tab6">
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content6"
+                                     aria-labelledby="profile-tab6">
                                         <textarea style="width: 100%;" rows="8" readonly>{
     "brokeUrl":""
 }</textarea>
                                 </div>
-                                <div role="tabpanel" class="tab-pane fade" id="tab_content7" aria-labelledby="profile-tab7">
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content7"
+                                     aria-labelledby="profile-tab7">
                                         <textarea style="width: 100%;" rows="8" readonly>{
     "hbase.zookeeper.property.clientPort":"",
     "hbase.zookeeper.quorum":"",
     "hbase.master":""
+}</textarea>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content8"
+                                     aria-labelledby="profile-tab8">
+                                        <textarea style="width: 100%;" rows="8" readonly>{
+    "cluster.name":"",
+    "cluster.host":"",
+    "client.transport.sniff":"",
+    "path.home":"",
+    "path.conf":"",
+    "searchguard.enable":"",
+    "searchguard.ssl.transport.enabled":"",
+    "searchguard.ssl.transport.keystore_filepath":"",
+    "searchguard.ssl.transport.truststore_filepath":"",
+    "searchguard.ssl.transport.enforce_hostname_verification":"",
+    "searchguard.ssl.transport.enable_openssl_if_available":"",
+    "searchguard.ssl.transport.keystore_password":"",
+    "searchguard.ssl.transport.truststore_password":""
 }</textarea>
                                 </div>
                             </div>

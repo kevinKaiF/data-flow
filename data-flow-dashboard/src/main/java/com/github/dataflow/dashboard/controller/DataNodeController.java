@@ -27,7 +27,7 @@ import static com.github.dataflow.dashboard.utils.Constants.NODE_INSTANCE_DETAIL
  */
 @Controller
 @RequestMapping("/dataNode")
-public class DataNodeController extends BaseController{
+public class DataNodeController extends BaseController {
     @Autowired
     private ZookeeperClient zookeeperClient;
 

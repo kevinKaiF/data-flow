@@ -47,7 +47,7 @@ public abstract class AbstractAlarmService extends AbstractDataFlowLifeCycle imp
 
     @Override
     public void sendAlarm(final String instanceName, final String message) {
-       sendAlarm(instanceName, message, true);
+        sendAlarm(instanceName, message, true);
     }
 
     @Override
@@ -86,6 +86,7 @@ public abstract class AbstractAlarmService extends AbstractDataFlowLifeCycle imp
 
     /**
      * 将异常信息持久化到数据库
+     *
      * @param instanceName
      * @param message
      */
@@ -93,7 +94,8 @@ public abstract class AbstractAlarmService extends AbstractDataFlowLifeCycle imp
         if (dataLogService != null) {
             dataLogService.insert(instanceName, message);
         }
-    };
+    }
+
 
     protected abstract void doSendAlarm(String instanceName, String message);
 
