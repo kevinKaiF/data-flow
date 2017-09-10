@@ -15,7 +15,6 @@
         <dependency>
             <groupId>com.github.data-flow</groupId>
             <artifactId>data-flow-sender-core</artifactId>
-            <version>${data-flow.version}</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>

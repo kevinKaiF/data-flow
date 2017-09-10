@@ -9,6 +9,7 @@
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>data-flow-sender-activemq</artifactId>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -27,8 +28,5 @@
             <version>5.7.0</version>
         </dependency>
     </dependencies>
-
-    <artifactId>data-flow-sender-activemq</artifactId>
-
 
 </project>
