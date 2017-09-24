@@ -1,7 +1,11 @@
 package com.github.dataflow.node.model.store;
 
 import com.alibaba.otter.canal.common.AbstractCanalLifeCycle;
+import com.alibaba.otter.canal.parse.index.CanalLogPositionManager;
 import com.alibaba.otter.canal.protocol.CanalEntry;
+import com.alibaba.otter.canal.protocol.position.EntryPosition;
+import com.alibaba.otter.canal.protocol.position.LogIdentity;
+import com.alibaba.otter.canal.protocol.position.LogPosition;
 import com.alibaba.otter.canal.protocol.position.Position;
 import com.alibaba.otter.canal.store.CanalEventStore;
 import com.alibaba.otter.canal.store.CanalStoreException;
@@ -11,8 +15,11 @@ import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.core.store.DataStore;
 import com.google.protobuf.InvalidProtocolBufferException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +33,15 @@ import java.util.concurrent.TimeUnit;
  * @date : 2017/5/29
  */
 public class MysqlEventStore extends AbstractCanalLifeCycle implements CanalEventStore<Event> {
+    private Logger logger = LoggerFactory.getLogger(MysqlEventStore.class);
+
     private DataStore dataStore;
+
+    private InetSocketAddress address;
+
+    private String name;
+
+    private CanalLogPositionManager canalLogPositionManager;
 
     @Override
     public void start() {
@@ -53,10 +68,33 @@ public class MysqlEventStore extends AbstractCanalLifeCycle implements CanalEven
                         List<RowMetaData> rowMetaDataList = getRowMetaData(rowDataList, entry, eventType);
                         dataStore.handle(rowMetaDataList);
                     }
+
+                    logger.debug("entry type is " + entry.getEntryType() + ", timestamp : " + entry.getHeader().getExecuteTime());
+                    // 更新binlog位置
+                    if (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
+                        LogPosition logPosition = buildLastPosition(entry);
+                        if (logPosition != null) {
+                            canalLogPositionManager.persistLogPosition(name, logPosition);
+                        }
+                    }
                 } catch (InvalidProtocolBufferException e) {
                 }
             }
         }
+    }
+
+    protected LogPosition buildLastPosition(CanalEntry.Entry entry) {
+        LogPosition logPosition = new LogPosition();
+        EntryPosition position = new EntryPosition();
+        position.setJournalName(entry.getHeader().getLogfileName());
+        position.setPosition(entry.getHeader().getLogfileOffset());
+        position.setTimestamp(entry.getHeader().getExecuteTime());
+        position.setServerId(entry.getHeader().getServerId());
+        logPosition.setPostion(position);
+
+        LogIdentity identity = new LogIdentity(address, -1L);
+        logPosition.setIdentity(identity);
+        return logPosition;
     }
 
 
@@ -137,6 +175,18 @@ public class MysqlEventStore extends AbstractCanalLifeCycle implements CanalEven
 
     public void setDataStore(DataStore dataStore) {
         this.dataStore = dataStore;
+    }
+
+    public void setAddress(InetSocketAddress address) {
+        this.address = address;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCanalLogPositionManager(CanalLogPositionManager canalLogPositionManager) {
+        this.canalLogPositionManager = canalLogPositionManager;
     }
 
     ///////////////////////////////////////////////////////////////////////////////

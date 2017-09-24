@@ -57,6 +57,8 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
 
     private DataStore dataStore;
 
+    private CanalLogPositionManager logPositionManager;
+
     public MysqlInstanceDelegate() {
     }
 
@@ -178,6 +180,9 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
         logger.info("init eventStore begin...");
         MysqlEventStore mysqlEventStore = new MysqlEventStore();
         mysqlEventStore.setDataStore(dataStore);
+        mysqlEventStore.setAddress(canalParameter.getDbAddresses().get(0));
+        mysqlEventStore.setName(name);
+        mysqlEventStore.setCanalLogPositionManager(initLogPositionManager());
         eventStore = mysqlEventStore;
         logger.info("init eventStore end! \n\t load MysqlEventStore:{}", eventStore.getClass().getName());
     }
@@ -366,9 +371,11 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
     }
 
     protected CanalLogPositionManager initLogPositionManager() {
+        if (logPositionManager != null) {
+            return logPositionManager;
+        }
         logger.info("init logPositionPersistManager begin...");
         CanalParameter.IndexMode indexMode = canalParameter.getIndexMode();
-        CanalLogPositionManager logPositionManager = null;
         if (indexMode.isMemory()) {
             logPositionManager = new MemoryLogPositionManager();
         } else if (indexMode.isZookeeper()) {
