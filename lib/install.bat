@@ -1,1 +1,2 @@
 call mvn install:install-file -DgroupId=com.alibaba -DartifactId=dubbo -Dversion=2.8.4 -Dpackaging=jar -Dfile=dubbo-2.8.4.jar -DgeneratePom=true
+call mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar -Dfile=ojdbc14.jar -DgeneratePom=true
