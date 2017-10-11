@@ -55,10 +55,12 @@ public class DataFlowContext implements ApplicationContextAware, InitializingBea
             alarmService = createAlarmService(alarmServiceHandlerMap);
         }
 
-        logger.warn("AlarmService is not found, use com.github.dataflow.node.model.alarm.LogAlarmService instead.");
         if (alarmService == null) {
+            logger.warn("AlarmService is not found, use com.github.dataflow.node.model.alarm.LogAlarmService instead.");
             alarmService = new LogAlarmService();
         }
+
+        alarmService.start();
     }
 
     private AlarmService createAlarmService(Map<String, AlarmServiceHandler> alarmServiceHandlerMap) throws Exception {
