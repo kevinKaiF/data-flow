@@ -9,5 +9,5 @@ import com.github.dataflow.common.model.RowMetaData;
  * @date : 2017/7/7
  */
 public interface InsertEvent {
-    RowMetaData.EventType INSERT = RowMetaData.EventType.DELETE;
+    RowMetaData.EventType INSERT = RowMetaData.EventType.INSERT;
 }
