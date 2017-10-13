@@ -35,7 +35,7 @@ public class HbaseDataSenderHandler extends EventDataSenderHandler {
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         HbaseSender hbaseSender = new HbaseSender();
-        JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = JSONObjectUtil.parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
         hbaseSender.setDataSourceHolder(new DataSourceHolder(getDataSource(props)));
         return hbaseSender;
     }
@@ -63,7 +63,7 @@ public class HbaseDataSenderHandler extends EventDataSenderHandler {
     protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataOutputMapping) {
         super.afterCreateDataSender(dataSender, dataOutputMapping);
         // set batch
-        JSONObject properties = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject properties = JSONObjectUtil.parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
         EventDataSender eventDataSender = (EventDataSender) dataSender;
         eventDataSender.setBatch(JSONObjectUtil.getBoolean(properties, HbaseConfig.BATCH, Boolean.TRUE));
     }

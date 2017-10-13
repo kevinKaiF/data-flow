@@ -52,4 +52,12 @@ public class JSONObjectUtil {
             return defaultValue;
         }
     }
+
+    public static JSONObject parseJSON(String options) {
+        if (options == null || options.trim().length() == 0) {
+            return new JSONObject();
+        } else {
+            return JSONObject.parseObject(options);
+        }
+    }
 }

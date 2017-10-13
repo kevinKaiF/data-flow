@@ -15,7 +15,7 @@ public class HbaseSender extends EventDataSender {
     private DataSourceType dataSourceType = DataSourceType.HBASE;
 
     @Override
-    protected boolean ignoreExceptionAfterSendFailed(Exception e) {
+    protected boolean supportSingleSend(Exception e) {
         return true;
     }
 

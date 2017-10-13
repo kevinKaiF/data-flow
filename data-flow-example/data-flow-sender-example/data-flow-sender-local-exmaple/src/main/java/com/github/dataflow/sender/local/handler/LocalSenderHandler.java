@@ -19,7 +19,7 @@ public class LocalSenderHandler extends AbstractDataSenderHandler{
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         LocalSender localSender = new LocalSender();
-        localSender.setProps(parseJSON(dataOutputMapping.getDataSourceOutput().getOptions()));
+        localSender.setProps(JSONObjectUtil.parseJSON(dataOutputMapping.getDataSourceOutput().getOptions()));
         return localSender;
     }
 

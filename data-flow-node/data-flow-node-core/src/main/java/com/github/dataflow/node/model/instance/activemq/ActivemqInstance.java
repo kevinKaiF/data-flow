@@ -123,27 +123,38 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
                     try {
                         TextMessage message = (TextMessage) consumer.receive(timeout);
                         String value = message.getText();
-                        handle(parseRowMetaData(value));
+                        logger.debug("ReceiveTask receive data : " + value);
+                        List<RowMetaData> rowMetaDataList = parseRowMetaData(value);
+                        do {
+                            try {
+                                handle(rowMetaDataList);
+                            } catch (Throwable e) {
+                                handleException(e);
+                                ex = e;
+                            } finally {
+                                Thread.sleep(period);
+                            }
+                        } while (running && ex != null && !(ex instanceof InterruptedException));
                         Thread.sleep(period);
-                    } catch (InterruptedException e) {
-                        logger.info("ReceiveTask accept interruption successfully.");
-                        ex = e;
                     } catch (Throwable e) {
-                        logger.error("ReceiveTask happened exception, detail : ", e);
-                        String fullStackTrace = ExceptionUtils.getFullStackTrace(e);
-                        alarmService.sendAlarm(name, fullStackTrace);
+                        handleException(e);
                         ex = e;
                     } finally {
-                        if (!running) {
+                        if (!running || ex instanceof InterruptedException) {
                             closeConsumer();
                             doStop();
-                        } else if (ex != null) {
-                            closeConsumer();
-                            stop();
-                        } else {
-                            // do nothing
                         }
                     }
+                }
+            }
+
+            private void handleException(Throwable e) {
+                if (e instanceof InterruptedException) {
+                    logger.info("ReceiveTask accept interruption successfully.");
+                } else {
+                    logger.error("ReceiveTask happened exception, detail : ", e);
+                    String fullStackTrace = ExceptionUtils.getFullStackTrace(e);
+                    alarmService.sendAlarm(name, fullStackTrace);
                 }
             }
         };

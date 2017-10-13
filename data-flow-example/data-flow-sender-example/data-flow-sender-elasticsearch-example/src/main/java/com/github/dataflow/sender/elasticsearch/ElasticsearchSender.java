@@ -13,7 +13,7 @@ public class ElasticsearchSender extends EventDataSender {
     private DataSourceType dataSourceType = DataSourceType.ELASTICSEARCH;
 
     @Override
-    protected boolean ignoreExceptionAfterSendFailed(Exception e) {
+    protected boolean supportSingleSend(Exception e) {
         return true;
     }
 

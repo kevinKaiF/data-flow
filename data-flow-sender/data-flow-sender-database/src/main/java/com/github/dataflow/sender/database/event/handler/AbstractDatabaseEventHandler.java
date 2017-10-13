@@ -5,6 +5,7 @@ import com.github.dataflow.common.utils.Closer;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 import com.github.dataflow.sender.core.event.handler.EventHandler;
+import com.github.dataflow.sender.core.utils.DBUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -89,7 +90,7 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
         if (!CollectionUtils.isEmpty(columnMetaList)) {
             for (int i = 0, size = columnMetaList.size(); i < size; i++) {
                 RowMetaData.ColumnMeta columnMeta = columnMetaList.get(i);
-                preparedStatement.setObject(i + 1, columnMeta.getValue(), columnMeta.getJdbcType());
+                preparedStatement.setObject(i + 1, DBUtil.convertValue(columnMeta.getValue(), columnMeta.getJdbcType()));
             }
         }
     }

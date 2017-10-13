@@ -36,8 +36,10 @@ public abstract class EventDataSender extends DataSender {
         RowMetaData prev = null;
         for (int i = 0, size = rowMetaDataList.size(); i < size; i++) {
             RowMetaData rowMetaData = rowMetaDataList.get(i);
+            boolean handled = false;
             for (EventHandler eventHandler : eventHandlers) {
                 if (isSupport(rowMetaData, eventHandler)) {
+                    handled = true;
                     if (batch) {
                         try {
                             if (dmlForSameTable(prev, rowMetaData)) {
@@ -60,7 +62,7 @@ public abstract class EventDataSender extends DataSender {
                                 batchRowMetaData.clear();
                             }
                         } catch (Exception e) {
-                            if (ignoreExceptionAfterSendFailed(e)) {
+                            if (supportSingleSend(e)) {
                                 logger.warn("batch handle RowMetaData failure and try to single handle RowMetaData, detail : ", e);
                                 for (RowMetaData metaData : batchRowMetaData) {
                                     singleHandle(metaData, eventHandler);
@@ -74,23 +76,34 @@ public abstract class EventDataSender extends DataSender {
                     }
                 }
             }
+
+            if (!handled) {
+                logger.warn("ignore to handle table[{}], rowMetaData : {}", rowMetaData.getFullTableName(), rowMetaData);
+            }
         }
     }
 
     /**
-     * 发送失败后是否支持忽略
+     * 是否支持单个发送
      *
      * @param e
      * @return
      */
-    protected abstract boolean ignoreExceptionAfterSendFailed(Exception e);
+    protected abstract boolean supportSingleSend(Exception e);
 
     private void singleHandle(RowMetaData rowMetaData, EventHandler eventHandler) {
         try {
             eventHandler.singleHandle(dataSourceHolder, rowMetaData);
         } catch (Exception e) {
-            if (ignoreExceptionAfterSendFailed(e)) {
-                logger.warn("ignore to handle table[{}], rowMetaData : {}", rowMetaData.getFullTableName(), rowMetaData);
+            if (supportSingleSend(e) && RowMetaData.EventType.INSERT == rowMetaData.getEventType()) {
+                // convert to UPDATE
+                logger.info("rowMetaData ({}) has existed, convert to UPDATE instead.", rowMetaData);
+                rowMetaData.setEventType(RowMetaData.EventType.UPDATE);
+                for (EventHandler handler : eventHandlers) {
+                    if (isSupport(rowMetaData, handler)) {
+                        singleHandle(rowMetaData, handler);
+                    }
+                }
             } else {
                 throw new DataSenderException(e);
             }

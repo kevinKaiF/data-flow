@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.Log4jConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -47,6 +48,7 @@ public class NodeLauncher {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static void configureServer(Server server) throws IOException {
         Properties properties = PropertiesLoaderUtils.loadProperties(new ClassPathResource("application.properties"));
         // configure connector
@@ -67,6 +69,9 @@ public class NodeLauncher {
         server.setSendDateHeader(PropertyUtil.getBoolean(properties, "jetty.sendDateHeader", "true"));
         server.setGracefulShutdown(PropertyUtil.getInt(properties, "jetty.gracefulShutdown", "1000"));
         server.setStopAtShutdown(PropertyUtil.getBoolean(properties, "jetty.stopAtShutdown", "true"));
+
+        // configure log4j refresh interval
+        Log4jConfigurer.initLogging("classpath:log4j.properties", PropertyUtil.getInt(properties, "log4jInterval", 60000));
     }
 
     private static Handler getSpringHandler() {

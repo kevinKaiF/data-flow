@@ -1,6 +1,7 @@
 package com.github.dataflow.sender.kafka.handler;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
@@ -24,7 +25,7 @@ public class KafkaDataSenderHandler extends TransformedDataSenderHandler {
 
     public DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
 
-        JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = JSONObjectUtil.parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
         String servers = props.getString(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG);
         if (StringUtils.isEmpty(servers)) {
             throw new DataSenderException("the bootstrap.servers property of DataSourceOutput must not be null.");
@@ -39,7 +40,7 @@ public class KafkaDataSenderHandler extends TransformedDataSenderHandler {
 
     @Override
     protected JSONObject refreshDataOutputMapping(DataOutputMapping dataOutputMapping) {
-        JSONObject dataOutputMappingOptions = parseJSON(dataOutputMapping.getOptions());
+        JSONObject dataOutputMappingOptions = JSONObjectUtil.parseJSON(dataOutputMapping.getOptions());
         String topic = dataOutputMappingOptions.getString(KafkaConfig.TOPIC);
         if (StringUtils.isEmpty(topic)) {
             throw new DataSenderException("the topic property of DataOutputMapping must not be null.");

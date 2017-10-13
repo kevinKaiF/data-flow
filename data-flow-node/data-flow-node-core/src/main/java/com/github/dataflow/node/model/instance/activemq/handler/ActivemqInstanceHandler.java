@@ -44,7 +44,7 @@ public class ActivemqInstanceHandler extends AbstractMessageAwareInstanceHandler
 
     @Override
     public Instance createInstance(DataInstance dataInstance) {
-        JSONObject options = parseJSON(dataInstance.getOptions());
+        JSONObject options = JSONObjectUtil.parseJSON(dataInstance.getOptions());
         validateProperties(options, ActivemqConfig.BROKE_URL);
         validateProperties(options, ActivemqConfig.TYPE);
         int type = JSONObjectUtil.getInt(options, ActivemqConfig.TYPE);

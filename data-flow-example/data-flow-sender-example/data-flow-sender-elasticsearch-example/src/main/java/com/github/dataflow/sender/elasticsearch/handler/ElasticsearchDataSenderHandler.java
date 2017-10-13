@@ -34,7 +34,7 @@ public class ElasticsearchDataSenderHandler extends EventDataSenderHandler {
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         ElasticsearchSender elasticsearchSender = new ElasticsearchSender();
-        JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = JSONObjectUtil.parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
         elasticsearchSender.setDataSourceHolder(new DataSourceHolder(getDataSource(props)));
         return elasticsearchSender;
     }

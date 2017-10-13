@@ -30,7 +30,7 @@ public class ActivemqDataSenderHandler extends TransformedDataSenderHandler {
 
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
-        JSONObject properties = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject properties = JSONObjectUtil.parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
         String brokeUrl = JSONObjectUtil.getString(properties, ActivemqConfig.BROKE_URL);
         if (StringUtils.isEmpty(brokeUrl)) {
             throw new DataSenderException("the brokeUrl property of DataOutputMapping.DataSourceOutput must not be null.");
@@ -42,7 +42,7 @@ public class ActivemqDataSenderHandler extends TransformedDataSenderHandler {
     }
 
     protected JSONObject refreshDataOutputMapping(DataOutputMapping dataOutputMapping) {
-        JSONObject dataOutputMappingOptions = parseJSON(dataOutputMapping.getOptions());
+        JSONObject dataOutputMappingOptions = JSONObjectUtil.parseJSON(dataOutputMapping.getOptions());
         int type = JSONObjectUtil.getInt(dataOutputMappingOptions, ActivemqConfig.TYPE, ActivemqType.QUEUE.getType());
         if (type == ActivemqType.QUEUE.getType()) {
             String queueName = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.QUEUE);

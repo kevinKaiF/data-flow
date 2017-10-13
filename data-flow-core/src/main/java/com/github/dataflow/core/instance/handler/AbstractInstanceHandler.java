@@ -148,15 +148,6 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
 
     protected abstract Instance createInstance(DataInstance dataInstance);
 
-    // util methods
-    protected JSONObject parseJSON(String options) {
-        if (StringUtils.isEmpty(options)) {
-            return new JSONObject();
-        } else {
-            return JSONObject.parseObject(options);
-        }
-    }
-
     protected void validateProperties(JSONObject prop, String property) {
         if (StringUtils.isEmpty(prop.getString(property))) {
             throw new InstanceException("no configure the property [" + property + "]");

@@ -47,7 +47,7 @@ public class DatabaseUpdateEventHandler extends AbstractDatabaseEventHandler imp
         sb.append(" WHERE ");
         for (int i = 0, size = primaryKeyColumnMetaList.size(); i < size; i++) {
             if (i > 0) {
-                sb.append(", ");
+                sb.append("AND ");
             }
 
             sb.append(primaryKeyColumnMetaList.get(i).getColumnName())

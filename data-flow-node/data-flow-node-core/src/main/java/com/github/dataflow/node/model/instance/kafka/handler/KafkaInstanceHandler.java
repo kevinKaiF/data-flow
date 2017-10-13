@@ -43,7 +43,7 @@ public class KafkaInstanceHandler extends AbstractMessageAwareInstanceHandler im
 
     @Override
     public Instance createInstance(DataInstance dataInstance) {
-        JSONObject options = parseJSON(dataInstance.getOptions());
+        JSONObject options = JSONObjectUtil.parseJSON(dataInstance.getOptions());
         validateProperties(options, ConsumerConfig.GROUP_ID_CONFIG);
         validateProperties(options, ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG);
         validateProperties(options, KafkaConfig.TOPIC);

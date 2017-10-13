@@ -6,6 +6,8 @@ import com.github.dataflow.sender.core.EventDataSender;
 import com.github.dataflow.sender.core.event.handler.EventHandler;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
+import java.sql.BatchUpdateException;
+
 /**
  * @author : kevin
  * @version : Ver 1.0
@@ -21,7 +23,7 @@ public class MysqlDataSender extends EventDataSender {
     }
 
     @Override
-    protected boolean ignoreExceptionAfterSendFailed(Exception e) {
-        return e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY");
+    protected boolean supportSingleSend(Exception e) {
+        return e instanceof BatchUpdateException || (e instanceof MySQLIntegrityConstraintViolationException && e.getMessage().contains("PRIMARY"));
     }
 }

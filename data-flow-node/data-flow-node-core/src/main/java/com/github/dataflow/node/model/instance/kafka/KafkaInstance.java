@@ -99,34 +99,44 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
                     try {
                         ConsumerRecords<String, String> records = consumer.poll(timeout);
                         Iterator<ConsumerRecord<String, String>> iterator = records.iterator();
-                        while (iterator.hasNext() && running) {
+                        while (running && iterator.hasNext()) {
                             ConsumerRecord<String, String> next = iterator.next();
                             String value = next.value();
                             logger.debug("ReceiveTask receive data : " + value);
-                            handle(parseRowMetaData(value));
-                            consumer.commitSync();
+                            List<RowMetaData> rowMetaDataList = parseRowMetaData(value);
+                            do {
+                                try {
+                                    handle(rowMetaDataList);
+                                    consumer.commitSync();
+                                } catch (Throwable e) {
+                                    handleException(e);
+                                    ex = e;
+                                } finally {
+                                    Thread.sleep(period);
+                                }
+                            } while (running && ex != null && !(ex instanceof InterruptedException));
                         }
 
                         Thread.sleep(period);
-                    } catch (InterruptedException e) {
-                        logger.info("ReceiveTask accept interruption successfully.");
-                        ex = e;
                     } catch (Throwable e) {
-                        logger.error("ReceiveTask happened exception, detail : ", e);
-                        String fullStackTrace = ExceptionUtils.getFullStackTrace(e);
-                        alarmService.sendAlarm(name, fullStackTrace);
+                        handleException(e);
                         ex = e;
                     } finally {
                         if (!running) {
                             closeConsumer();
                             doStop();
-                        } else if (ex != null) {
-                            closeConsumer();
-                            stop();
-                        } else {
-                            // do nothing
                         }
                     }
+                }
+            }
+
+            private void handleException(Throwable e) {
+                if (e instanceof InterruptedException) {
+                    logger.info("ReceiveTask accept interruption successfully.");
+                } else {
+                    logger.error("ReceiveTask happened exception, detail : ", e);
+                    String fullStackTrace = ExceptionUtils.getFullStackTrace(e);
+                    alarmService.sendAlarm(name, fullStackTrace);
                 }
             }
         };

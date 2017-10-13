@@ -21,7 +21,7 @@ public class MysqlDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     @Override
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
         MysqlDataSender dataSender = new MysqlDataSender();
-        JSONObject props = parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
+        JSONObject props = JSONObjectUtil.parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());
         dataSender.setDataSourceHolder(new DataSourceHolder(getDataSource(props)));
         return dataSender;
     }

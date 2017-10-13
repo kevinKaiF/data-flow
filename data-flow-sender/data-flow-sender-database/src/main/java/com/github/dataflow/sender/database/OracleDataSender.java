@@ -20,7 +20,7 @@ public class OracleDataSender extends EventDataSender {
     }
 
     @Override
-    protected boolean ignoreExceptionAfterSendFailed(Exception e) {
+    protected boolean supportSingleSend(Exception e) {
         return false;
     }
 }

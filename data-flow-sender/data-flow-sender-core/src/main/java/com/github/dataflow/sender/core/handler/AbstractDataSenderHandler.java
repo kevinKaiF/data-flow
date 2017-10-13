@@ -4,7 +4,6 @@ package com.github.dataflow.sender.core.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.sender.core.DataSender;
-import org.springframework.util.StringUtils;
 
 /**
  * @author : kevin
@@ -36,14 +35,5 @@ public abstract class AbstractDataSenderHandler implements DataSenderHandler {
      * @return
      */
     protected abstract JSONObject refreshDataOutputMapping(DataOutputMapping dataOutputMapping);
-
-    protected JSONObject parseJSON(String options) {
-        if (StringUtils.isEmpty(options)) {
-            return new JSONObject();
-        } else {
-            return JSONObject.parseObject(options);
-        }
-    }
-
 
 }
