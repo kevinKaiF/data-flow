@@ -88,6 +88,10 @@
                             dataTable.fnSettings().ajax.data = {nodePath: nodePath};
                             dataTable.api().ajax.reload(null, false);
                         }
+                        // hide log table
+                        $('#logList').hide();
+                        // clean log detail
+                        $("#logDetail").html("");
                     })
 
                     $("#nodeList>div:eq(0)").click();
@@ -240,7 +244,6 @@
                         var data = table.row($tr).data();
                         var id = "dataLogTable";
                         if (!Table.hasInitLogTable) {
-                            $('#logList').show();
                             Table._initLogTable(id, data.name);
                             Table.hasInitLogTable = true;
                         } else {
@@ -248,6 +251,7 @@
                             dataTable.fnSettings().ajax.data = {instanceName: data.name};
                             dataTable.api().ajax.reload(null, false);
                         }
+                        $('#logList').show();
                     })
                 },
                 _format: function (rowData) {

@@ -113,6 +113,38 @@
                 validator.checkField.apply($(this).siblings().last()[0]);
             });
         },
+        __renderSelectOptions: function (data) {
+            var options = "";
+            if ($.isArray(data) && data.length > 0) {
+                options += '<option value="*">全部</option>';
+                for (var i in data) {
+                    options += '<option value="' + data[i] + '">' + data[i] + '</option>'
+                }
+            }
+
+            $("#dataOutputMapping-schemaName").empty().html(options);
+        },
+        renderSelectOptions : function() {
+            if ($("#dataInstance-type").val() < 20) {
+                // render select options
+                $.ajax({
+                    url: "./schema",
+                    data: {id: $("#dataInstance-id").val(), filter: true},
+                    dataType: "json",
+                }).then(function (data) {
+                    if (data.responseStatus == 200) {
+                        main.__renderSelectOptions(data.result);
+                    } else {
+                        main.messageAlert("渲染schema列表失败")
+                    }
+                })
+
+                $("#dataOutputMapping-schemaName-group").show();
+            } else {
+                $("#dataOutputMapping-schemaName-group").hide();
+                $("#dataOutputMapping-schemaName").empty().html("<option value='*' selected></option>");
+            }
+        },
         _hasInitFormWizard: false,
         _initFormWizard: function () {
             var wizard = {
@@ -465,40 +497,11 @@
                     })
                     return success;
                 },
-                __renderSelectOptions: function (data) {
-                    var options = "";
-                    if ($.isArray(data) && data.length > 0) {
-                        options += '<option value="*">全部</option>';
-                        for (var i in data) {
-                            options += '<option value="' + data[i] + '">' + data[i] + '</option>'
-                        }
-                    }
-
-                    $("#dataOutputMapping-schemaName").empty().html(options);
-                },
                 __step2: function () {
                     // set dataInstanceId
                     var dataInstanceId = $("#dataInstance-id").val();
                     $("#dataOutputMapping-dataInstanceId").val(dataInstanceId);
-                    if ($("#dataInstance-type").val() < 20) {
-                        // render select options
-                        $.ajax({
-                            url: "./schema",
-                            data: {id: $("#dataInstance-id").val(), filter: true},
-                            dataType: "json",
-                        }).then(function (data) {
-                            if (data.responseStatus == 200) {
-                                wizard.__renderSelectOptions(data.result);
-                            } else {
-                                main.messageAlert("渲染schema列表失败")
-                            }
-                        })
-
-                        $("#dataOutputMapping-schemaName-group").show();
-                    } else {
-                        $("#dataOutputMapping-schemaName-group").hide();
-                        $("#dataOutputMapping-schemaName").empty().html("<option value='*' selected></option>");
-                    }
+                    main.renderSelectOptions();
                     var dataTable = $('#dataOutputMappingTable').dataTable();
                     dataTable.fnSettings().ajax.data = {dataInstanceId: dataInstanceId};
                     dataTable.api().ajax.reload(null, false);
@@ -584,17 +587,7 @@
                                     // expand the first panel
                                     $("#headingOne").click()
                                     // 重新渲染schemaList
-                                    $.ajax({
-                                        url: "./schema",
-                                        data: {id: $("#dataInstance-id").val(), filter: true},
-                                        dataType: "json",
-                                    }).then(function (data) {
-                                        if (data.responseStatus == 200) {
-                                            wizard.__renderSelectOptions(data.result);
-                                        } else {
-                                            main.messageAlert("渲染schema列表失败")
-                                        }
-                                    })
+                                    main.renderSelectOptions();
                                 } else {
                                     main.messageAlert("添加dataOutputMapping失败");
                                 }
@@ -734,6 +727,8 @@
                         }).then(function (data) {
                             if (data.responseStatus == 200) {
                                 table.ajax.reload(null, false);
+                                // 重新渲染schemaList
+                                main.renderSelectOptions();
                             } else {
                                 main.messageAlert("删除dataOutputMapping失败")
                             }
@@ -1162,7 +1157,7 @@
                         language: {
                             "decimal": "",
                             "emptyTable": "暂无数据",
-                            "info": "显示第 _START_ 条到第 _END_ 条，共 _TOTAL_ 条（每页 20 条）",
+                            "info": "显示第 _START_ 条到第 _END_ 条，共 _TOTAL_ 条（每页 5 条）",
                             "infoEmpty": "第1页/共0页",
                             "infoFiltered": "",
                             "infoPostFix": "",

@@ -296,6 +296,7 @@ public class DataInstanceService {
             }
         } finally {
             Closer.closeQuietly(resultSet);
+            Closer.closeQuietly(connection);
         }
 
         return tableNameList;
@@ -341,6 +342,7 @@ public class DataInstanceService {
         } finally {
             Closer.closeQuietly(resultSet);
             Closer.closeQuietly(primaryKeysSet);
+            Closer.closeQuietly(connection);
         }
 
         return columnListMap;
@@ -356,6 +358,7 @@ public class DataInstanceService {
             }
         } finally {
             Closer.closeQuietly(resultSet);
+            Closer.closeQuietly(connection);
         }
         return schemaList;
     }

@@ -16,6 +16,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author : kevin
@@ -25,6 +27,13 @@ import java.util.List;
  */
 public abstract class AbstractDatabaseEventHandler implements EventHandler {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private ThreadLocal<Map<DataSourceHolder, Connection>> connectionHolder = new ThreadLocal<Map<DataSourceHolder, Connection>>() {
+        @Override
+        protected Map<DataSourceHolder, Connection> initialValue() {
+            return new ConcurrentHashMap<>();
+        }
+    };
 
     protected static final List<DataSourceType> DATA_SOURCE_TYPEs = new ArrayList<>();
 
@@ -40,8 +49,7 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-            DataSource dataSource = (DataSource) dataSourceHolder.getDataSource();
-            connection = dataSource.getConnection();
+            connection = getConnection(dataSourceHolder);
             SqlMeta sqlMeta = buildSqlMeta(rowMetaData);
             logger.debug("build SqlMeta : {}", sqlMeta);
 
@@ -50,7 +58,8 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
             preparedStatement.execute();
         } finally {
             Closer.closeQuietly(preparedStatement);
-            Closer.closeQuietly(connection);
+            // keep and cache the Connection
+//            Closer.closeQuietly(connection);
         }
     }
 
@@ -59,8 +68,7 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-            DataSource dataSource = (DataSource) dataSourceHolder.getDataSource();
-            connection = dataSource.getConnection();
+            connection = getConnection(dataSourceHolder);
             for (RowMetaData rowMetaData : rowMetaDataList) {
                 SqlMeta sqlMeta = buildSqlMeta(rowMetaData);
                 logger.debug("build SqlMeta : {}", sqlMeta);
@@ -74,8 +82,21 @@ public abstract class AbstractDatabaseEventHandler implements EventHandler {
             preparedStatement.executeBatch();
         } finally {
             Closer.closeQuietly(preparedStatement);
-            Closer.closeQuietly(connection);
+            // keep and cache the Connection
+//            Closer.closeQuietly(connection);
         }
+    }
+
+    private Connection getConnection(DataSourceHolder dataSourceHolder) throws SQLException {
+        Connection connection;
+        DataSource dataSource = (DataSource) dataSourceHolder.getDataSource();
+        Map<DataSourceHolder, Connection> dataSourceHolderConnectionMap = connectionHolder.get();
+        connection = dataSourceHolderConnectionMap.get(dataSourceHolder);
+        if (connection == null) {
+            connection = dataSource.getConnection();
+            dataSourceHolderConnectionMap.put(dataSourceHolder, connection);
+        }
+        return connection;
     }
 
     /**

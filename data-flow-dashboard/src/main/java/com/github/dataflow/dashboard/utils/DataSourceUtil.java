@@ -5,9 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.github.dataflow.common.utils.PropertyUtil;
 import com.github.dataflow.dubbo.model.DataInstance;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author : kevin
@@ -16,13 +19,20 @@ import java.util.Properties;
  * @date : 2017/5/9
  */
 public class DataSourceUtil {
+    private static Map<DataInstance, DataSource> dataSourceCache = new ConcurrentHashMap<>();
+
     public static javax.sql.DataSource getDataSource(DataInstance dataInstance) {
         // just support mysql
         return getMySqlDataSource(dataInstance);
     }
 
-    public static Connection getConnection(DataInstance dataInstance) throws SQLException {
-        return getDataSource(dataInstance).getConnection();
+    public static synchronized Connection getConnection(DataInstance dataInstance) throws SQLException {
+        DataSource dataSource = dataSourceCache.get(dataInstance);
+        if (dataSource == null) {
+            dataSource = getDataSource(dataInstance);
+            dataSourceCache.put(dataInstance, dataSource);
+        }
+        return dataSource.getConnection();
     }
 
 //    private static javax.sql.DataSource getOracleDataSource(DataInstance dataInstance) {
