@@ -157,9 +157,9 @@
                                     case 20 :
                                         return "kafka";
                                     case 21 :
-                                        return "metaQ";
+                                        return "MetaQ";
                                     case 22 :
-                                        return "rabbitMQ"
+                                        return "RabbitMQ"
                                     default :
                                         return '-';
                                 }

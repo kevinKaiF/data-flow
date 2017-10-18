@@ -11,7 +11,7 @@ import java.util.List;
  * @description :
  * @date : 2017/7/7
  */
-public class PostGroovyShellDataTransformer implements PostDataTransformer {
+public class PostGroovyShellDataTransformer implements PostDataTransformer<String> {
     private GroovyShellDataTransformer<String> groovyShellDataTransformer;
 
     private PostGroovyShellDataTransformer() {

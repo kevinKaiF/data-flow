@@ -11,7 +11,7 @@ import java.util.List;
  * @description :
  * @date : 2017/7/6
  */
-public class JSONDataTransformer implements PostDataTransformer {
+public class JSONDataTransformer implements PostDataTransformer<String> {
     @Override
     public String transform(List<RowMetaData> rowMetaDataList) {
         return JSON.toJSONString(rowMetaDataList);

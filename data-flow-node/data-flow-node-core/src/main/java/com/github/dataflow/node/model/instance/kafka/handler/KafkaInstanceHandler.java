@@ -46,7 +46,7 @@ public class KafkaInstanceHandler extends AbstractMessageAwareInstanceHandler im
         JSONObject options = JSONObjectUtil.parseJSON(dataInstance.getOptions());
         validateProperties(options, ConsumerConfig.GROUP_ID_CONFIG);
         validateProperties(options, ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG);
-        validateProperties(options, KafkaConfig.TOPIC);
+        validateProperties(options, KafkaConfig.MappingConfig.TOPIC);
         // set property
         Long timeout = JSONObjectUtil.getLong(options, MessageAwareInstanceConfig.POLL_TIMEOUT, DEFAULT_TIMEOUT);
         Long period = JSONObjectUtil.getLong(options, MessageAwareInstanceConfig.POLL_PERIOD, DEFAULT_PERIOD);

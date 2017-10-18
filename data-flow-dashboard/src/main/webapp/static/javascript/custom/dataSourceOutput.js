@@ -81,12 +81,12 @@
                             case 20 : // Kafka
                                 var props = ["bootstrap.servers"]
                                 return Table.__validateProperty(json, props);
-                            case 21 : // metaQ
+                            case 21 : // MetaQ
                                 // TODO
                                 return true;
-                            case 22 : // rabbitMQ
+                            case 22 : // RabbitMQ
                                 return true;
-                            case 23 : // activeMQ
+                            case 23 : // ActiveMQ
                                 var props = ["brokeUrl"];
                                 return Table.__validateProperty(json, props);
                             case 30 : // ElasticSearch
@@ -138,11 +138,11 @@
                                     case 20 :
                                         return "Kafka";
                                     case 21 :
-                                        return "metaQ";
+                                        return "MetaQ";
                                     case 22 :
-                                        return "rabbitMQ"
+                                        return "RabbitMQ"
                                     case 23 :
-                                        return "activeMQ"
+                                        return "ActiveMQ"
                                     case 30 :
                                         return "ElasticSearch"
                                     case 31 :

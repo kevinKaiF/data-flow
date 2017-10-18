@@ -4,15 +4,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.utils.JSONObjectUtil;
 import com.github.dataflow.sender.activemq.config.ActivemqConfig;
 import com.github.dataflow.sender.activemq.enums.ActivemqType;
+import com.github.dataflow.sender.activemq.enums.MessageType;
 import com.github.dataflow.sender.activemq.utils.Closer;
-import com.github.dataflow.sender.core.TransformedDataSender;
+import com.github.dataflow.sender.core.DataSender;
+import com.github.dataflow.sender.core.config.MessageQueueMappingConfig;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -21,7 +25,7 @@ import java.util.List;
  * @description :
  * @date : 2017/7/4
  */
-public class ActivemqDataSender extends TransformedDataSender {
+public class ActivemqDataSender extends DataSender {
     private Logger                logger    = LoggerFactory.getLogger(ActivemqDataSender.class);
     private List<MessageProducer> producers = new ArrayList<>();
     private JSONObject options;
@@ -44,15 +48,15 @@ public class ActivemqDataSender extends TransformedDataSender {
     private void init() {
         try {
             ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-                    JSONObjectUtil.getString(options, ActivemqConfig.USERNAME),
-                    JSONObjectUtil.getString(options, ActivemqConfig.PASSWORD),
+                    JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.USERNAME),
+                    JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.PASSWORD),
                     JSONObjectUtil.getString(options, ActivemqConfig.BROKE_URL));
             connection = connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
-            int deliveryMode = JSONObjectUtil.getInt(options, ActivemqConfig.DELIVERY_MODE);
-            if (JSONObjectUtil.getInt(options, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
-                String queues = JSONObjectUtil.getString(options, ActivemqConfig.QUEUE);
+            int deliveryMode = JSONObjectUtil.getInt(options, ActivemqConfig.MappingConfig.DELIVERY_MODE);
+            if (JSONObjectUtil.getInt(options, ActivemqConfig.MappingConfig.TYPE) == ActivemqType.QUEUE.getType()) {
+                String queues = JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.QUEUE);
                 String[] queueArr = queues.split(",");
                 int length = queueArr.length;
                 for (int i = 0; i < length; i++) {
@@ -62,7 +66,7 @@ public class ActivemqDataSender extends TransformedDataSender {
                     producers.add(producer);
                 }
             } else {
-                String topics = JSONObjectUtil.getString(options, ActivemqConfig.TOPIC);
+                String topics = JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.TOPIC);
                 String[] topicArr = topics.split(",");
                 int length = topicArr.length;
                 for (int i = 0; i < length; i++) {
@@ -78,10 +82,25 @@ public class ActivemqDataSender extends TransformedDataSender {
     }
 
     @Override
-    protected void doSend(String transformedValue) throws Exception {
-        TextMessage message = session.createTextMessage(transformedValue);
-        for (MessageProducer producer : producers) {
-            producer.send(message);
+    protected void doSend(Object transformedValue) throws Exception {
+        String messageType = JSONObjectUtil.getString(options, MessageQueueMappingConfig.MESSAGE_TYPE);
+        List<Object> messageList = null;
+        if (transformedValue instanceof List) {
+            messageList = ((List) transformedValue);
+        } else {
+            messageList = Collections.singletonList(transformedValue);
+        }
+
+        for (Object messageEntity : messageList) {
+            Message message;
+            if (MessageType.OBJECT.getType().equalsIgnoreCase(messageType)) {
+                message = session.createObjectMessage((Serializable) messageEntity);
+            } else {
+                message = session.createTextMessage((String) messageEntity);
+            }
+            for (MessageProducer producer : producers) {
+                producer.send(message);
+            }
         }
         session.commit();
     }

@@ -10,5 +10,8 @@ import com.github.dataflow.transformer.core.DataTransformer;
  * @description :
  * @date : 2017/7/7
  */
-public interface PostDataTransformer extends DataTransformer<String> {
+public interface PostDataTransformer<T> extends DataTransformer<T> {
+    Void RETURN_VOID = VoidHolder.returnVoid;
+
+
 }

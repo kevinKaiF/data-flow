@@ -41,7 +41,7 @@ public class KafkaDataSenderHandler extends TransformedDataSenderHandler {
     @Override
     protected JSONObject refreshDataOutputMapping(DataOutputMapping dataOutputMapping) {
         JSONObject dataOutputMappingOptions = JSONObjectUtil.parseJSON(dataOutputMapping.getOptions());
-        String topic = dataOutputMappingOptions.getString(KafkaConfig.TOPIC);
+        String topic = dataOutputMappingOptions.getString(KafkaConfig.MappingConfig.TOPIC);
         if (StringUtils.isEmpty(topic)) {
             throw new DataSenderException("the topic property of DataOutputMapping must not be null.");
         }

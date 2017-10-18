@@ -31,7 +31,8 @@ public abstract class EventDataSender extends DataSender {
     }
 
     @Override
-    public void send(List<RowMetaData> rowMetaDataList) throws Exception {
+    public void doSend(Object transformedData) throws Exception {
+        List<RowMetaData> rowMetaDataList = (List<RowMetaData>) transformedData;
         List<RowMetaData> batchRowMetaData = new ArrayList<>();
         RowMetaData prev = null;
         for (int i = 0, size = rowMetaDataList.size(); i < size; i++) {

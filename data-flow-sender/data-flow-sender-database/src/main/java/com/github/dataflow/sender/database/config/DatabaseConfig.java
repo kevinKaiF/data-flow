@@ -7,6 +7,9 @@ package com.github.dataflow.sender.database.config;
  * @date : 2017/6/24
  */
 public class DatabaseConfig {
+    public static class MappingConfig extends com.github.dataflow.sender.core.config.MappingConfig{
+        public static final String BATCH = "batch";
+    }
     public static final String HOST = "host";
 
     public static final String PORT = "port";
@@ -17,5 +20,5 @@ public class DatabaseConfig {
 
     public static final String PASSWORD = "password";
 
-    public static final String BATCH = "batch";
+
 }

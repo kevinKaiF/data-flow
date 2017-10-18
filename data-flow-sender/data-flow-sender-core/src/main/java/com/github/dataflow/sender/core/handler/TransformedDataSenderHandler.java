@@ -19,7 +19,9 @@ public abstract class TransformedDataSenderHandler extends AbstractDataSenderHan
     protected void afterCreateDataSender(DataSender dataSender, DataOutputMapping dataOutputMapping) {
         super.afterCreateDataSender(dataSender, dataOutputMapping);
         if (StringUtils.isEmpty(dataOutputMapping.getTransformScript())) {
-            dataSender.setDataTransformer(new JSONDataTransformer());
+            if (dataSender.getDataTransformer() == null) {
+                dataSender.setDataTransformer(new JSONDataTransformer());
+            }
         } else {
             dataSender.setDataTransformer(new PostGroovyShellDataTransformer(dataOutputMapping.getTransformScript()));
         }

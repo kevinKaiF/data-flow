@@ -160,9 +160,9 @@
                                                 <option value="12">PostGreSQL</option>
                                                 <option value="13">SQLServer</option>
                                                 <option value="20">Kafka</option>
-                                                <option value="21">metaQ</option>
-                                                <option value="22">rabbitMQ</option>
-                                                <option value="23">activeMQ</option>
+                                                <option value="21">MetaQ</option>
+                                                <option value="22">RabbitMQ</option>
+                                                <option value="23">ActiveMQ</option>
                                                 <option value="30">ElasticSearch</option>
                                                 <option value="31">hbase</option>
                                             </select>
@@ -242,9 +242,9 @@
                                                             <option value="12">PostGreSQL</option>
                                                             <option value="13">SQLServer</option>
                                                             <option value="20">Kafka</option>
-                                                            <option value="21">metaQ</option>
-                                                            <option value="22">rabbitMQ</option>
-                                                            <option value="23">activeMQ</option>
+                                                            <option value="21">MetaQ</option>
+                                                            <option value="22">RabbitMQ</option>
+                                                            <option value="23">ActiveMQ</option>
                                                             <option value="30">ElasticSearch</option>
                                                             <option value="31">hbase</option>
                                                         </select>
@@ -327,7 +327,7 @@
                                                                     data-toggle="tab" aria-expanded="false">Kafka</a>
                                 </li>
                                 <li role="presentation" class=""><a href="#tab_content6" role="tab" id="profile-tab6"
-                                                                    data-toggle="tab" aria-expanded="false">activeMQ</a>
+                                                                    data-toggle="tab" aria-expanded="false">ActiveMQ</a>
                                 </li>
                                 <li role="presentation" class=""><a href="#tab_content7" role="tab" id="profile-tab7"
                                                                     data-toggle="tab" aria-expanded="false">hbase</a>

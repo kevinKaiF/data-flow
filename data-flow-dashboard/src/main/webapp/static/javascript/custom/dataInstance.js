@@ -85,11 +85,11 @@
                 case 20 :
                     return "Kafka";
                 case 21 :
-                    return "metaQ";
+                    return "MetaQ";
                 case 22 :
-                    return "rabbitMQ"
+                    return "RabbitMQ"
                 case 23 :
-                    return "activeMQ"
+                    return "ActiveMQ"
                 case 30 :
                     return "ElasticSearch"
                 case 31 :
@@ -435,12 +435,12 @@
                             case 20 : // Kafka
                                 var props = ["bootstrap.servers", "topic"]
                                 return wizard.__validateProperty(json, props);
-                            case 21 : // metaQ
+                            case 21 : // MetaQ
                                 // TODO
                                 return true;
-                            case 22 : // rabbitMQ
+                            case 22 : // RabbitMQ
                                 return true;
-                            case 23 : // activeMQ
+                            case 23 : // ActiveMQ
                                 var props = ["brokeUrl", "type"];
                                 if (wizard.__validateProperty(json, props)) {
                                     // topic or queue
@@ -521,12 +521,12 @@
                             case 20 : // Kafka
                                 var props = ["topic"]
                                 return wizard.__validateProperty(json, props);
-                            case 21 : // metaQ
+                            case 21 : // MetaQ
                                 // TODO
                                 return true;
-                            case 22 : // rabbitMQ
+                            case 22 : // RabbitMQ
                                 return true;
-                            case 23 : // activeMQ
+                            case 23 : // ActiveMQ
                                 var props = ["type"];
                                 if (wizard.__validateProperty(json, props)) {
                                     // topic or queue
@@ -671,7 +671,7 @@
                         language: {
                             "decimal": "",
                             "emptyTable": "暂无数据",
-                            "info": "显示第 _START_ 条到第 _END_ 条，共 _TOTAL_ 条（每页 20 条）",
+                            "info": "显示第 _START_ 条到第 _END_ 条，共 _TOTAL_ 条（每页 5 条）",
                             "infoEmpty": "第1页/共0页",
                             "infoFiltered": "",
                             "infoPostFix": "",

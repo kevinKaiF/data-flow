@@ -46,20 +46,20 @@ public class ActivemqInstanceHandler extends AbstractMessageAwareInstanceHandler
     public Instance createInstance(DataInstance dataInstance) {
         JSONObject options = JSONObjectUtil.parseJSON(dataInstance.getOptions());
         validateProperties(options, ActivemqConfig.BROKE_URL);
-        validateProperties(options, ActivemqConfig.TYPE);
-        int type = JSONObjectUtil.getInt(options, ActivemqConfig.TYPE);
+        validateProperties(options, ActivemqConfig.MappingConfig.TYPE);
+        int type = JSONObjectUtil.getInt(options, ActivemqConfig.MappingConfig.TYPE);
         if (type == ActivemqType.QUEUE.getType()) {
-            validateProperties(options, ActivemqConfig.QUEUE);
+            validateProperties(options, ActivemqConfig.MappingConfig.QUEUE);
         } else {
-            validateProperties(options, ActivemqConfig.TOPIC);
+            validateProperties(options, ActivemqConfig.MappingConfig.TOPIC);
         }
         // set property
-        String username = JSONObjectUtil.getString(options, ActivemqConfig.USERNAME, ActiveMQConnection.DEFAULT_USER);
-        String password = JSONObjectUtil.getString(options, ActivemqConfig.PASSWORD, ActiveMQConnection.DEFAULT_PASSWORD);
+        String username = JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.USERNAME, ActiveMQConnection.DEFAULT_USER);
+        String password = JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.PASSWORD, ActiveMQConnection.DEFAULT_PASSWORD);
         Long timeout = JSONObjectUtil.getLong(options, MessageAwareInstanceConfig.POLL_TIMEOUT, DEFAULT_TIMEOUT);
         Long period = JSONObjectUtil.getLong(options, MessageAwareInstanceConfig.POLL_PERIOD, DEFAULT_PERIOD);
-        options.put(ActivemqConfig.USERNAME, username);
-        options.put(ActivemqConfig.PASSWORD, password);
+        options.put(ActivemqConfig.MappingConfig.USERNAME, username);
+        options.put(ActivemqConfig.MappingConfig.PASSWORD, password);
         options.put(MessageAwareInstanceConfig.POLL_TIMEOUT, timeout);
         options.put(MessageAwareInstanceConfig.POLL_PERIOD, period);
         // create instance

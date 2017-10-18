@@ -71,17 +71,17 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
         try {
             logger.info("init consumer begin...");
             ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-                    JSONObjectUtil.getString(options, ActivemqConfig.USERNAME),
-                    JSONObjectUtil.getString(options, ActivemqConfig.PASSWORD),
+                    JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.USERNAME),
+                    JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.PASSWORD),
                     JSONObjectUtil.getString(options, ActivemqConfig.BROKE_URL));
             connection = connectionFactory.createConnection();
             connection.start();
             session = connection.createSession(Boolean.FALSE, Session.AUTO_ACKNOWLEDGE);
             Destination destination = null;
-            if (JSONObjectUtil.getInt(options, ActivemqConfig.TYPE) == ActivemqType.QUEUE.getType()) {
-                destination = session.createQueue(JSONObjectUtil.getString(options, ActivemqConfig.QUEUE));
+            if (JSONObjectUtil.getInt(options, ActivemqConfig.MappingConfig.TYPE) == ActivemqType.QUEUE.getType()) {
+                destination = session.createQueue(JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.QUEUE));
             } else {
-                destination = session.createTopic(JSONObjectUtil.getString(options, ActivemqConfig.TOPIC));
+                destination = session.createTopic(JSONObjectUtil.getString(options, ActivemqConfig.MappingConfig.TOPIC));
             }
 
             consumer = session.createConsumer(destination);

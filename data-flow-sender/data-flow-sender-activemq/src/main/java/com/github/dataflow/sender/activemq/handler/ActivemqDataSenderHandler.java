@@ -43,25 +43,25 @@ public class ActivemqDataSenderHandler extends TransformedDataSenderHandler {
 
     protected JSONObject refreshDataOutputMapping(DataOutputMapping dataOutputMapping) {
         JSONObject dataOutputMappingOptions = JSONObjectUtil.parseJSON(dataOutputMapping.getOptions());
-        int type = JSONObjectUtil.getInt(dataOutputMappingOptions, ActivemqConfig.TYPE, ActivemqType.QUEUE.getType());
+        int type = JSONObjectUtil.getInt(dataOutputMappingOptions, ActivemqConfig.MappingConfig.TYPE, ActivemqType.QUEUE.getType());
         if (type == ActivemqType.QUEUE.getType()) {
-            String queueName = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.QUEUE);
+            String queueName = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.MappingConfig.QUEUE);
             if (StringUtils.isEmpty(queueName)) {
                 throw new DataSenderException("the queue property of DataOutputMapping must not be null.");
             }
         } else {
-            String topic = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.TOPIC);
+            String topic = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.MappingConfig.TOPIC);
             if (StringUtils.isEmpty(topic)) {
                 throw new DataSenderException("the topic property of DataOutputMapping must not be null.");
             }
         }
 
-        String username = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.USERNAME);
-        String password = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.PASSWORD);
-        int deliverMode = JSONObjectUtil.getInt(dataOutputMappingOptions, ActivemqConfig.DELIVERY_MODE, DeliveryMode.NON_PERSISTENT);
-        dataOutputMappingOptions.put(ActivemqConfig.USERNAME, username);
-        dataOutputMappingOptions.put(ActivemqConfig.PASSWORD, password);
-        dataOutputMappingOptions.put(ActivemqConfig.DELIVERY_MODE, deliverMode);
+        String username = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.MappingConfig.USERNAME);
+        String password = JSONObjectUtil.getString(dataOutputMappingOptions, ActivemqConfig.MappingConfig.PASSWORD);
+        int deliverMode = JSONObjectUtil.getInt(dataOutputMappingOptions, ActivemqConfig.MappingConfig.DELIVERY_MODE, DeliveryMode.NON_PERSISTENT);
+        dataOutputMappingOptions.put(ActivemqConfig.MappingConfig.USERNAME, username);
+        dataOutputMappingOptions.put(ActivemqConfig.MappingConfig.PASSWORD, password);
+        dataOutputMappingOptions.put(ActivemqConfig.MappingConfig.DELIVERY_MODE, deliverMode);
         return dataOutputMappingOptions;
     }
 }

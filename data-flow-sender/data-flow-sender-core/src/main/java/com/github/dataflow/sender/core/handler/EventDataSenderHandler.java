@@ -8,7 +8,6 @@ import com.github.dataflow.sender.core.event.handler.EventHandler;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -22,11 +21,12 @@ import java.util.Map;
  * @author kevin
  * @date 2017-09-05 10:57 PM.
  */
-public abstract class EventDataSenderHandler extends AbstractDataSenderHandler implements ApplicationContextAware {
+public abstract class EventDataSenderHandler extends AbstractDataSenderHandler {
     protected List<EventHandler> eventHandlers = new ArrayList<>();
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        super.setApplicationContext(applicationContext);
         Map<String, EventHandler> eventHandlerMap = applicationContext.getBeansOfType(EventHandler.class);
         if (CollectionUtils.isEmpty(eventHandlerMap)) {
             throw new DataSenderException("there is no EventHandler bean");

@@ -36,7 +36,7 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
 
     public KafkaInstance(JSONObject options) {
         this.options = options;
-        this.topic = JSONObjectUtil.getString(options, KafkaConfig.TOPIC);
+        this.topic = JSONObjectUtil.getString(options, KafkaConfig.MappingConfig.TOPIC);
     }
 
     protected void initReceiveThread() {

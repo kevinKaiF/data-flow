@@ -4,6 +4,8 @@ package com.github.dataflow.sender.core;
 import com.github.dataflow.common.model.AbstractDataFlowLifeCycle;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.transformer.core.post.PostDataTransformer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 数据发送者
  * <p>
  * DataSender是对输出端的抽象，数据接收方可能是Mysql,Oracle等数据库，也可能是
- * 消息队列kafka,metaQ，可能是Elasticsearch。
+ * 消息队列kafka,MetaQ，可能是Elasticsearch。
  * <p>
  * 一个Instance可能拥有多个DataSender，多个Instance可能拥有相同的DataSender。
  *
@@ -20,6 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @date 2017-05-29 10:34 PM.
  */
 public abstract class DataSender extends AbstractDataFlowLifeCycle {
+    private Logger logger = LoggerFactory.getLogger(DataSender.class);
+
     /**
      * 统计DataSender的引用次数
      */
@@ -52,7 +56,23 @@ public abstract class DataSender extends AbstractDataFlowLifeCycle {
      *
      * @param rowMetaDataList
      */
-    public abstract void send(List<RowMetaData> rowMetaDataList) throws Exception;
+    public void send(List<RowMetaData> rowMetaDataList) throws Exception {
+        if (dataTransformer == null) {
+            doSend(rowMetaDataList);
+        } else {
+            Object transformedData = dataTransformer.transform(rowMetaDataList);
+            if (transformedData == null) {
+                logger.warn("ignore that rowMetaDataList is null after DataTransformer transform rowMetaDataList {}.", rowMetaDataList);
+            } else {
+                // 如果是Void实例，就不需要再处理了
+                if ((!(transformedData instanceof Void))) {
+                    doSend(transformedData);
+                }
+            }
+        }
+    }
+
+    protected abstract void doSend(Object transformedData) throws Exception;
 
     @Override
     public void start() {

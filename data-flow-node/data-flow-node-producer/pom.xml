@@ -17,16 +17,6 @@
             <artifactId>data-flow-node-core</artifactId>
             <version>${data-flow.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.github.data-flow</groupId>-->
-            <!--<artifactId>data-flow-sender-elasticsearch-example</artifactId>-->
-            <!--<version>${data-flow.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.github.data-flow</groupId>-->
-        <!--<artifactId>data-flow-sender-hbase</artifactId>-->
-        <!--<version>${data-flow.version}</version>-->
-        <!--</dependency>-->
     </dependencies>
 
     <build>

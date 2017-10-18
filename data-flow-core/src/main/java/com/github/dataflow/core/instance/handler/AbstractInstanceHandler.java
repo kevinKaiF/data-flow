@@ -6,8 +6,10 @@ import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.core.instance.AbstractInstance;
 import com.github.dataflow.core.instance.Instance;
 import com.github.dataflow.core.store.DataStore;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
+import com.github.dataflow.dubbo.model.DataSourceOutput;
 import com.github.dataflow.dubbo.model.DataTable;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.DataSenderManager;
@@ -112,7 +114,14 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
     }
 
     protected DataSender createDataSender(DataOutputMapping dataOutputMapping) {
-        Integer type = dataOutputMapping.getDataSourceOutput().getType();
+        DataSourceOutput dataSourceOutput = dataOutputMapping.getDataSourceOutput();
+        Integer type = null;
+        if (dataSourceOutput == null) {
+            type = DataSourceType.NONE.getType();
+        } else {
+            type = dataSourceOutput.getType();
+        }
+
         for (DataSenderHandler dataSenderHandler : dataSenderHandlers) {
             if (dataSenderHandler.support(type)) {
                 try {

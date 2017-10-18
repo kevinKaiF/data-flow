@@ -11,7 +11,7 @@
     <artifactId>data-flow-example</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>data-flow-sender-example</module>
+        <module>data-flow-node-producer-example</module>
     </modules>
 
 

@@ -267,9 +267,9 @@
                                                                     <option value="12">PostGreSQL</option>
                                                                     <option value="13">SQLServer</option>
                                                                     <option value="20">Kafka</option>
-                                                                    <option value="21">metaQ</option>
-                                                                    <option value="22">rabbitMQ</option>
-                                                                    <option value="23">activeMQ</option>
+                                                                    <option value="21">MetaQ</option>
+                                                                    <option value="22">RabbitMQ</option>
+                                                                    <option value="23">ActiveMQ</option>
                                                                 </select>
                                                             </div>
                                                         </div>

@@ -8,7 +8,7 @@ package com.github.dataflow.dubbo.common.enums;
  */
 public enum DataSourceType {
     // custom
-    LOCAL(-1),
+    NONE(-1),
 
     // traditional DB start with 10
     MYSQL(10),
