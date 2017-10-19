@@ -25,4 +25,6 @@ public interface DataLogDao {
     List<DataLog> findByCondition(DataLog dataLog);
 
     List<DataLog> findByConditionFully(DataLog dataLog);
+
+    void deleteByCondition(DataLog dataLog);
 }

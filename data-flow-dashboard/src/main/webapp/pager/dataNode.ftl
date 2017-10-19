@@ -12,6 +12,7 @@
     <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/datatables/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="../styles/custom/custom.min.css" rel="stylesheet">
     <style type="text/css">
@@ -132,6 +133,16 @@
                         <div class="col-md-4" style="padding-left: 0px">
                             <div class="x_panel">
                                 <span class="section">日志列表</span>
+                                <div>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input type="text" class="form-control" id="cleanTime" readonly>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <button id="log-cleanForm-submit" type="button"
+                                                class="btn btn-primary">清理
+                                        </button>
+                                    </div>
+                                </div>
                                 <table id="dataLogTable" class="table table-hover jambo_table" style="width: 100%">
                                 </table>
                             </div>
@@ -192,6 +203,8 @@
 <script src="https://cdn.bootcss.com/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script src="https://cdn.bootcss.com/jquery.nicescroll/3.7.0/jquery.nicescroll.min.js"></script>
 <script src="https://cdn.bootcss.com/easy-pie-chart/2.1.6/jquery.easypiechart.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-daterangepicker/2.1.25/moment.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-daterangepicker/2.1.25/daterangepicker.min.js"></script>
 <script src="../javascript/validator/validator.min.js"></script>
 <script src="../javascript/custom/global.js"></script>
 <script src="../javascript/custom/dataNode.js"></script>

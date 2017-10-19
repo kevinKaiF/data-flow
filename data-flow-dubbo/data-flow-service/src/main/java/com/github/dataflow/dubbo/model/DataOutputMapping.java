@@ -40,7 +40,7 @@ public class DataOutputMapping implements Serializable {
      *
      * @字段:DATA_INSTANCE_ID BIGINT(20)
      */
-    @NotNull
+//    @NotNull
     private java.lang.Long dataSourceOutputId;
 
     private DataSourceOutput dataSourceOutput;

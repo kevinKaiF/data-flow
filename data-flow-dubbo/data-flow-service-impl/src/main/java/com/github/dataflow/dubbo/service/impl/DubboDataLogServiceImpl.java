@@ -143,4 +143,19 @@ public class DubboDataLogServiceImpl implements DubboDataLogService {
         }
         return result;
     }
+
+    @Override
+    public ServiceResult<Void> deleteByCondition(DataLog dataLog) {
+        ServiceResult<Void> result = new ServiceResult<Void>();
+        try {
+            dataLogDao.deleteByCondition(dataLog);
+        } catch (Exception e) {
+            logger.error("调用{}方法 异常", "[dataflow-service_DubboDataLogServiceImpl#deleteByCondition]");
+            logger.error("方法使用参数：[[dataLog:{}]]", dataLog.toString());
+            logger.error("异常信息：{}", e);
+            result.setSuccess(false);
+            result.setErrorMessage("调用deleteByCondition方法异常，异常信息：" + e.getMessage());
+        }
+        return result;
+    }
 }

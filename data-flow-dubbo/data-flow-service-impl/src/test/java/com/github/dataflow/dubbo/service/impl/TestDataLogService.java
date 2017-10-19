@@ -58,4 +58,13 @@ public class TestDataLogService extends TestBase {
         dataLog.setMessage("xx error message");
         print(dubboDataLogService.findByCondition(dataLog, new PageSet()));
     }
+
+    @Test
+    public void testDeleteByCondition() {
+        DataLog dataLog = new DataLog();
+        dataLog.setInstanceName("xxxx");
+        dataLog.setCreateTimeBegin(new Date());
+        dataLog.setCreateTimeEnd(new Date());
+        print(dubboDataLogService.deleteByCondition(dataLog));
+    }
 }

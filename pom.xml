@@ -34,6 +34,7 @@
         <kafka.version>0.10.0.0</kafka.version>
         <jackson-databind.version>2.7.5</jackson-databind.version>
         <fastjson.version>1.2.28</fastjson.version>
+        <joda.version>2.6</joda.version>
     </properties>
 
     <dependencyManagement>
@@ -134,6 +135,12 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-http</artifactId>
                 <version>${jetty.version}</version>
+            </dependency>
+            <!--joda-->
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda.version}</version>
             </dependency>
             <!--test-->
             <dependency>

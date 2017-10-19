@@ -6,6 +6,8 @@ import com.github.dataflow.dubbo.model.DataLog;
 import com.github.dataflow.dubbo.model.PageSet;
 import com.github.dataflow.dubbo.model.ServiceResult;
 import com.github.dataflow.dubbo.service.DubboDataLogService;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +83,20 @@ public class DataLogService {
             logger.warn("com.github.dataflow.dashboard.service.DataLogService.getLogById时未获取到结果");
         }
         return dataLog;
+    }
+
+    public void cleanLog(String instanceName, String dateRange) {
+        DataLog dataLog = new DataLog();
+        dataLog.setInstanceName(instanceName);
+        String[] split = dateRange.split(" - ");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        dataLog.setCreateTimeBegin(dateTimeFormatter.parseDateTime(split[0]).toDate());
+        dataLog.setCreateTimeEnd(dateTimeFormatter.parseDateTime(split[1]).toDate());
+        ServiceResult<Void> serviceResult = dubboDataLogService.deleteByCondition(dataLog);
+        if (!serviceResult.isSuccess()) {
+            logger.error("{}调用{}时发生未知异常,error Message:{}", "cn.bidlink.dataflow.dashboard.service.DataLogService.cleanLog",
+                         "serviceResult", serviceResult.getErrorMessage());
+            throw new DataFlowException();
+        }
     }
 }

@@ -74,6 +74,11 @@
     	]]>
     </delete>
 
+    <delete id="deleteByCondition">
+        DELETE FROM data_log
+        <include refid="findPage_where" />
+    </delete>
+
     <!--<delete id="deleteBatch">-->
     <!--DELETE FROM data_log WHERE id IN -->
     <!--<foreach item="ids" collection="list" open="(" separator="," close=")">-->

@@ -2,6 +2,7 @@
     var main = {
         init: function () {
             this.initNodeList();
+            this.initDatePicker();
         },
         _renderNodeList: function (result) {
             var nodeList = "";
@@ -110,6 +111,40 @@
             }
         },
         hasInitInstanceTable: false,
+        initDatePicker : function() {
+            $('#cleanTime').daterangepicker({
+                autoApply:false,
+                singleDatePicker:false,
+                showDropdowns:false,        
+                timePicker: true, 		
+                timePickerIncrement: 10, 	
+                timePicker24Hour : true,
+                opens : 'right', 
+                ranges: {
+                    '最近1小时': [moment().subtract(1, 'hours'), moment()],
+                    '今日': [moment().startOf('day'), moment().endOf('day')],
+                    '昨日': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                    '最近7日': [moment().subtract(6, 'days'), moment()],
+                    '最近30日': [moment().subtract(29, 'days'), moment()],
+                    '本月': [moment().startOf('month'), moment().endOf('month')],
+                    '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                locale : {
+                    format: 'YYYY-MM-DD HH:mm:ss',
+                    separator : ' - ',
+                    customRangeLabel : '自定义',
+                    applyLabel : '确定',
+                    cancelLabel : '取消',
+                    fromLabel : '起始时间',
+                    toLabel : '结束时间',
+                    daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+                    monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月' ],
+                    firstDay : 1,
+                    startDate: moment().startOf('day'),
+                    endDate: moment().endOf('day')
+                }
+            });
+        },
         initInstanceTable: function (nodePath) {
             var Table = {
                 init: function (nodePath) {
@@ -155,7 +190,7 @@
                                     case 13 :
                                         return "SQLServer";
                                     case 20 :
-                                        return "kafka";
+                                        return "Kafka";
                                     case 21 :
                                         return "MetaQ";
                                     case 22 :
@@ -252,6 +287,30 @@
                             dataTable.api().ajax.reload(null, false);
                         }
                         $('#logList').show();
+                    })
+
+                    // 清理日志
+                    $("#log-cleanForm-submit").on("click", function () {
+                        var dataTable = $('#dataLogTable').dataTable();
+                        var instanceName = dataTable.fnSettings().ajax.data.instanceName;
+                        $.ajax({
+                            url : "./cleanLog",
+                            data : {
+                                dateRange : $("#cleanTime").val(),
+                                instanceName : instanceName
+                            },
+                            type : "POST",
+                            dataType : "json",
+                            success : function (json) {
+                                if (json.responseStatus == 200) {
+                                    dataTable.fnSettings().ajax.data = {instanceName: instanceName};
+                                    dataTable.api().ajax.reload(null, false);
+                                } else {
+                                    main.messageAlert("清理日志失败");
+                                }
+
+                            }
+                        })
                     })
                 },
                 _format: function (rowData) {

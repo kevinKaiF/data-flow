@@ -116,4 +116,15 @@ public class DataNodeController extends BaseController {
         });
     }
 
+    @RequestMapping("cleanLog")
+    @ResponseBody
+    public ResponseEntity cleanLog(@RequestParam final String instanceName, @RequestParam final String dateRange) {
+        return getResponseEntity("cleanLog", new Callable(instanceName, dateRange) {
+            @Override
+            public void call(ResponseEntity responseEntity) {
+                dataLogService.cleanLog(instanceName, dateRange);
+            }
+        });
+    }
+
 }

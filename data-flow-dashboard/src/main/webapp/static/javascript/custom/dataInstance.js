@@ -511,7 +511,7 @@
                     return true;
                 },
                 __validateDataOutputMappingOptions: function (type, options) {
-                    if (type < 20 || type == 30) {
+                    if (!options || $.trim(options).length == 0) {
                         return true;
                     }
 
@@ -527,7 +527,7 @@
                             case 22 : // RabbitMQ
                                 return true;
                             case 23 : // ActiveMQ
-                                var props = ["type"];
+                                var props = ["type", "messageType"];
                                 if (wizard.__validateProperty(json, props)) {
                                     // topic or queue
                                     if (json[props[1]] == 1) {  // topic
@@ -553,18 +553,6 @@
                             return false;
                         }
 
-                        var dataSourceOutputId = $("#dataOutputMapping-dataSourceOutputId").val();
-                        if (!dataSourceOutputId) {
-                            main.messageAlert("请选择输出数据源");
-                            return false;
-                        }
-
-                        var dataInstanceId = $("#dataOutputMapping-dataInstanceId").val();
-                        if (!dataInstanceId) {
-                            main.messageAlert('数据实例已失效');
-                            return false;
-                        }
-
                         var type = $("#dataOutputMapping-dataSourceOutputType").val();
                         var $dataOutputMappingOptions = $("#dataOutputMapping-options");
                         var options = $dataOutputMappingOptions.val();
@@ -573,6 +561,22 @@
                             return false;
                         } else {
                             window.validator.unmark($dataOutputMappingOptions);
+                        }
+
+                        var dataSourceOutputId = $("#dataOutputMapping-dataSourceOutputId").val();
+                        if (!dataSourceOutputId) {
+                            var optionsJSON = JSON.parse(options);
+                            // 如果没有选择输出数据源，必须指定对应的postDataTransformerBean
+                            if (!optionsJSON["postDataTransformerBean"]) {
+                                main.messageAlert("请选择输出数据源");
+                                return false;
+                            }
+                        }
+
+                        var dataInstanceId = $("#dataOutputMapping-dataInstanceId").val();
+                        if (!dataInstanceId) {
+                            main.messageAlert('数据实例已失效');
+                            return false;
                         }
 
                         $dataOutputMapping.ajaxSubmit({
@@ -635,7 +639,11 @@
                                 title: "输出源id",
                                 width: "10%",
                                 render: function (data, type, full, meta) {
-                                    return full.dataSourceOutputId;
+                                    if (full.dataSourceOutputId) {
+                                        return full.dataSourceOutputId;
+                                    } else {
+                                        return "-";
+                                    }
                                 }
                             }, {
                                 data: "dataSourceOutput.name",
@@ -657,7 +665,7 @@
                                     if (full.dataSourceOutput) {
                                         return main.parseDataSourceOutputType(full.dataSourceOutput.type)
                                     } else {
-                                        return "-"
+                                        return "自定义"
                                     }
                                 }
                             }, {
@@ -1075,10 +1083,10 @@
                                         '<td>' + row.schemaName + '</td>' +
                                         '<td>' + row.options + '</td>' +
                                         '<td>' + row.transformScript + '</td>' +
-                                        '<td>' + row.dataSourceOutput.id + '</td>' +
-                                        '<td>' + row.dataSourceOutput.name + '</td>' +
-                                        '<td>' + main.parseDataSourceOutputType(row.dataSourceOutput.type) + '</td>' +
-                                        '<td>' + row.dataSourceOutput.options + '</td>' +
+                                        '<td>' + (row.dataSourceOutput ? row.dataSourceOutput.id : "-") + '</td>' +
+                                        '<td>' + (row.dataSourceOutput ? row.dataSourceOutput.name : "-") + '</td>' +
+                                        '<td>' + (row.dataSourceOutput ? main.parseDataSourceOutputType(row.dataSourceOutput.type) : "自定义") + '</td>' +
+                                        '<td>' + (row.dataSourceOutput ? row.dataSourceOutput.options : "") + '</td>' +
                                         '</tr>'
                                 }
                                 dataOutputMappings +=

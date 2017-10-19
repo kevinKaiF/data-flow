@@ -72,5 +72,11 @@ public interface DubboDataLogService {
      */
     ServiceResult<List<DataLog>> findByConditionFully(DataLog dataLog, PageSet pageSet);
 
-
+    /**
+     * 根据条件删除
+     *
+     * @param dataLog
+     * @return
+     */
+    ServiceResult<Void> deleteByCondition(DataLog dataLog);
 }

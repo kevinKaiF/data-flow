@@ -235,7 +235,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <pom.application.name>data-flow-service</pom.application.name>
+                <pom.application.name>data-flow-service-impl</pom.application.name>
                 <pom.dubbo.protocol.port>20970</pom.dubbo.protocol.port>
                 <pom.dubbo.registry.address>zookeeper://127.0.0.1:2181?backup=127.0.0.1:2182,127.0.0.1:2183
                 </pom.dubbo.registry.address>
@@ -250,7 +250,7 @@
         <profile>
             <id>test</id>
             <properties>
-                <pom.application.name>data-flow-service</pom.application.name>
+                <pom.application.name>data-flow-service-impl</pom.application.name>
                 <pom.dubbo.protocol.port>20970</pom.dubbo.protocol.port>
                 <pom.dubbo.registry.address>zookeeper://127.0.0.1:2181?backup=127.0.0.1:2182,127.0.0.1:2183
                 </pom.dubbo.registry.address>
@@ -265,7 +265,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <pom.application.name>data-flow-service</pom.application.name>
+                <pom.application.name>data-flow-service-impl</pom.application.name>
                 <pom.dubbo.protocol.port>20970</pom.dubbo.protocol.port>
                 <pom.dubbo.registry.address>zookeeper://127.0.0.1:2181?backup=127.0.0.1:2182,127.0.0.1:2183
                 </pom.dubbo.registry.address>
