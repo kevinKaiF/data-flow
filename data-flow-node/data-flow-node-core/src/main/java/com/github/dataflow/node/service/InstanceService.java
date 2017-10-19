@@ -164,7 +164,7 @@ public class InstanceService implements DisposableBean {
         DataInstance dataInstance = new DataInstance();
         dataInstance.setNodePath(nodePath);
         PageSet pageSet = new PageSet(0, Integer.MAX_VALUE);
-        ServiceResult<List<DataInstance>> serviceResult = dataInstanceService.findByCondition(dataInstance, pageSet);
+        ServiceResult<List<DataInstance>> serviceResult = dataInstanceService.findByConditionFully(dataInstance, pageSet);
         if (!serviceResult.isSuccess()) {
             throw new InstanceException(serviceResult.getErrorMessage());
         }
