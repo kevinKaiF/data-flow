@@ -305,6 +305,7 @@
                                 if (json.responseStatus == 200) {
                                     dataTable.fnSettings().ajax.data = {instanceName: instanceName};
                                     dataTable.api().ajax.reload(null, false);
+                                    $("#logDetail").html("");
                                 } else {
                                     main.messageAlert("清理日志失败");
                                 }
