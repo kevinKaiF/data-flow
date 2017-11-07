@@ -16,7 +16,7 @@ public class DatabaseInsertEventHandler extends AbstractDatabaseEventHandler imp
 
     @Override
     public boolean support(DataSourceType dataSourceType, RowMetaData.EventType eventType) {
-        return dataSourceType != DataSourceType.MYSQL && DATA_SOURCE_TYPEs.contains(dataSourceType) && INSERT == eventType;
+        return DATA_SOURCE_TYPEs.contains(dataSourceType) && INSERT == eventType;
     }
 
     @Override
