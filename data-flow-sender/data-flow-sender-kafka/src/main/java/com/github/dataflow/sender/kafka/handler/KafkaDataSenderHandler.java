@@ -23,6 +23,13 @@ public class KafkaDataSenderHandler extends TransformedDataSenderHandler {
         return dataSourceType.getType() == type;
     }
 
+    /**
+     * {@link ProducerConfig#PARTITIONER_CLASS_CONFIG}可以指定生产者的分区
+     *
+     * @param dataOutputMapping
+     * @return
+     * @throws Exception
+     */
     public DataSender createDataSender(DataOutputMapping dataOutputMapping) throws Exception {
 
         JSONObject props = JSONObjectUtil.parseJSON(dataOutputMapping.getDataSourceOutput().getOptions());

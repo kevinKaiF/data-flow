@@ -379,12 +379,12 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
         if (indexMode.isMemory()) {
             logPositionManager = new MemoryLogPositionManager();
         } else if (indexMode.isZookeeper()) {
-            logPositionManager = new ZooKeeperLogPositionManager();
-            ((ZooKeeperLogPositionManager) logPositionManager).setZkClientx(getZkclientx());
+            logPositionManager = new ZKLogPositionManager();
+            ((ZKLogPositionManager) logPositionManager).setZkClientx(getZkclientx());
         } else if (indexMode.isMixed()) {
             logPositionManager = new PeriodMixedLogPositionManager();
 
-            ZooKeeperLogPositionManager zooKeeperLogPositionManager = new ZooKeeperLogPositionManager();
+            ZKLogPositionManager zooKeeperLogPositionManager = new ZKLogPositionManager();
             zooKeeperLogPositionManager.setZkClientx(getZkclientx());
             ((PeriodMixedLogPositionManager) logPositionManager).setZooKeeperLogPositionManager(zooKeeperLogPositionManager);
         } else if (indexMode.isMeta()) {

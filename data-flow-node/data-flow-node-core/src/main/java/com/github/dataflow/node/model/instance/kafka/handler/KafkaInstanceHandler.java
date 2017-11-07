@@ -55,7 +55,7 @@ public class KafkaInstanceHandler extends AbstractMessageAwareInstanceHandler im
         options.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         options.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         // create instance
-        return new KafkaInstance(options);
+        return new KafkaInstance(dataInstance.getName(), options);
     }
 
     @Override

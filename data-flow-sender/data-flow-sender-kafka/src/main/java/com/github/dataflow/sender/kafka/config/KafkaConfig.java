@@ -11,5 +11,8 @@ import com.github.dataflow.sender.core.config.MessageQueueMappingConfig;
 public class KafkaConfig {
     public static class MappingConfig extends MessageQueueMappingConfig {
         public static final String TOPIC = "topic";
+
+        // 指定消费端的分区
+        public static final String TOPIC_PARTITION = "topicPartition";
     }
 }

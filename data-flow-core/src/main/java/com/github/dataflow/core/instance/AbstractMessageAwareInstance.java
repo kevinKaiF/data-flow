@@ -22,6 +22,15 @@ public abstract class AbstractMessageAwareInstance extends AbstractInstance {
 
     protected JSONObject options;
 
+    protected String instanceName;
+
+    public AbstractMessageAwareInstance() {
+    }
+
+    public AbstractMessageAwareInstance(String instanceName) {
+        this.instanceName = instanceName;
+    }
+
     @Override
     protected void doInit() {
         initConsumer();

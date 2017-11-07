@@ -3,6 +3,7 @@ package com.github.dataflow.node.model.instance.kafka;
 import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.JSONObjectUtil;
+import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.core.instance.AbstractMessageAwareInstance;
 import com.github.dataflow.sender.kafka.config.KafkaConfig;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -10,9 +11,12 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -29,14 +33,17 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
     private static AtomicLong atomicLong = new AtomicLong(0);
     private Consumer<String, String> consumer;
     private String                   topic;
+    private String                   partition;
 
     private KafkaInstance() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
 
-    public KafkaInstance(JSONObject options) {
+    public KafkaInstance(String instanceName, JSONObject options) {
+        super(instanceName);
         this.options = options;
         this.topic = JSONObjectUtil.getString(options, KafkaConfig.MappingConfig.TOPIC);
+        this.partition = JSONObjectUtil.getString(options, KafkaConfig.MappingConfig.TOPIC_PARTITION);
     }
 
     protected void initReceiveThread() {
@@ -46,13 +53,26 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
     }
 
     protected String getThreadName() {
-        return "kafkaInstance-" + atomicLong.getAndIncrement();
+        return "kafkaInstance-" + instanceName + "-" + atomicLong.getAndIncrement();
     }
 
     protected void initConsumer() {
         logger.info("init consumer begin...");
         consumer = new KafkaConsumer<>(options);
-        consumer.subscribe(toList(topic));
+        List<String> topics = toList(topic);
+        if (!StringUtils.isEmpty(partition)) {
+            if (topics.size() > 1) {
+                throw new InstanceException(String.format("there is many topics[%s] with many partitions[%s], suggest that one topic with many partition.", topic, partition));
+            }
+            List<String> partitions = toList(partition);
+            List<TopicPartition> topicPartitions = new ArrayList<>();
+            for (String p : partitions) {
+                topicPartitions.add(new TopicPartition(topic, Integer.valueOf(p)));
+            }
+            consumer.assign(topicPartitions);
+        } else {
+            consumer.subscribe(topics);
+        }
         logger.info("init consumer end!");
     }
 
@@ -122,7 +142,7 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
                         handleException(e);
                         ex = e;
                     } finally {
-                        if (!running) {
+                        if (!running || ex instanceof InterruptedException) {
                             closeConsumer();
                             doStop();
                         }

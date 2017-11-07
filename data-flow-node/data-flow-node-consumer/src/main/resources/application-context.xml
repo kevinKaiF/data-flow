@@ -47,6 +47,8 @@
           class="com.github.dataflow.sender.database.event.handler.DatabaseInsertEventHandler"></bean>
     <bean id="databaseUpdateEventHandler"
           class="com.github.dataflow.sender.database.event.handler.DatabaseUpdateEventHandler"></bean>
+    <bean id="mySqlInsertEventHandler"
+          class="com.github.dataflow.sender.database.event.handler.mysql.MySqlInsertEventHandler"></bean>
 
     <import resource="application-dubbo.xml"/>
     <import resource="application-custom.xml"/>

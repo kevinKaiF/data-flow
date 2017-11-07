@@ -56,13 +56,18 @@ public class InstanceService implements DisposableBean {
         }
         Instance instance = instanceFactory.createInstance(dataInstance);
         if (!instance.isStart()) {
-            instance.start();
-            // 注册instance到zk
-            instanceRegister.registerToZookeeper(instance.getName(), getLocalAddress());
-            // 更新数据库
-            dataInstance.setStatus(DataInstanceStatus.START.getStatus());
-            dataInstance.setNodePath(nodeRegister.getNodePath());
-            updateDataInstance(dataInstance);
+            boolean exists = instanceRegister.exists(instance.getName());
+            if (exists) {
+                throw new InstanceException("Instance [" + instance.getName() + "] has existed in ZK cluster.");
+            } else {
+                instance.start();
+                // 注册instance到zk
+                instanceRegister.registerToZookeeper(instance.getName(), getLocalAddress());
+                // 更新数据库
+                dataInstance.setStatus(DataInstanceStatus.START.getStatus());
+                dataInstance.setNodePath(nodeRegister.getNodePath());
+                updateDataInstance(dataInstance);
+            }
         } else {
             logger.warn("Instance [" + dataInstance.getName() + "] has started!");
         }
