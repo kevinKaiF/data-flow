@@ -38,8 +38,7 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
         throw new IllegalAccessException();
     }
 
-    public ActivemqInstance(String instanceName, JSONObject options) {
-        super(instanceName);
+    public ActivemqInstance(JSONObject options) {
         this.options = options;
     }
 
@@ -94,7 +93,7 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
 
     @Override
     protected String getThreadName() {
-        return "ActiveMqInstance-" + instanceName + "-" + atomicLong.getAndIncrement();
+        return "ActiveMqInstance-" + name + "-" + atomicLong.getAndIncrement();
     }
 
     @Override

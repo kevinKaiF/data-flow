@@ -63,7 +63,7 @@ public class ActivemqInstanceHandler extends AbstractMessageAwareInstanceHandler
         options.put(MessageAwareInstanceConfig.POLL_TIMEOUT, timeout);
         options.put(MessageAwareInstanceConfig.POLL_PERIOD, period);
         // create instance
-        return new ActivemqInstance(dataInstance.getName(), options);
+        return new ActivemqInstance(options);
     }
 
     @Override

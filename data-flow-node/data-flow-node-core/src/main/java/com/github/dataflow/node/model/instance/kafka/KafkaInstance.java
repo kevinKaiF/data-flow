@@ -39,8 +39,7 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
         throw new IllegalAccessException();
     }
 
-    public KafkaInstance(String instanceName, JSONObject options) {
-        super(instanceName);
+    public KafkaInstance(JSONObject options) {
         this.options = options;
         this.topic = JSONObjectUtil.getString(options, KafkaConfig.MappingConfig.TOPIC);
         this.partition = JSONObjectUtil.getString(options, KafkaConfig.MappingConfig.TOPIC_PARTITION);
@@ -53,7 +52,7 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
     }
 
     protected String getThreadName() {
-        return "kafkaInstance-" + instanceName + "-" + atomicLong.getAndIncrement();
+        return "kafkaInstance-" + name + "-" + atomicLong.getAndIncrement();
     }
 
     protected void initConsumer() {
