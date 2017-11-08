@@ -20,7 +20,7 @@ import java.net.InetAddress;
 /**
  * 修改原JSON序列化InetAddress的方式，使用{@link InetAddress#getHostAddress()}代替原来ZooKeeperLogPositionManager的{@link InetAddress#getHostName()}
  *
- * @author : <a href="mailto:zikaifeng@ebnew.com">冯子恺</a>
+ * @author : kevin
  * @version : Ver 1.0
  * @description :
  * @date : 2017/11/7
