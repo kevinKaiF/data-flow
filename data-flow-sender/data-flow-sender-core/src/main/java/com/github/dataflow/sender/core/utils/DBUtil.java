@@ -59,12 +59,87 @@ public class DBUtil {
         }
     }
 
+    public static List<Map<String, Object>> query(Connection connection, String sql, List<Object> params) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            if (params != null && params.size() > 0) {
+                int size = params.size();
+                for (int i = 0; i < size; i++) {
+                    preparedStatement.setObject(i + 1, params.get(i));
+                }
+            }
+            resultSet = preparedStatement.executeQuery();
+            List<Map<String, Object>> results = new ArrayList<>();
+            while (resultSet.next()) {
+                Map<String, Object> map = new LinkedHashMap<>();
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                for (int i = 0; i < columnCount; i++) {
+                    String columnLabel = metaData.getColumnLabel(i + 1);
+                    map.put(columnLabel, resultSet.getObject(columnLabel));
+                }
+                results.add(map);
+            }
+
+            return results;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeQuietly(resultSet, preparedStatement);
+        }
+    }
+
+    public static void execute(Connection connection, String createSql) {
+        execute(connection, createSql, null);
+    }
+
+    public static int execute(Connection connection, String sql, List<Object> params) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            if (params != null && params.size() > 0) {
+                int size = params.size();
+                for (int i = 0; i < size; i++) {
+                    preparedStatement.setObject(i + 1, params.get(i));
+                }
+            }
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeQuietly(resultSet, preparedStatement);
+        }
+    }
+
     public static <T> T query(DataSource dataSource, String sql, List<Object> params, ResultSetCallback<T> callback) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            if (params != null && params.size() > 0) {
+                int size = params.size();
+                for (int i = 0; i < size; i++) {
+                    preparedStatement.setObject(i + 1, params.get(i));
+                }
+            }
+            resultSet = preparedStatement.executeQuery();
+            return callback.execute(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            closeQuietly(resultSet, preparedStatement, connection);
+        }
+    }
+
+    public static <T> T query(Connection connection, String sql, List<Object> params, ResultSetCallback<T> callback) {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
             preparedStatement = connection.prepareStatement(sql);
             if (params != null && params.size() > 0) {
                 int size = params.size();
@@ -104,9 +179,18 @@ public class DBUtil {
         }
     }
 
+    public static List<Map<String, Object>> query(Connection connection, String querySql) {
+        return query(connection, querySql, null);
+    }
+
 
     public interface ResultSetCallback<T> {
         T execute(ResultSet resultSet) throws SQLException;
+    }
+
+
+    private static void closeQuietly(ResultSet resultSet, PreparedStatement preparedStatement) {
+        closeQuietly(resultSet, preparedStatement, null);
     }
 
     public static void closeQuietly(ResultSet resultSet, PreparedStatement preparedStatement, java.sql.Connection connection) {

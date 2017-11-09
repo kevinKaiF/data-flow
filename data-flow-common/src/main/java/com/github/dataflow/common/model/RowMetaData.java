@@ -152,6 +152,15 @@ public class RowMetaData implements Serializable {
             this.value = value;
         }
 
+        public ColumnMeta clone() {
+            ColumnMeta columnMetaClone = new ColumnMeta();
+            columnMetaClone.setKey(this.isKey);
+            columnMetaClone.setJdbcType(jdbcType);
+            columnMetaClone.setColumnName(columnName);
+            columnMetaClone.setValue(value);
+            return columnMetaClone;
+        }
+
         @Override
         public String toString() {
             return "ColumnMeta{" +

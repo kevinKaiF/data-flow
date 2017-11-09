@@ -6,8 +6,8 @@ package com.github.dataflow.node.model.instance.mysql.config;
  * @description :
  * @date : 2017/7/4
  */
-public class MysqlInstanceConfig {
-    public static final String WHITE_FILTER = "whiteFilter";
+public interface MysqlInstanceConfig {
+    String WHITE_FILTER = "whiteFilter";
 
-    public static final String BLACK_FILTER = "blackFilter";
+    String BLACK_FILTER = "blackFilter";
 }
