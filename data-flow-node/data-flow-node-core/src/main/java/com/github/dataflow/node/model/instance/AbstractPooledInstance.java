@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.JSONObjectUtil;
+import com.github.dataflow.node.exception.InstanceException;
 
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -71,8 +72,7 @@ public abstract class AbstractPooledInstance extends AbstractInstance {
         receiveThread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-                // TODO
-                stop();
+                throw new InstanceException(e);
             }
         });
     }

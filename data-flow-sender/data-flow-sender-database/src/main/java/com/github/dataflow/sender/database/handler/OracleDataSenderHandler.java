@@ -29,7 +29,6 @@ public class OracleDataSenderHandler extends AbstractDatabaseDataSenderHandler {
     }
 
     protected DataSource getDataSource(JSONObject props) {
-        // TODO 优化连接池
         OracleDataSource oracleDataSource = null;
         try {
             oracleDataSource = new OracleDataSource();
