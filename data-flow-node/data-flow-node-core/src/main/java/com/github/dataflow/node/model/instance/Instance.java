@@ -1,9 +1,9 @@
-package com.github.dataflow.core.instance;
+package com.github.dataflow.node.model.instance;
 
 
 import com.github.dataflow.common.model.DataFlowLifeCycle;
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.store.DataStore;
+import com.github.dataflow.node.model.alarm.AlarmService;
+import com.github.dataflow.node.model.store.DataStore;
 
 /**
  * @author kevin
@@ -48,9 +48,7 @@ public interface Instance extends DataFlowLifeCycle {
 
     /**
      * 获取最后一次同步的位置信息
-     *
-     * @param instanceName
      * @return
      */
-    String getPosition(String instanceName);
+    String getPosition();
 }

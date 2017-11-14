@@ -1,21 +1,23 @@
-package com.github.dataflow.core.instance.handler;
+package com.github.dataflow.node.model.instance.handler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.exception.InstanceException;
-import com.github.dataflow.core.instance.AbstractInstance;
-import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.core.store.DataStore;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.dubbo.model.DataOutputMapping;
 import com.github.dataflow.dubbo.model.DataSourceOutput;
 import com.github.dataflow.dubbo.model.DataTable;
+import com.github.dataflow.node.exception.InstanceException;
+import com.github.dataflow.node.model.alarm.AlarmService;
+import com.github.dataflow.node.model.config.DataFlowContext;
+import com.github.dataflow.node.model.instance.AbstractInstance;
+import com.github.dataflow.node.model.instance.Instance;
+import com.github.dataflow.node.model.store.DataStore;
 import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.DataSenderManager;
 import com.github.dataflow.sender.core.handler.DataSenderHandler;
 import com.github.dataflow.transformer.core.pre.PreGroovyShellDataTransformer;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -33,7 +35,10 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
      * zk集群地址
      */
     @Value("${node.zookeeper.addresses}")
-    private String zookeeperAddresses;
+    protected String zookeeperAddresses;
+
+    @Autowired
+    protected DataFlowContext dataFlowContext;
 
     protected List<DataSenderHandler> dataSenderHandlers = new ArrayList<>();
 
@@ -132,7 +137,7 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
             }
         }
 
-        throw new InstanceException("there is no DataSenderHandler support the type [" + type + "] of DataOutputMapping + [" + dataOutputMapping + "].");
+        throw new InstanceException("there is no DataSenderHandler support the type [" + type + "] of DataOutputMapping [" + dataOutputMapping + "].");
     }
 
     @Override

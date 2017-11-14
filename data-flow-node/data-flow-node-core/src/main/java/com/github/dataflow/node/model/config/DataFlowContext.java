@@ -1,10 +1,10 @@
 package com.github.dataflow.node.model.config;
 
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.alarm.handler.AlarmServiceHandler;
 import com.github.dataflow.dubbo.model.DataAlarm;
 import com.github.dataflow.dubbo.model.DataNodeConfiguration;
+import com.github.dataflow.node.model.alarm.AlarmService;
 import com.github.dataflow.node.model.alarm.LogAlarmService;
+import com.github.dataflow.node.model.alarm.handler.AlarmServiceHandler;
 import com.github.dataflow.node.service.DataLogService;
 import com.github.dataflow.node.service.DataNodeConfigurationService;
 import org.slf4j.Logger;

@@ -4,17 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.utils.Closer;
 import com.github.dataflow.common.utils.JSONObjectUtil;
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.exception.InstanceException;
-import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.core.instance.handler.AbstractInstanceHandler;
-import com.github.dataflow.core.instance.handler.InstanceHandler;
-import com.github.dataflow.core.store.DataStore;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataInstance;
+import com.github.dataflow.node.exception.InstanceException;
+import com.github.dataflow.node.model.alarm.AlarmService;
 import com.github.dataflow.node.model.config.DataFlowContext;
+import com.github.dataflow.node.model.instance.Instance;
+import com.github.dataflow.node.model.instance.handler.AbstractPooledInstanceHandler;
+import com.github.dataflow.node.model.instance.handler.InstanceHandler;
 import com.github.dataflow.node.model.instance.oracle.OracleInstance;
 import com.github.dataflow.node.model.instance.oracle.config.OracleInstanceConfig;
+import com.github.dataflow.node.model.store.DataStore;
 import com.github.dataflow.node.model.store.DefaultDataStore;
 import oracle.jdbc.pool.OracleDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.sql.SQLException;
  * @description :
  * @date : 2017/11/8
  */
-public class OracleInstanceHandler extends AbstractInstanceHandler implements InstanceHandler {
+public class OracleInstanceHandler extends AbstractPooledInstanceHandler implements InstanceHandler {
     @Autowired
     private DataFlowContext dataFlowContext;
 

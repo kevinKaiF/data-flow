@@ -1,10 +1,10 @@
 package com.github.dataflow.node.service;
 
-import com.github.dataflow.core.exception.InstanceException;
 import com.github.dataflow.dubbo.model.DataNodeConfiguration;
 import com.github.dataflow.dubbo.model.PageSet;
 import com.github.dataflow.dubbo.model.ServiceResult;
 import com.github.dataflow.dubbo.service.DubboDataNodeConfigurationService;
+import com.github.dataflow.node.exception.InstanceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

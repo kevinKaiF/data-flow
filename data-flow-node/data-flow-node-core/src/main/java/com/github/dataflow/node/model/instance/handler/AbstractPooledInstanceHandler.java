@@ -1,14 +1,14 @@
-package com.github.dataflow.core.instance.handler;
+package com.github.dataflow.node.model.instance.handler;
 
 /**
- * 消息中间件实例处理器
+ * 轮询拉取数据的实例处理器
  *
  * @author : kevin
  * @version : Ver 1.0
  * @description :
  * @date : 2017/7/5
  */
-public abstract class AbstractMessageAwareInstanceHandler extends AbstractInstanceHandler {
+public abstract class AbstractPooledInstanceHandler extends AbstractInstanceHandler {
     /**
      * 消费获取时延
      */
@@ -17,5 +17,5 @@ public abstract class AbstractMessageAwareInstanceHandler extends AbstractInstan
     /**
      * 消费获取时间间隔
      */
-    protected final long DEFAULT_PERIOD = 100;
+    protected final long DEFAULT_PERIOD  = 100;
 }

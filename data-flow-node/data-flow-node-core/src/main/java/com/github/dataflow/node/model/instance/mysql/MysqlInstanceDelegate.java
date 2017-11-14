@@ -22,10 +22,10 @@ import com.alibaba.otter.canal.parse.support.AuthenticationInfo;
 import com.alibaba.otter.canal.protocol.position.EntryPosition;
 import com.alibaba.otter.canal.sink.entry.EntryEventSink;
 import com.alibaba.otter.canal.sink.entry.group.GroupEventSink;
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.core.store.DataStore;
+import com.github.dataflow.node.model.alarm.AlarmService;
 import com.github.dataflow.node.model.alarm.AlarmServiceDelegate;
+import com.github.dataflow.node.model.instance.Instance;
+import com.github.dataflow.node.model.store.DataStore;
 import com.github.dataflow.node.model.store.MysqlEventStore;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -170,7 +170,7 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
             zooKeeperMetaManager.setZkClientx(getZkclientx());
             ((PeriodMixedMetaManager) metaManager).setZooKeeperMetaManager(zooKeeperMetaManager);
         } else {
-            throw new CanalException("unsupport MetaMode for " + mode);
+            throw new CanalException("don't support MetaMode for " + mode);
         }
 
         logger.info("init metaManager end! \n\t load MysqlMetaManager:{} ", metaManager.getClass().getName());
@@ -320,9 +320,9 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
             }
             eventParser = localBinlogEventParser;
         } else if (type.isOracle()) {
-            throw new CanalException("unsupport SourcingType for " + type);
+            throw new CanalException("don't support SourcingType for " + type);
         } else {
-            throw new CanalException("unsupport SourcingType for " + type);
+            throw new CanalException("don't support SourcingType for " + type);
         }
 
         // add transaction support at 2012-12-06
@@ -363,7 +363,7 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
             ((HeartBeatHAController) haController).setDetectingRetryTimes(canalParameter.getDetectingRetryTimes());
             ((HeartBeatHAController) haController).setSwitchEnable(canalParameter.getHeartbeatHaEnable());
         } else {
-            throw new CanalException("unsupport HAMode for " + haMode);
+            throw new CanalException("don't support HAMode for " + haMode);
         }
         logger.info("init haController end! \n\t load MysqlHAController:{}", haController.getClass().getName());
 
@@ -399,7 +399,7 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
             ((FailbackLogPositionManager) logPositionManager).setPrimary(primaryLogPositionManager);
             ((FailbackLogPositionManager) logPositionManager).setFailback(failbackLogPositionManager);
         } else {
-            throw new CanalException("unsupport indexMode for " + indexMode);
+            throw new CanalException("don't support indexMode for " + indexMode);
         }
 
         logger.info("init logPositionManager end! \n\t load MysqlLogPositionManager:{}", logPositionManager.getClass()
@@ -454,10 +454,10 @@ public class MysqlInstanceDelegate extends AbstractCanalInstance implements Inst
     }
 
     @Override
-    public String getPosition(String instanceName) {
+    public String getPosition() {
         if (eventParser instanceof MysqlEventParser) {
             CanalLogPositionManager logPositionManager = ((MysqlEventParser) this.eventParser).getLogPositionManager();
-            return JSON.toJSONString(logPositionManager.getLatestIndexBy(instanceName));
+            return JSON.toJSONString(logPositionManager.getLatestIndexBy(name));
         } else {
             return null;
         }

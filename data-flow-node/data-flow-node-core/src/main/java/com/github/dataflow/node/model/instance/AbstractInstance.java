@@ -1,8 +1,9 @@
-package com.github.dataflow.core.instance;
+package com.github.dataflow.node.model.instance;
+
 
 import com.github.dataflow.common.model.AbstractDataFlowLifeCycle;
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.store.DataStore;
+import com.github.dataflow.node.model.alarm.AlarmService;
+import com.github.dataflow.node.model.store.DataStore;
 
 /**
  * @author kevin

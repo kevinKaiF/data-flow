@@ -1,4 +1,5 @@
-package com.github.dataflow.core.store;
+package com.github.dataflow.node.model.store;
+
 
 import com.github.dataflow.common.model.DataFlowLifeCycle;
 import com.github.dataflow.common.model.RowMetaData;

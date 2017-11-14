@@ -1,7 +1,6 @@
 package com.github.dataflow.node.model.alarm;
 
 import com.github.dataflow.common.model.AbstractDataFlowLifeCycle;
-import com.github.dataflow.core.alarm.AlarmService;
 import com.github.dataflow.node.model.config.GlobalExecutor;
 import com.github.dataflow.node.service.DataLogService;
 

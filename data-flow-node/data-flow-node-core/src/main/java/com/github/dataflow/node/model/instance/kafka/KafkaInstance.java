@@ -3,8 +3,8 @@ package com.github.dataflow.node.model.instance.kafka;
 import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.JSONObjectUtil;
-import com.github.dataflow.core.exception.InstanceException;
-import com.github.dataflow.core.instance.AbstractMessageAwareInstance;
+import com.github.dataflow.node.exception.InstanceException;
+import com.github.dataflow.node.model.instance.AbstractPooledInstance;
 import com.github.dataflow.sender.kafka.config.KafkaConfig;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @description :
  * @date : 2017/6/30
  */
-public class KafkaInstance extends AbstractMessageAwareInstance {
+public class KafkaInstance extends AbstractPooledInstance {
     private        Logger     logger     = LoggerFactory.getLogger(KafkaInstance.class);
     private static AtomicLong atomicLong = new AtomicLong(0);
     private Consumer<String, String> consumer;
@@ -92,7 +92,7 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
     }
 
     @Override
-    public String getPosition(String instanceName) {
+    public String getPosition() {
         return null;
     }
 
@@ -114,7 +114,7 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
             @Override
             public void run() {
                 Throwable ex = null;
-                while (running && ex == null) {
+                while (running) {
                     try {
                         ConsumerRecords<String, String> records = consumer.poll(timeout);
                         Iterator<ConsumerRecord<String, String>> iterator = records.iterator();
@@ -127,6 +127,7 @@ public class KafkaInstance extends AbstractMessageAwareInstance {
                                 try {
                                     handle(rowMetaDataList);
                                     consumer.commitSync();
+                                    ex = null;
                                 } catch (Throwable e) {
                                     handleException(e);
                                     ex = e;

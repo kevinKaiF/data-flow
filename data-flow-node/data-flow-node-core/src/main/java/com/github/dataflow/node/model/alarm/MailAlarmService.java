@@ -1,12 +1,11 @@
 package com.github.dataflow.node.model.alarm;
 
-import com.github.dataflow.core.alarm.AlarmService;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,7 @@ public class MailAlarmService extends AbstractAlarmService implements AlarmServi
             mail.setSubject(subject);                                   // 主题
             mail.setFrom(emailUsername);                                // 发件人
 
-            String receiveKeys[] = StringUtils.split(emailReceiver, ",");
+            String receiveKeys[] = StringUtils.commaDelimitedListToStringArray(emailReceiver);
             List<String> address = new ArrayList<>();
             for (String receiveKey : receiveKeys) {
                 if (isEmailAddress(receiveKey)) {
@@ -84,7 +83,7 @@ public class MailAlarmService extends AbstractAlarmService implements AlarmServi
 
     private void sendMail(SimpleMailMessage mail) {
         // 正确设置了账户/密码，才尝试发送邮件
-        if (StringUtils.isNotEmpty(emailUsername) && StringUtils.isNotEmpty(emailPassword)) {
+        if (!StringUtils.isEmpty(emailUsername) && !StringUtils.isEmpty(emailPassword)) {
             mailSender.send(mail);
         }
     }

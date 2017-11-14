@@ -3,19 +3,17 @@ package com.github.dataflow.node.model.instance.mysql.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.otter.canal.instance.manager.model.CanalParameter;
 import com.github.dataflow.common.utils.JSONObjectUtil;
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.core.instance.handler.AbstractInstanceHandler;
-import com.github.dataflow.core.instance.handler.InstanceHandler;
-import com.github.dataflow.core.store.DataStore;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataInstance;
-import com.github.dataflow.node.model.config.DataFlowContext;
+import com.github.dataflow.node.model.alarm.AlarmService;
+import com.github.dataflow.node.model.instance.Instance;
+import com.github.dataflow.node.model.instance.handler.AbstractInstanceHandler;
+import com.github.dataflow.node.model.instance.handler.InstanceHandler;
 import com.github.dataflow.node.model.instance.mysql.MysqlInstance;
 import com.github.dataflow.node.model.instance.mysql.config.MysqlInstanceConfig;
+import com.github.dataflow.node.model.store.DataStore;
 import com.github.dataflow.node.model.store.DefaultDataStore;
 import com.github.dataflow.sender.database.config.DatabaseConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
@@ -28,9 +26,6 @@ import java.util.Collections;
  */
 @Component
 public class MysqlInstanceHandler extends AbstractInstanceHandler implements InstanceHandler {
-    @Autowired
-    private DataFlowContext dataFlowContext;
-
     private DataSourceType instanceType = DataSourceType.MYSQL;
 
     public boolean support(int instanceType) {

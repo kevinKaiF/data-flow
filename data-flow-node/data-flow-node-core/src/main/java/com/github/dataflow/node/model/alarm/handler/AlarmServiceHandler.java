@@ -1,8 +1,8 @@
-package com.github.dataflow.core.alarm.handler;
+package com.github.dataflow.node.model.alarm.handler;
 
 
-import com.github.dataflow.core.alarm.AlarmService;
 import com.github.dataflow.dubbo.model.DataAlarm;
+import com.github.dataflow.node.model.alarm.AlarmService;
 
 /**
  * @author : kevin

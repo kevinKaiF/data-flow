@@ -1,12 +1,14 @@
 package com.github.dataflow.node.model.instance.oracle;
 
 import com.github.dataflow.common.utils.Closer;
+import com.github.dataflow.common.utils.DBMetaUtil;
+import com.github.dataflow.node.exception.InstanceException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.ResultSet;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -16,22 +18,34 @@ import java.util.*;
  * @description :
  * @date : 2017/11/9
  */
-public class SyncTableNameParser {
+public class TableNameParser {
     public static List<String> parse(DataSource oracleDataSource, String whiteFilter, String blackFilter) {
         Connection connection = null;
+        List<String> tableNamesToUse = new ArrayList<>();
         try {
             Set<String> tableNames = new HashSet<>();
-            Map<String, Map<String, String>> blackTableMap = getBlackTableMap(blackFilter);
-            String[] splits = whiteFilter.split(",");
             connection = oracleDataSource.getConnection();
+            final Map<String, Map<String, String>> blackTableMap = getBlackTableMap(blackFilter, connection);
+            String[] splits = whiteFilter.split(",");
+            DatabaseMetaData metaData = connection.getMetaData();
             for (String split : splits) {
                 String fullTableName = split.trim();
                 if (!StringUtils.isEmpty(fullTableName)) {
                     String[] str = fullTableName.split("\\.");
-                    String schemaName = str[0].toUpperCase();
-                    String tableName = str[1].toUpperCase();
+                    final String schemaName = DBMetaUtil.getCanonicalName(str[0], metaData);
+                    String tableName = DBMetaUtil.getCanonicalName(str[1], metaData);
+                    // schema.*这种格式
                     if ("*".equals(tableName)) {
-                        tableNames.addAll(getTableNames(connection, schemaName, blackTableMap));
+                        List<String> tableNameList = DBMetaUtil.getTableNames(connection, schemaName, new DBMetaUtil.TableFilter() {
+                            @Override
+                            public void doFilter(List<String> tableNameList, String tableName) {
+                                String fullTableName = schemaName + "." + tableName;
+                                if (!filterBlackTable(schemaName, tableName, blackTableMap)) {
+                                    tableNameList.add(fullTableName);
+                                }
+                            }
+                        });
+                        tableNames.addAll(tableNameList);
                     } else {
                         if (!filterBlackTable(schemaName, tableName, blackTableMap)) {
                             tableNames.add(fullTableName);
@@ -39,12 +53,18 @@ public class SyncTableNameParser {
                     }
                 }
             }
+
+            tableNamesToUse.addAll(tableNames);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new InstanceException(e);
         } finally {
             Closer.closeQuietly(connection);
         }
-        return null;
+
+        if (tableNamesToUse.size() == 0) {
+            throw new InstanceException(String.format("there is no valid tables, whiteFilter : %s, blackFilter : %s", whiteFilter, blackFilter));
+        }
+        return tableNamesToUse;
     }
 
     /**
@@ -79,16 +99,17 @@ public class SyncTableNameParser {
         }
     }
 
-    private static Map<String, Map<String, String>> getBlackTableMap(String blackFilter) {
+    private static  Map<String, Map<String, String>> getBlackTableMap(String blackFilter, Connection connection) throws SQLException {
         Map<String, Map<String, String>> blackTableMap = new HashMap<>();
+        DatabaseMetaData metaData = connection.getMetaData();
         if (!StringUtils.isEmpty(blackFilter)) {
-            String[] ss = blackFilter.split(",");
-            for (String split : ss) {
+            String[] schemaAndTable = blackFilter.split(",");
+            for (String split : schemaAndTable) {
                 String fullTableName = split.trim();
                 if (!StringUtils.isEmpty(fullTableName)) {
                     String[] str = fullTableName.split("\\.");
-                    String schemaName = str[0].toUpperCase();
-                    String tableName = str[1].toUpperCase();
+                    String schemaName = DBMetaUtil.getCanonicalName(str[0], metaData);
+                    String tableName = DBMetaUtil.getCanonicalName(str[1], metaData);
                     Map<String, String> tableMap = blackTableMap.get(schemaName);
                     if (tableMap == null) {
                         tableMap = new HashMap<>();
@@ -100,23 +121,5 @@ public class SyncTableNameParser {
             }
         }
         return blackTableMap;
-    }
-
-    private static List<String> getTableNames(Connection connection, String schemaName, Map<String, Map<String, String>> blackTableMap) throws SQLException {
-        ResultSet resultSet = null;
-        List<String> tableNameList = new ArrayList<>();
-        try {
-            resultSet = connection.getMetaData().getTables(schemaName, null, "%", new String[]{"TABLE"});
-            while (resultSet.next()) {
-                String tableName = resultSet.getString("TABLE_NAME");
-                String fullTableName = schemaName + "." + tableName;
-                if (!filterBlackTable(schemaName, tableName, blackTableMap)) {
-                    tableNameList.add(fullTableName);
-                }
-            }
-        } finally {
-            Closer.closeQuietly(resultSet);
-        }
-        return tableNameList;
     }
 }

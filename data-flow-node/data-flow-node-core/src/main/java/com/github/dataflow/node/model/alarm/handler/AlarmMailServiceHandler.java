@@ -2,9 +2,9 @@ package com.github.dataflow.node.model.alarm.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.github.dataflow.core.alarm.AlarmService;
 import com.github.dataflow.dubbo.common.enums.DataAlarmType;
 import com.github.dataflow.dubbo.model.DataAlarm;
+import com.github.dataflow.node.model.alarm.AlarmService;
 import com.github.dataflow.node.model.alarm.MailAlarmService;
 import org.springframework.stereotype.Component;
 

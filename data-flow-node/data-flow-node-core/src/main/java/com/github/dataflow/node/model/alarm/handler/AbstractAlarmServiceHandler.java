@@ -1,9 +1,8 @@
 package com.github.dataflow.node.model.alarm.handler;
 
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.alarm.handler.AlarmServiceHandler;
 import com.github.dataflow.dubbo.model.DataAlarm;
 import com.github.dataflow.node.model.alarm.AbstractAlarmService;
+import com.github.dataflow.node.model.alarm.AlarmService;
 import com.github.dataflow.node.model.config.DataFlowContext;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -6,19 +6,19 @@ package com.github.dataflow.sender.database.config;
  * @description :
  * @date : 2017/6/24
  */
-public class DatabaseConfig {
-    public static class MappingConfig extends com.github.dataflow.sender.core.config.MappingConfig{
-        public static final String BATCH = "batch";
+public interface DatabaseConfig {
+    interface MappingConfig extends com.github.dataflow.sender.core.config.MappingConfig{
+        String BATCH = "batch";
     }
-    public static final String HOST = "host";
+    String HOST = "host";
 
-    public static final String PORT = "port";
+    String PORT = "port";
 
-    public static final String JDBC_URL = "jdbcUrl";
+    String JDBC_URL = "jdbcUrl";
 
-    public static final String USERNAME = "username";
+    String USERNAME = "username";
 
-    public static final String PASSWORD = "password";
+    String PASSWORD = "password";
 
 
 }

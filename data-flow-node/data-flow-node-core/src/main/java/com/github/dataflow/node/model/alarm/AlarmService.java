@@ -1,4 +1,4 @@
-package com.github.dataflow.core.alarm;
+package com.github.dataflow.node.model.alarm;
 
 
 import com.github.dataflow.common.model.DataFlowLifeCycle;

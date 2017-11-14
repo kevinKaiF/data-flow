@@ -5,6 +5,7 @@ import org.I0Itec.zkclient.IZkChildListener;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +25,8 @@ public class ZookeeperClient implements InitializingBean {
     private ZkClientx zkClientx;
 
     public void afterPropertiesSet() throws Exception {
-        zkClientx = ZkClientx.getZkClient(zookeeperAddresses);
+        String replacedZookeeperAddresses = StringUtils.replace(zookeeperAddresses, ",", ";");
+        zkClientx = ZkClientx.getZkClient(replacedZookeeperAddresses);
     }
 
     public void createEphemeral(String path, Object data) {

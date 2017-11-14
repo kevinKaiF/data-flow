@@ -171,6 +171,10 @@
             <groupId>com.github.data-flow</groupId>
             <artifactId>data-flow-service-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ojdbc</groupId>
+            <artifactId>ojdbc</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>${pom.application.name}</finalName>

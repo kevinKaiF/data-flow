@@ -1,6 +1,5 @@
 package com.github.dataflow.node.model.alarm;
 
-import com.github.dataflow.core.alarm.AlarmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

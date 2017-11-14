@@ -1,8 +1,8 @@
 package com.github.dataflow.node.controller;
 
 import com.github.dataflow.common.model.ResponseEntity;
-import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.core.instance.InstanceManager;
+import com.github.dataflow.node.model.instance.Instance;
+import com.github.dataflow.node.model.instance.InstanceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ public class NodeController {
         ResponseEntity responseEntity = new ResponseEntity();
         try {
             Instance instance = InstanceManager.get(instanceName);
-            String position = instance.getPosition(instanceName);
+            String position = instance.getPosition();
             responseEntity.setResult(position);
         } catch (Exception e) {
             logger.error("get the position of DataInstance [{}] failure, detail : ", instanceName, e);

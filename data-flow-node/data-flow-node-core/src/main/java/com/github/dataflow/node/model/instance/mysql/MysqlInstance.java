@@ -1,9 +1,9 @@
 package com.github.dataflow.node.model.instance.mysql;
 
 import com.alibaba.otter.canal.instance.manager.model.CanalParameter;
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.instance.AbstractInstance;
-import com.github.dataflow.core.store.DataStore;
+import com.github.dataflow.node.model.alarm.AlarmService;
+import com.github.dataflow.node.model.instance.AbstractInstance;
+import com.github.dataflow.node.model.store.DataStore;
 
 /**
  * @author kevin
@@ -35,8 +35,8 @@ public class MysqlInstance extends AbstractInstance {
     }
 
     @Override
-    public String getPosition(String instanceName) {
-        return mysqlInstanceDelegate.getPosition(instanceName);
+    public String getPosition() {
+        return mysqlInstanceDelegate.getPosition();
     }
 
     @Override

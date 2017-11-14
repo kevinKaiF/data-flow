@@ -1,8 +1,8 @@
-package com.github.dataflow.core.instance.handler;
+package com.github.dataflow.node.model.instance.handler;
 
 
-import com.github.dataflow.core.instance.Instance;
 import com.github.dataflow.dubbo.model.DataInstance;
+import com.github.dataflow.node.model.instance.Instance;
 
 /**
  * @author kevin

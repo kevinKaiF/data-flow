@@ -3,8 +3,8 @@ package com.github.dataflow.node.model.instance.activemq;
 import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.common.utils.JSONObjectUtil;
-import com.github.dataflow.core.exception.InstanceException;
-import com.github.dataflow.core.instance.AbstractMessageAwareInstance;
+import com.github.dataflow.node.exception.InstanceException;
+import com.github.dataflow.node.model.instance.AbstractPooledInstance;
 import com.github.dataflow.sender.activemq.config.ActivemqConfig;
 import com.github.dataflow.sender.activemq.enums.ActivemqType;
 import com.github.dataflow.sender.activemq.utils.Closer;
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @description :
  * @date : 2017/7/4
  */
-public class ActivemqInstance extends AbstractMessageAwareInstance {
+public class ActivemqInstance extends AbstractPooledInstance {
     private Logger logger = LoggerFactory.getLogger(ActivemqInstance.class);
 
     private static final AtomicLong atomicLong = new AtomicLong(0);
@@ -57,7 +57,7 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
     }
 
     @Override
-    public String getPosition(String instanceName) {
+    public String getPosition() {
         return null;
     }
 
@@ -119,7 +119,7 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
             @Override
             public void run() {
                 Throwable ex = null;
-                while (running && ex == null) {
+                while (running) {
                     try {
                         TextMessage message = (TextMessage) consumer.receive(timeout);
                         String value = message.getText();
@@ -128,6 +128,7 @@ public class ActivemqInstance extends AbstractMessageAwareInstance {
                         do {
                             try {
                                 handle(rowMetaDataList);
+                                ex = null;
                             } catch (Throwable e) {
                                 handleException(e);
                                 ex = e;

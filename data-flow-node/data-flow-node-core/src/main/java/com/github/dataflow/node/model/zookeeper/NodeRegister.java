@@ -2,10 +2,10 @@ package com.github.dataflow.node.model.zookeeper;
 
 import com.github.dataflow.common.utils.Constants;
 import com.github.dataflow.common.utils.IPUtil;
-import com.github.dataflow.core.alarm.AlarmService;
 import com.github.dataflow.dubbo.common.enums.DataInstanceModel;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.node.exception.InstanceInvalidException;
+import com.github.dataflow.node.model.alarm.AlarmService;
 import com.github.dataflow.node.model.config.DataFlowContext;
 import com.github.dataflow.node.service.InstanceService;
 import org.I0Itec.zkclient.IZkChildListener;

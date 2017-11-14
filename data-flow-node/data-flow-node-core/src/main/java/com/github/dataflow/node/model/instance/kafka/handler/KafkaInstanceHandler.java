@@ -2,20 +2,18 @@ package com.github.dataflow.node.model.instance.kafka.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.dataflow.common.utils.JSONObjectUtil;
-import com.github.dataflow.core.alarm.AlarmService;
-import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.core.instance.config.MessageAwareInstanceConfig;
-import com.github.dataflow.core.instance.handler.AbstractMessageAwareInstanceHandler;
-import com.github.dataflow.core.instance.handler.InstanceHandler;
-import com.github.dataflow.core.store.DataStore;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataInstance;
-import com.github.dataflow.node.model.config.DataFlowContext;
+import com.github.dataflow.node.model.alarm.AlarmService;
+import com.github.dataflow.node.model.instance.Instance;
+import com.github.dataflow.node.model.instance.PooledInstanceConfig;
+import com.github.dataflow.node.model.instance.handler.AbstractPooledInstanceHandler;
+import com.github.dataflow.node.model.instance.handler.InstanceHandler;
 import com.github.dataflow.node.model.instance.kafka.KafkaInstance;
+import com.github.dataflow.node.model.store.DataStore;
 import com.github.dataflow.node.model.store.DefaultDataStore;
 import com.github.dataflow.sender.kafka.config.KafkaConfig;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,11 +23,8 @@ import org.springframework.stereotype.Component;
  * @date : 2017/6/30
  */
 @Component
-public class KafkaInstanceHandler extends AbstractMessageAwareInstanceHandler implements InstanceHandler {
+public class KafkaInstanceHandler extends AbstractPooledInstanceHandler implements InstanceHandler {
     private DataSourceType dataSourceType = DataSourceType.KAFKA;
-
-    @Autowired
-    private DataFlowContext dataFlowContext;
 
     @Override
     protected DataStore doBuildDataStore() {
@@ -48,10 +43,10 @@ public class KafkaInstanceHandler extends AbstractMessageAwareInstanceHandler im
         validateProperties(options, ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG);
         validateProperties(options, KafkaConfig.MappingConfig.TOPIC);
         // set property
-        Long timeout = JSONObjectUtil.getLong(options, MessageAwareInstanceConfig.POLL_TIMEOUT, DEFAULT_TIMEOUT);
-        Long period = JSONObjectUtil.getLong(options, MessageAwareInstanceConfig.POLL_PERIOD, DEFAULT_PERIOD);
-        options.put(MessageAwareInstanceConfig.POLL_TIMEOUT, timeout);
-        options.put(MessageAwareInstanceConfig.POLL_PERIOD, period);
+        Long timeout = JSONObjectUtil.getLong(options, PooledInstanceConfig.POLL_TIMEOUT, DEFAULT_TIMEOUT);
+        Long period = JSONObjectUtil.getLong(options, PooledInstanceConfig.POLL_PERIOD, DEFAULT_PERIOD);
+        options.put(PooledInstanceConfig.POLL_TIMEOUT, timeout);
+        options.put(PooledInstanceConfig.POLL_PERIOD, period);
         options.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         options.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
         // create instance

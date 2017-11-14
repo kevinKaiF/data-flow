@@ -1,15 +1,15 @@
 package com.github.dataflow.node.service;
 
 import com.github.dataflow.common.utils.IPUtil;
-import com.github.dataflow.core.exception.InstanceException;
-import com.github.dataflow.core.instance.Instance;
-import com.github.dataflow.core.instance.InstanceManager;
 import com.github.dataflow.dubbo.common.enums.DataInstanceStatus;
 import com.github.dataflow.dubbo.model.DataInstance;
 import com.github.dataflow.dubbo.model.PageSet;
 import com.github.dataflow.dubbo.model.ServiceResult;
 import com.github.dataflow.dubbo.service.DubboDataInstanceService;
+import com.github.dataflow.node.exception.InstanceException;
 import com.github.dataflow.node.exception.InstanceInvalidException;
+import com.github.dataflow.node.model.instance.Instance;
+import com.github.dataflow.node.model.instance.InstanceManager;
 import com.github.dataflow.node.model.instance.factory.InstanceFactory;
 import com.github.dataflow.node.model.zookeeper.InstanceRegister;
 import com.github.dataflow.node.model.zookeeper.NodeRegister;

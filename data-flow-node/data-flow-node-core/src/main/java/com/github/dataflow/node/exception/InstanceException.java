@@ -1,4 +1,4 @@
-package com.github.dataflow.core.exception;
+package com.github.dataflow.node.exception;
 
 /**
  * @author kevin

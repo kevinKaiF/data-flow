@@ -406,7 +406,7 @@
                     })
                 },
                 __isEmpty: function (data) {
-                    if (typeof data === "undefined") {
+                    if (typeof data === "undefined" || data.length == 0) {
                         return true;
                     } else {
                         return false;
@@ -428,6 +428,8 @@
                                 var props = ["username", "password", "host", "port", "jdbcUrl", "slaveId"];
                                 return wizard.__validateProperty(json, props);
                             case 11: // Oracle
+                                var props = ["username", "password", "host", "port", "jdbcUrl", "whiteFilter"];
+                                return wizard.__validateProperty(json, props);
                             case 12: // PostGreSQL
                             case 13: // SQLServer
                                 var props = ["username", "password", "host", "port", "jdbcUrl"];

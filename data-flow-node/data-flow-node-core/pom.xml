@@ -180,10 +180,6 @@
         </dependency>
         <dependency>
             <groupId>com.github.data-flow</groupId>
-            <artifactId>data-flow-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.data-flow</groupId>
             <artifactId>data-flow-sender-kafka</artifactId>
             <version>${data-flow.version}</version>
         </dependency>

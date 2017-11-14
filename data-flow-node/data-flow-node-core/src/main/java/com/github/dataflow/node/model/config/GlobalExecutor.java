@@ -9,6 +9,8 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * 全局线程池，异步处理Node本身的任务
+ *
  * @author : kevin
  * @version : Ver 1.0
  * @description :

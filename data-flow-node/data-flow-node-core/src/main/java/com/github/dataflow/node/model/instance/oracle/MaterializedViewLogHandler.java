@@ -23,11 +23,11 @@ import java.util.Map;
 public class MaterializedViewLogHandler {
     private static final String CREATE_VIEW_LOG = "CREATE MATERIALIZED VIEW LOG ON {0}.{1} WITH ROWID, SEQUENCE({2}) INCLUDING NEW VALUES ";
 
-    private static final String SELECT_VIEW_LOG = "SELECT ROWID,{0} FROM {1}.{2} WHERE ROWNUM <= {3} ORDER BY SEQUENCE$$ ASC";
+    private static final String SELECT_VIEW_LOG = "SELECT ROWID,DMLTYPE$$,SEQUENCE$$,M_ROW$$,OLD_NEW$$,{0} FROM {1}.{2} WHERE ROWNUM <= {3} ORDER BY SEQUENCE$$ ASC";
 
-    private static final String DELETE_VIEW_LOG = "DELETE FROM {0}.{1} WHERE ROWID in ({3})";
+    private static final String DELETE_VIEW_LOG = "DELETE FROM {0}.{1} WHERE ROWID in ({2})";
 
-    private static final String QUERY_VIEW_LOG = "SELECT MASTER,LOG_TABLE FROM ALL_MVIEW_LOGS WHERE MASTER = {0} AND LOG_OWNER = {1}";
+    private static final String QUERY_VIEW_LOG = "SELECT MASTER,LOG_TABLE FROM ALL_MVIEW_LOGS WHERE MASTER = ? AND LOG_OWNER = ?";
 
     // 物化日志不支持的类型
     private static Map<Integer, Integer> blackJdbcType = new HashMap<>();
@@ -55,8 +55,10 @@ public class MaterializedViewLogHandler {
     public QueryViewLogCallback.RowMetaDataHolder queryViewLog(TableMeta tableMeta) throws SQLException {
         Connection connection = getConnection();
         if (!tableMeta.hasViewLog()) {
-            String querySql = MessageFormat.format(QUERY_VIEW_LOG, tableMeta.getSchema(), tableMeta.getTable());
-            List<Map<String, Object>> viewLogList = DBUtil.query(connection, querySql);
+            List<Object> params = new ArrayList<>();
+            params.add(tableMeta.getTable());
+            params.add(tableMeta.getSchema());
+            List<Map<String, Object>> viewLogList = DBUtil.query(connection, QUERY_VIEW_LOG, params);
             // 没有物化日志
             if (CollectionUtils.isEmpty(viewLogList)) {
                 String columns = tableMeta.getWhiteColumnsString();
@@ -65,13 +67,12 @@ public class MaterializedViewLogHandler {
             }
 
             // 再查询一次
-            viewLogList = DBUtil.query(connection, querySql);
+            viewLogList = DBUtil.query(connection, QUERY_VIEW_LOG, params);
             String viewLogName = ((String) viewLogList.get(0).get("LOG_TABLE"));
             tableMeta.setViewLogName(viewLogName);
         }
 
-        String columns = tableMeta.getWhiteColumnsString();
-        String selectSql = MessageFormat.format(SELECT_VIEW_LOG, columns, tableMeta.getSchema(), tableMeta.getViewLogName(), queryPageSize);
+        String selectSql = MessageFormat.format(SELECT_VIEW_LOG, tableMeta.getWhiteColumnsString(), tableMeta.getSchema(), tableMeta.getViewLogName(), queryPageSize);
         QueryViewLogCallback.RowMetaDataHolder metaDataHolder = DBUtil.query(connection, selectSql, null, new QueryViewLogCallback(tableMeta, connection));
         return metaDataHolder;
     }
@@ -138,7 +139,7 @@ public class MaterializedViewLogHandler {
                 }
                 placeHolders.append("?");
             }
-            String deleteSql = MessageFormat.format(DELETE_VIEW_LOG, tableMeta.getSchema(), tableMeta.getTable(), placeHolders.toString());
+            String deleteSql = MessageFormat.format(DELETE_VIEW_LOG, tableMeta.getSchema(), tableMeta.getViewLogName(), placeHolders.toString());
             DBUtil.execute(connection, deleteSql, rowIds);
         } finally {
             Closer.closeQuietly(preparedStatement);
@@ -166,11 +167,11 @@ public class MaterializedViewLogHandler {
         // 支持物化日志的列
         private List<RowMetaData.ColumnMeta> whiteColumns;
         // 物化日志名称
-        private String                       viewLogName;
+        private String viewLogName;
         // 物化日志所有列
-        private String                       whiteColumnString;
+        private String whiteColumnString;
         // 不支持物化日志的列
-        private String                       blackColumnString;
+        private String blackColumnString;
 
 
         public TableMeta(String schema, String table, List<RowMetaData.ColumnMeta> fullColumns) {
@@ -221,7 +222,7 @@ public class MaterializedViewLogHandler {
                 if (i > 0) {
                     columnBuilder.append(", ");
                 }
-                columnBuilder.append(columns.get(i));
+                columnBuilder.append(columns.get(i).getColumnName());
             }
 
             return columnBuilder.toString();

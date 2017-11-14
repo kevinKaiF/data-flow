@@ -8,11 +8,11 @@ import com.github.dataflow.sender.core.config.MessageQueueMappingConfig;
  * @description :
  * @date : 2017/7/4
  */
-public class KafkaConfig {
-    public static class MappingConfig extends MessageQueueMappingConfig {
-        public static final String TOPIC = "topic";
+public interface KafkaConfig {
+    interface MappingConfig extends MessageQueueMappingConfig {
+        String TOPIC = "topic";
 
         // 指定消费端的分区
-        public static final String TOPIC_PARTITION = "topicPartition";
+        String TOPIC_PARTITION = "topicPartition";
     }
 }

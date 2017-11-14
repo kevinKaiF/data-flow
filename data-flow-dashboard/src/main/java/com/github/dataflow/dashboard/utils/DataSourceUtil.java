@@ -3,7 +3,10 @@ package com.github.dataflow.dashboard.utils;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.fastjson.JSON;
 import com.github.dataflow.common.utils.PropertyUtil;
+import com.github.dataflow.dashboard.exception.DataFlowException;
+import com.github.dataflow.dubbo.common.enums.DataSourceType;
 import com.github.dataflow.dubbo.model.DataInstance;
+import oracle.jdbc.pool.OracleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -21,9 +24,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DataSourceUtil {
     private static Map<DataInstance, DataSource> dataSourceCache = new ConcurrentHashMap<>();
 
-    public static javax.sql.DataSource getDataSource(DataInstance dataInstance) {
-        // just support mysql
-        return getMySqlDataSource(dataInstance);
+    private static javax.sql.DataSource getDataSource(DataInstance dataInstance) {
+        DataSourceType dataSourceType = DataSourceType.parse(dataInstance.getType());
+        switch (dataSourceType) {
+            case MYSQL:
+                return getMySqlDataSource(dataInstance);
+            case ORACLE:
+                return getOracleDataSource(dataInstance);
+            default:
+                throw new DataFlowException("don't support DataSourceType : " + dataSourceType);
+        }
     }
 
     public static synchronized Connection getConnection(DataInstance dataInstance) throws SQLException {
@@ -35,18 +45,18 @@ public class DataSourceUtil {
         return dataSource.getConnection();
     }
 
-//    private static javax.sql.DataSource getOracleDataSource(DataInstance dataInstance) {
-//        OracleDataSource oracleDataSource = null;
-//        try {
-//            oracleDataSource = new OracleDataSource();
-//            oracleDataSource.setURL(dataInstance.getJdbcUrl());
-//            oracleDataSource.setUser(dataInstance.getUsername());
-//            oracleDataSource.setPassword(dataInstance.getPassword());
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return oracleDataSource;
-//    }
+    private static javax.sql.DataSource getOracleDataSource(DataInstance dataInstance) {
+        try {
+            Properties properties = JSON.parseObject(dataInstance.getOptions(), Properties.class);
+            OracleDataSource oracleDataSource = new OracleDataSource();
+            oracleDataSource.setURL(PropertyUtil.getString(properties, "jdbcUrl"));
+            oracleDataSource.setUser(PropertyUtil.getString(properties, "username"));
+            oracleDataSource.setPassword(PropertyUtil.getString(properties, "password"));
+            return oracleDataSource;
+        } catch (SQLException e) {
+            throw new DataFlowException(e);
+        }
+    }
 
     private static javax.sql.DataSource getMySqlDataSource(DataInstance dataInstance) {
         try {
@@ -75,8 +85,7 @@ public class DataSourceUtil {
             druidDataSource.setValidConnectionCheckerClassName("com.alibaba.druid.pool.vendor.MySqlValidConnectionChecker");
             return druidDataSource;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new DataFlowException(e);
         }
-        return null;
     }
 }

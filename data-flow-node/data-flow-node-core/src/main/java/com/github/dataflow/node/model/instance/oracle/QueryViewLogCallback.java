@@ -3,6 +3,7 @@ package com.github.dataflow.node.model.instance.oracle;
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.sender.core.utils.DBUtil;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -23,6 +24,8 @@ public class QueryViewLogCallback implements DBUtil.ResultSetCallback<QueryViewL
     private static final String QUERY_BY_SEQUENCE$$ = "SELECT ROWID,{0} FROM {1}.{2} WHERE SEQUENCE$$ = {3}";
 
     private static final String QUERY_SOURCE_BY_ROWID = "SELECT {0} FROM {1}.{2} WHERE ROWID = ?";
+
+    private static String TIME_STAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
     private static Logger logger = LoggerFactory.getLogger(OracleInstance.class);
 
@@ -77,10 +80,10 @@ public class QueryViewLogCallback implements DBUtil.ResultSetCallback<QueryViewL
             public List<RowMetaData.ColumnMeta> execute(ResultSet resultSet) throws SQLException {
                 List<RowMetaData.ColumnMeta> columnMetaList = new ArrayList<>();
                 if (resultSet.next()) {
-                    List<RowMetaData.ColumnMeta> blackColumns1 = tableMeta.getBlackColumns();
-                    for (RowMetaData.ColumnMeta blackColumn : blackColumns1) {
+                    List<RowMetaData.ColumnMeta> blackColumns = tableMeta.getBlackColumns();
+                    for (RowMetaData.ColumnMeta blackColumn : blackColumns) {
                         RowMetaData.ColumnMeta columnMeta = blackColumn.clone();
-                        columnMeta.setValue(getColumnValue(resultSet, blackColumn));
+                        parseColumnValue(resultSet, columnMeta);
                         columnMetaList.add(columnMeta);
                     }
                 }
@@ -118,35 +121,24 @@ public class QueryViewLogCallback implements DBUtil.ResultSetCallback<QueryViewL
         List<RowMetaData.ColumnMeta> columnValues = new LinkedList<>();
         for (RowMetaData.ColumnMeta whiteColumn : whiteColumns) {
             RowMetaData.ColumnMeta columnMeta = whiteColumn.clone();
-            columnMeta.setValue(getColumnValue(resultSet, whiteColumn));
+            parseColumnValue(resultSet, columnMeta);
             columnValues.add(columnMeta);
         }
         return columnValues;
     }
 
-    /**
-     * 将字段处理为字符串
-     *
-     * @param resultSet
-     * @param columnMeta
-     * @return
-     * @throws SQLException
-     */
-    protected String getColumnValue(ResultSet resultSet, RowMetaData.ColumnMeta columnMeta) throws SQLException {
+    private void parseColumnValue(ResultSet resultSet, RowMetaData.ColumnMeta columnMeta) throws SQLException {
         String value = null;
-        if (columnMeta.getJdbcType() == Types.DATE){
-            Date date = resultSet.getDate(columnMeta.getColumnName());
-            value = date == null ? null : String.valueOf(date.getTime());
-        } else if  (columnMeta.getJdbcType() == Types.TIMESTAMP){
+        if  (columnMeta.getJdbcType() == Types.TIMESTAMP){
             Timestamp timestamp = resultSet.getTimestamp(columnMeta.getColumnName());
-            value = timestamp == null ? null : String.valueOf(timestamp.getTime());
+            value = timestamp == null ? null : String.valueOf(new DateTime(timestamp.getTime()).toString(TIME_STAMP_PATTERN));
         } else {
             Object object = resultSet.getObject(columnMeta.getColumnName());
             value = object == null ? null : String.valueOf(object);
         }
-        return value;
-    }
 
+        columnMeta.setValue(value);
+    }
 
     private RowMetaData buildUpdateRecord(ResultSet resultSet, MaterializedViewLogHandler.TableMeta tableMeta, List<Object> rowIds) throws SQLException {
         rowIds.add(getRowId(resultSet));

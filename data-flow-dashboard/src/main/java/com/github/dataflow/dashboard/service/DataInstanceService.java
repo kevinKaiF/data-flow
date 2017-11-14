@@ -71,6 +71,9 @@ public class DataInstanceService {
     }
 
     public Long update(DataInstance dataInstance) {
+        DataInstance dataInstanceToUse = getById(dataInstance.getId());
+        dataInstance.setStatus(dataInstanceToUse.getStatus());
+        dataInstance.setNodePath(dataInstanceToUse.getNodePath());
         dataInstance.setName(updateName(dataInstance.getName(), dataInstance.getTag()));
         dataInstance.setUpdateTime(new Date());
         ServiceResult<Integer> serviceResult = dubboDataInstanceService.update(dataInstance);
