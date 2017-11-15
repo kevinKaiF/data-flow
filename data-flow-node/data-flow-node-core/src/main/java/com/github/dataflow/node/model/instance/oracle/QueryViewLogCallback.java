@@ -1,13 +1,18 @@
 package com.github.dataflow.node.model.instance.oracle;
 
 import com.github.dataflow.common.model.RowMetaData;
+import com.github.dataflow.node.exception.InstanceException;
 import com.github.dataflow.sender.core.utils.DBUtil;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.sql.*;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -127,17 +132,76 @@ public class QueryViewLogCallback implements DBUtil.ResultSetCallback<QueryViewL
         return columnValues;
     }
 
+    /**
+     * note:处理不支持物化日志字段
+     *
+     * @param resultSet
+     * @param columnMeta
+     * @throws SQLException
+     */
     private void parseColumnValue(ResultSet resultSet, RowMetaData.ColumnMeta columnMeta) throws SQLException {
         String value = null;
-        if  (columnMeta.getJdbcType() == Types.TIMESTAMP){
-            Timestamp timestamp = resultSet.getTimestamp(columnMeta.getColumnName());
-            value = timestamp == null ? null : String.valueOf(new DateTime(timestamp.getTime()).toString(TIME_STAMP_PATTERN));
-        } else {
-            Object object = resultSet.getObject(columnMeta.getColumnName());
-            value = object == null ? null : String.valueOf(object);
+        String columnName = columnMeta.getColumnName();
+        switch (columnMeta.getJdbcType()) {
+            case Types.TIMESTAMP:
+                Timestamp timestamp = resultSet.getTimestamp(columnName);
+                value = timestamp == null ? null : String.valueOf(new DateTime(timestamp.getTime()).toString(TIME_STAMP_PATTERN));
+                break;
+            case Types.CLOB:
+            case Types.NCLOB:
+                value = getClobColumnValue(resultSet, columnName);
+                break;
+            case Types.BLOB:
+            case Types.BINARY:
+            case Types.VARBINARY:
+            case Types.LONGVARBINARY:
+                value = getBlobColumnValue(resultSet, columnName);
+                break;
+            default:
+                Object object = resultSet.getObject(columnName);
+                value = object == null ? null : String.valueOf(object);
         }
-
         columnMeta.setValue(value);
+    }
+
+    /**
+     * 获取clob字段数据
+     *
+     * @param resultSet
+     * @param columnName
+     * @return
+     * @throws SQLException
+     */
+    private String getClobColumnValue(ResultSet resultSet, String columnName) throws SQLException {
+        Reader reader = null;
+        try {
+            reader = resultSet.getCharacterStream(columnName);
+            return (reader == null ? null :  IOUtils.toString(reader));
+        } catch (IOException e) {
+            throw new InstanceException("caught exception when get the black column[" + columnName + "] value, detail:", e);
+        } finally {
+            IOUtils.closeQuietly(reader);
+        }
+    }
+
+    /**
+     * 获取blob字段数据
+     *
+     * @param resultSet
+     * @param columnName
+     * @return
+     * @throws SQLException
+     */
+    private String getBlobColumnValue(ResultSet resultSet, String columnName) throws SQLException {
+        InputStream inputStream = null;
+        try {
+            inputStream = resultSet.getBinaryStream(columnName);
+            return (inputStream == null ? null :  IOUtils.toString(inputStream));
+        } catch (IOException e) {
+            throw new InstanceException("caught exception when get the black column[" + columnName + "] value, detail:", e);
+        } finally {
+            IOUtils.closeQuietly(inputStream);
+        }
     }
 
     private RowMetaData buildUpdateRecord(ResultSet resultSet, MaterializedViewLogHandler.TableMeta tableMeta, List<Object> rowIds) throws SQLException {
