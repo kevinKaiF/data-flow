@@ -494,6 +494,10 @@
                                                                               id="profile-tab" data-toggle="tab"
                                                                               aria-expanded="false">Mysql</a>
                                     </li>
+                                    <li role="presentation" class=""><a href="#tab_content2" role="tab"
+                                                                              id="profile-tab" data-toggle="tab"
+                                                                              aria-expanded="false">Oracle</a>
+                                    </li>
                                     <li role="presentation" class=""><a href="#tab_content5" role="tab"
                                                                         id="profile-tab5" data-toggle="tab"
                                                                         aria-expanded="false">Kafka</a>
@@ -513,8 +517,20 @@
     "port":"",
     "jdbcUrl":"",
     "slaveId":"",
-    "whiteFilter":"white\\..*",
-    "blackFilter":"black\\..*"
+    "whiteFilter":"schema\\..*",
+    "blackFilter":"schema\\..*"
+}</textarea>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content2"
+                                         aria-labelledby="profile-tab">
+                                        <textarea style="width: 100%;" rows="12" readonly>{
+    "username":"",
+    "password":"",
+    "host":"",
+    "port":"",
+    "jdbcUrl":"",
+    "whiteFilter":"schema.*",
+    "blackFilter":"schema.*"
 }</textarea>
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade" id="tab_content5"
