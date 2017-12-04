@@ -48,7 +48,7 @@ public class DefaultDataStore extends AbstractDataFlowLifeCycle implements DataS
      * <p>
      * key是schema.name格式，value设计成map，方便快速查找
      */
-    protected Map<String, Map<String, List<String>>> columnsToFilterMap;
+    protected Map<String, Map<String, Map<String, Boolean>>> columnsToFilterMap;
 
     /**
      * instance的名称
@@ -91,21 +91,29 @@ public class DefaultDataStore extends AbstractDataFlowLifeCycle implements DataS
             for (RowMetaData rowMetaData : rowMetaDataList) {
                 // 暂不考虑schema,table大小写的问题
                 String fullTableName = rowMetaData.getSchemaName() + "." + rowMetaData.getTableName();
-                Map<String, List<String>> columnNamesToFilter = columnsToFilterMap.get(fullTableName);
+                Map<String, Map<String, Boolean>> columnNamesToFilter = columnsToFilterMap.get(fullTableName);
                 if (!CollectionUtils.isEmpty(columnNamesToFilter)) {
-                    List<RowMetaData.ColumnMeta> beforeColumns = rowMetaData.getBeforeColumns();
-                    for (int i = 0; i < beforeColumns.size(); ) {
-                        List<String> columns = columnNamesToFilter.get(rowMetaData.getTableName());
-                        if (columns != null && columns.contains(beforeColumns.get(i).getColumnName())) {
-                            i++;
-                        } else {
-                            beforeColumns.remove(i);
-                        }
+                    Map<String, Boolean> columnMap = columnNamesToFilter.get(rowMetaData.getTableName());
+                    if (!CollectionUtils.isEmpty(columnMap)) {
+                        filterColumn(columnMap, rowMetaData.getBeforeColumns());
+                        filterColumn(columnMap, rowMetaData.getAfterColumns());
                     }
                 }
             }
         }
         return rowMetaDataList;
+    }
+
+    private void filterColumn(Map<String, Boolean> columnMap, List<RowMetaData.ColumnMeta> columns) {
+        if (!CollectionUtils.isEmpty(columns)) {
+            for (int i = 0; i < columns.size(); ) {
+                if (columnMap != null && columnMap.get(columns.get(i).getColumnName()) != null) {
+                    i++;
+                } else {
+                    columns.remove(i);
+                }
+            }
+        }
     }
 
     @Override
@@ -167,11 +175,11 @@ public class DefaultDataStore extends AbstractDataFlowLifeCycle implements DataS
         this.dataSenderMap = dataSenderMap;
     }
 
-    public Map<String, Map<String, List<String>>> getColumnsToFilterMap() {
+    public Map<String, Map<String, Map<String, Boolean>>> getColumnsToFilterMap() {
         return columnsToFilterMap;
     }
 
-    public void setColumnsToFilterMap(Map<String, Map<String, List<String>>> columnsToFilterMap) {
+    public void setColumnsToFilterMap(Map<String, Map<String, Map<String, Boolean>>> columnsToFilterMap) {
         this.columnsToFilterMap = columnsToFilterMap;
     }
 

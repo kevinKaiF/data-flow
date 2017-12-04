@@ -22,7 +22,7 @@ public interface DataStore extends DataFlowLifeCycle {
 
     void setDataSenderMap(Map<String, DataSender> dataSenderMap);
 
-    void setColumnsToFilterMap(Map<String, Map<String, List<String>>> columnsToFilterMap);
+    void setColumnsToFilterMap(Map<String, Map<String, Map<String, Boolean>>> columnsToFilterMap);
 
     void setInstanceName(String instanceName);
 }

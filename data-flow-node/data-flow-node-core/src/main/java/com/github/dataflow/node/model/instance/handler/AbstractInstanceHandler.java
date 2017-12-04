@@ -58,14 +58,14 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
             throw new InstanceException("dataOutputMappings must not be empty.");
         }
 
-        // transform
         DataStore dataStore = doBuildDataStore();
+        // transform
         if (!StringUtils.isEmpty(dataInstance.getTransformScript())) {
             dataStore.setDataTransformer(new PreGroovyShellDataTransformer(dataInstance.getTransformScript()));
         }
 
         // filter
-        Map<String, Map<String, List<String>>> columnsToFilterMap = buildColumnsToFilterMap(dataInstance);
+        Map<String, Map<String, Map<String, Boolean>>> columnsToFilterMap = buildColumnsToFilterMap(dataInstance);
         dataStore.setColumnsToFilterMap(columnsToFilterMap);
 
         // sender
@@ -75,17 +75,17 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
 
     protected abstract DataStore doBuildDataStore();
 
-    private Map<String, Map<String, List<String>>> buildColumnsToFilterMap(DataInstance dataInstance) {
+    private Map<String, Map<String, Map<String, Boolean>>> buildColumnsToFilterMap(DataInstance dataInstance) {
         if (!CollectionUtils.isEmpty(dataInstance.getDataTables())) {
-            Map<String, Map<String, List<String>>> columnsToFilterMap = new HashMap<>();
+            Map<String, Map<String, Map<String, Boolean>>> columnsToFilterMap = new HashMap<>();
             for (DataTable dataTable : dataInstance.getDataTables()) {
-                Map<String, List<String>> columnsMap = columnsToFilterMap.get(dataTable.getSchemaName());
+                Map<String, Map<String, Boolean>> columnsMap = columnsToFilterMap.get(dataTable.getSchemaName());
                 if (columnsMap == null) {
                     columnsMap = new HashMap<>();
                     columnsToFilterMap.put(dataTable.getSchemaName(), columnsMap);
                 }
 
-                columnsMap.put(dataTable.getTableName(), columnsToList(dataTable.getColumns()));
+                columnsMap.put(dataTable.getTableName(), columnsToMap(dataTable.getColumns()));
             }
             return columnsToFilterMap;
         } else {
@@ -93,8 +93,13 @@ public abstract class AbstractInstanceHandler implements ApplicationContextAware
         }
     }
 
-    private List<String> columnsToList(String columns) {
-        return Arrays.asList(columns.split(","));
+    private Map<String, Boolean> columnsToMap(String columns) {
+        List<String> columnsToUse = Arrays.asList(columns.split(","));
+        Map<String, Boolean> columnMap = new HashMap<>();
+        for (String column : columnsToUse) {
+            columnMap.put(column, Boolean.TRUE);
+        }
+        return columnMap;
     }
 
     protected void buildDataSender(List<DataOutputMapping> dataOutputMappings, DataStore dataStore) {
