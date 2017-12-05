@@ -81,7 +81,9 @@
                 case 12 :
                     return "PostGreSQL";
                 case 13 :
-                    return "SQLServer";
+                    return "SQLServer"; 
+                case 14 :
+                    return "Hive";
                 case 20 :
                     return "Kafka";
                 case 21 :

@@ -72,10 +72,11 @@
                     try {
                         var json = JSON.parse(options);
                         switch (parseInt(type)) {
-                            case 10 : // MySQL
+                            case 10: // MySQL
                             case 11: // Oracle
                             case 12: // PostGreSQL
                             case 13: // SQLServer
+                            case 14: // Hive
                                 var props = ["username", "password", "host", "port", "jdbcUrl"];
                                 return Table.__validateProperty(json, props);
                             case 20 : // Kafka

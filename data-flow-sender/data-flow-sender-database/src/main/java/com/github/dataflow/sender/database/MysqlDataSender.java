@@ -2,7 +2,6 @@ package com.github.dataflow.sender.database;
 
 import com.github.dataflow.common.model.RowMetaData;
 import com.github.dataflow.dubbo.common.enums.DataSourceType;
-import com.github.dataflow.sender.core.EventDataSender;
 import com.github.dataflow.sender.core.event.handler.EventHandler;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
@@ -14,7 +13,7 @@ import java.sql.BatchUpdateException;
  * @description :
  * @date : 2017/6/24
  */
-public class MysqlDataSender extends EventDataSender {
+public class MysqlDataSender extends DatabaseDataSender {
     private DataSourceType dataSourceType = DataSourceType.MYSQL;
 
     @Override

@@ -1,6 +1,7 @@
-package com.github.dataflow.sender.core;
+package com.github.dataflow.sender.database;
 
 import com.github.dataflow.common.model.RowMetaData;
+import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.datasource.DataSourceHolder;
 import com.github.dataflow.sender.core.event.handler.EventHandler;
 import com.github.dataflow.sender.core.exception.DataSenderException;
@@ -16,7 +17,7 @@ import java.util.List;
  * @description :
  * @date : 2017/9/9
  */
-public abstract class EventDataSender extends DataSender {
+public abstract class DatabaseDataSender extends DataSender {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     protected List<EventHandler> eventHandlers = new ArrayList<>();

@@ -159,6 +159,7 @@
                                                 <option value="11">Oracle</option>
                                                 <option value="12">PostGreSQL</option>
                                                 <option value="13">SQLServer</option>
+                                                <option value="14">Hive</option>
                                                 <option value="20">Kafka</option>
                                                 <option value="21">MetaQ</option>
                                                 <option value="22">RabbitMQ</option>
@@ -241,6 +242,7 @@
                                                             <option value="11">Oracle</option>
                                                             <option value="12">PostGreSQL</option>
                                                             <option value="13">SQLServer</option>
+                                                            <option value="14">Hive</option>
                                                             <option value="20">Kafka</option>
                                                             <option value="21">MetaQ</option>
                                                             <option value="22">RabbitMQ</option>
