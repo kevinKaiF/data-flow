@@ -97,7 +97,7 @@ public class DataInstanceController extends BaseController {
     @RequestMapping("stop")
     @ResponseBody
     public ResponseEntity stop(@RequestParam final Long id) {
-        return getResponseEntity("stop", new Callable() {
+        return getResponseEntity("stop", new Callable(id) {
             @Override
             public void call(ResponseEntity responseEntity) {
                 DataInstance dataInstance = dataInstanceService.getById(id);
