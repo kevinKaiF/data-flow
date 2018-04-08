@@ -11,8 +11,8 @@ import java.util.List;
  * @description :
  * @date : 2017/7/7
  */
-public class PostGroovyShellDataTransformer implements PostDataTransformer<String> {
-    private GroovyShellDataTransformer<String> groovyShellDataTransformer;
+public class PostGroovyShellDataTransformer implements PostDataTransformer<Object> {
+    private GroovyShellDataTransformer<Object> groovyShellDataTransformer;
 
     private PostGroovyShellDataTransformer() {
     }
@@ -22,7 +22,7 @@ public class PostGroovyShellDataTransformer implements PostDataTransformer<Strin
     }
 
     @Override
-    public String transform(List<RowMetaData> rowMetaDataList) {
+    public Object transform(List<RowMetaData> rowMetaDataList) {
         return groovyShellDataTransformer.transform(rowMetaDataList);
     }
 

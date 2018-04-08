@@ -1002,7 +1002,7 @@
                             var dataInstanceProperties = {
                                 "name": "input",
                                 "options": "textarea",
-                                "transformScript": "textarea",
+                                // "transformScript": "textarea",
                             };
                             var dataInstanceForm = '<div class="container">' +
                                 '<span class="section">实例详情</span>' +

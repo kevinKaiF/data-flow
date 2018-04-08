@@ -287,18 +287,18 @@
                                                                       class="doc">doc</span>
                                                             </div>
                                                         </div>
-                                                        <div class="item form-group">
-                                                            <label for="dataInstance-transformScript"
-                                                                   class="control-label col-md-2 col-sm-2 col-xs-12">转换脚本 </label>
-                                                            <div class="col-md-8 col-sm-8 col-xs-12"
-                                                                 style="position: relative">
-                                                        <textarea id="dataInstance-transformScript"
-                                                                  class="form-control col-md-7 col-xs-12"
-                                                                  rows="7"
-                                                                  name="transformScript"></textarea>
-                                                                <span id="dataInstance-transformScript-doc" class="doc">doc</span>
-                                                            </div>
-                                                        </div>
+                                                        <#--<div class="item form-group">-->
+                                                            <#--<label for="dataInstance-transformScript"-->
+                                                                   <#--class="control-label col-md-2 col-sm-2 col-xs-12">转换脚本 </label>-->
+                                                            <#--<div class="col-md-8 col-sm-8 col-xs-12"-->
+                                                                 <#--style="position: relative">-->
+                                                        <#--<textarea id="dataInstance-transformScript"-->
+                                                                  <#--class="form-control col-md-7 col-xs-12"-->
+                                                                  <#--rows="7"-->
+                                                                  <#--name="transformScript"></textarea>-->
+                                                                <#--<span id="dataInstance-transformScript-doc" class="doc">doc</span>-->
+                                                            <#--</div>-->
+                                                        <#--</div>-->
                                                         <div class="item form-group">
                                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                                 <input id="dataInstance-id"

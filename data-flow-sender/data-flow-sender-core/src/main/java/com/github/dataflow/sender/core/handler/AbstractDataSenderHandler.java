@@ -8,6 +8,7 @@ import com.github.dataflow.sender.core.DataSender;
 import com.github.dataflow.sender.core.config.MappingConfig;
 import com.github.dataflow.sender.core.exception.DataSenderException;
 import com.github.dataflow.transformer.core.post.PostDataTransformer;
+import com.github.dataflow.transformer.core.post.PostGroovyShellDataTransformer;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -50,6 +51,11 @@ public abstract class AbstractDataSenderHandler implements DataSenderHandler, Ap
             } else {
                 throw new DataSenderException(String.format("transformBean[%s] is not a instance of com.github.dataflow.transformer.core.post.PostDataTransformer.", transformBean));
             }
+        }
+
+        // 以transformScript为主，会覆盖postDataTransformerBean的配置
+        if (!StringUtils.isEmpty(dataOutputMapping.getTransformScript())) {
+            dataSender.setDataTransformer(new PostGroovyShellDataTransformer(dataOutputMapping.getTransformScript()));
         }
     }
 
