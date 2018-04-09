@@ -47,6 +47,12 @@ public class ZKLogPositionManager extends ZooKeeperLogPositionManager {
         return data != null && data.length != 0?(LogPosition) JsonUtils.unmarshalFromByte(data, LogPosition.class):null;
     }
 
+    /**
+     * 解决canal序列化时使用hostName时，异活后无法解析hostName的问题
+     *
+     * @param destination
+     * @param logPosition
+     */
     public void persistLogPosition(String destination, LogPosition logPosition) {
         String path = ZookeeperPathUtils.getParsePath(destination);
         ObjectSerializer serializer = new InetAddressSerializer();
